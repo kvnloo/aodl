@@ -34,6 +34,7 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 |---|---|
 | `schema/` + `spec/` + `tests/validate.py` | HOTL 0.2 IR. Unknown version, implicit fan-in, unbounded spawn, payment grants fail closed. |
 | `encodings/` | Join table. Visual topology ids compile **only** through `ir-map.json`. |
+| `harnesses/catalog.json` | Formal supported harness ids (`hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`). |
 | `language/` | UI catalog: capability cores, decode key, IR map. |
 
 ```
@@ -42,10 +43,12 @@ schema/hotl-0.1.schema.json   archived 0.1
 spec/hotl-0.2.md            research spec
 encodings/visual.json       design-language catalog (canonical)
 encodings/ir-map.json       visual topology → HOTL 0.2
+harnesses/catalog.json      supported harness + network ids
 language/                   Vite catalog (port 5178)
 examples/valid/             fixtures that must pass
 examples/invalid/           fail-closed cases
-tests/validate.py           zero-dependency validator + join-table check
+tests/validate.py           zero-dependency validator + join-table + catalog check
+docs/network.md             how this repo sits next to dash / frontier-kb / keel
 ```
 
 ## Validate
@@ -59,12 +62,43 @@ cd language && bun install && bun run dev
 
 Unknown `specVersion`, implicit fan-in, unbounded spawn, missing ports, dependency cycles, undeclared privileged capability, and payment-execution grants fail closed. A visual `swarm` silhouette does **not** compile unless `ir-map.json` lists the required bounds.
 
+
+## Supported harnesses
+
+Ids are fixed in [`harnesses/catalog.json`](harnesses/catalog.json). Unknown ids fail closed.
+
+| id | kind | Dash | Firstmate | Upstream |
+|---|---|---|---|---|
+| `hermes` | executor | wired | none | [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) |
+| `omp` | executor | wired | primary | [can1357/oh-my-pi](https://github.com/can1357/oh-my-pi) |
+| `o8` | control-room | none | none | [hurttlocker/o8](https://github.com/hurttlocker/o8) |
+| `grok` | executor | wired | primary | [xai-org/grok-build](https://github.com/xai-org/grok-build) |
+| `codex` | executor | wired | primary | [openai/codex](https://github.com/openai/codex) |
+| `claude` | executor | wired | primary | [anthropics/claude-code](https://github.com/anthropics/claude-code) |
+| `pi` | executor | none | primary | [earendil-works/pi](https://github.com/earendil-works/pi) |
+| `fx` | executor | none | none | [vercel-labs/fx](https://github.com/vercel-labs/fx) |
+
+[kunchenguid/firstmate](https://github.com/kunchenguid/firstmate) is a **distro**, not a ninth harness. Fork: [kvnloo/firstmate](https://github.com/kvnloo/firstmate).
+
+## Network
+
+| Repo | Job |
+|---|---|
+| [kvnloo/aodl](https://github.com/kvnloo/aodl) | this IR |
+| [kvnloo/dash](https://github.com/kvnloo/dash) | phone + Tailscale spawn of executor CLIs |
+| [kvnloo/frontier-kb](https://github.com/kvnloo/frontier-kb) | research notes |
+| [kvnloo/hermes-keel](https://github.com/kvnloo/hermes-keel) | Hermes governance, Level 0 only |
+| [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) | Kanban / profiles / A2A |
+
+See [docs/network.md](docs/network.md).
+
 ## Non-goals
 
 - Second scheduler or ledger (Hermes Kanban / Keel stay canonical where they exist)
 - Inferring swarm / intelligence / consensus from a drawing
 - Shipping the private ChatGPT voice thread that motivated the IR
 - Mixing this into `kvnloo/dash`
+- Treating Firstmate or o8 as AODL graphs
 - A second GitHub repo for the same ids (`kvnloo/aodl-ui` is not the contract)
 
 ## Provenance
@@ -72,3 +106,7 @@ Unknown `specVersion`, implicit fan-in, unbounded spawn, missing ports, dependen
 Recovered 2026-08-17 from Hermes Kanban attachments `t_7432ab2d` (0.1) and `t_83991e68` (0.2). `examples/` and `tests/validate.py` were named in the 0.2 README and never attached; this repo is that first implementation milestone.
 
 See `spec/provenance.md`.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). MIT. CI: `python3 tests/validate.py`.

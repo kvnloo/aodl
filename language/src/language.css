@@ -20,6 +20,13 @@
 
 .aodl-language__hero code { color: var(--gold); }
 
+.aodl-language__preview {
+  font-size: 13px;
+  color: var(--gold);
+}
+
+.aodl-language__preview a { color: var(--gold); }
+
 .aodl-map {
   margin: 36px 0 0;
   border-top: 1px solid var(--hair-2);

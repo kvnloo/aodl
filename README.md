@@ -6,6 +6,8 @@ Public name: **AODL**. Wire identifier: **`hotl-0.2`** (Hermes Orchestration Top
 
 This repository is a **specification** (schema + fail-closed validator) plus a **design-language join table**. It is not a scheduler, runtime, payment system, or paper.
 
+Live catalog: [kvnloo.github.io/aodl](https://kvnloo.github.io/aodl/). Other git branches land at `/preview/<branch>/`.
+
 The formal language is a working note, not a preprint: [`docs/working-note.md`](docs/working-note.md). There is no `.tex` / PDF and nothing on arXiv.
 
 ## Why
@@ -47,6 +49,7 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 | Checkable IR | [`schema/hotl-0.2.schema.json`](schema/hotl-0.2.schema.json) |
 | Long research spec | [`spec/hotl-0.2.md`](spec/hotl-0.2.md) (ASCII; GitHub will not render `O_t` there) |
 | Intent → plan → observed | [`spec/architecture.mermaid`](spec/architecture.mermaid) |
+| Live UI | [kvnloo.github.io/aodl](https://kvnloo.github.io/aodl/) (branch previews: [`/preview/`](https://kvnloo.github.io/aodl/preview/)) |
 | Proof | `python3 tests/validate.py` |
 
 ## Packages
@@ -82,6 +85,9 @@ python3 tests/validate.py
 python3 tests/validate.py examples/valid/pipeline.json
 cd language && bun install && bun run dev
 # http://127.0.0.1:5178/
+python3 scripts/build-pages.py --current-only   # site/ for GitHub Pages
+# https://kvnloo.github.io/aodl/  (main)
+# https://kvnloo.github.io/aodl/preview/<branch>/
 ```
 
 Unknown `specVersion`, implicit fan-in, unbounded spawn, missing ports, dependency cycles, undeclared privileged capability, and payment-execution grants fail closed. A visual `swarm` silhouette does **not** compile unless `ir-map.json` lists the required bounds.

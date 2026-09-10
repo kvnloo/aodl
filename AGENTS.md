@@ -16,3 +16,4 @@ IR first. Pretty DSL later. Fail closed.
 - Do not port Keel into this repo or into Firstmate as a second scheduler. Keel is Hermes L0. Firstmate is Keel L9 (subordinate executor) when we use it.
 - C(RAID) is a named hybrid program (`spec/craid.md`, `examples/valid/craid.json`). Unlabeled `hybrid` stays `not-inferred`. D→R feedback is `observation`, never `dependency`.
 - Network map: `docs/network.md`. Human contract: `docs/working-note.md`. No arXiv; no `.tex`.
+- Live catalog is GitHub Pages (`scripts/build-pages.py`, `.github/workflows/pages.yml`). Main → https://kvnloo.github.io/aodl/. Other branches → `/preview/<slug>/`. Workers never merge `main`.

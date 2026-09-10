@@ -5,10 +5,22 @@ import irMap from '../../encodings/ir-map.json';
 
 export function Language() {
   const topologies = Object.entries(visual.topologies);
+  const branch = import.meta.env.VITE_AODL_BRANCH;
+  const sha = import.meta.env.VITE_AODL_SHA;
+  const preview = branch && branch !== 'main';
   return (
     <div className="aodl-language">
       <header className="aodl-language__hero">
         <h1>AODL language</h1>
+        {preview ? (
+          <p className="aodl-language__preview">
+            Preview of <code>{branch}</code> <code>{sha}</code>
+            {' · '}
+            <a href="/aodl/">main</a>
+            {' · '}
+            <a href="/aodl/preview/">all branches</a>
+          </p>
+        ) : null}
         <p>
           Visual encoding of declared orchestration. Cores compress provider, model, effort, topology, mode, and runtime cadence.
           Topology silhouettes compile only through <code>encodings/ir-map.json</code>. Shape is not a HOTL kind.

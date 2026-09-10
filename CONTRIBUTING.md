@@ -18,6 +18,7 @@ python3 tests/validate.py examples/valid/pipeline.json
 1. Add or change a construct → one **valid** fixture and one **invalid** fixture.
 2. `python3 tests/validate.py` must stay green.
 3. Unknown `specVersion`, implicit fan-in, unbounded spawn, payment grants, unknown harness ids, and inferred `swarm` stay fail-closed.
+4. Catalog UI: `python3 scripts/build-pages.py --current-only` must produce `site/index.html` (not committed).
 
 ## Do not
 

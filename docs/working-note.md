@@ -127,6 +127,7 @@ Autonomous product management is this graph over a backlog. That is Blueprint st
 | Research dump (ASCII, long) | [`spec/hotl-0.2.md`](../spec/hotl-0.2.md) |
 | Pipeline of intent → plan → observed | [`spec/architecture.mermaid`](../spec/architecture.mermaid) |
 | Named hybrid | [`spec/craid.md`](../spec/craid.md) |
+| Live UI | [kvnloo.github.io/aodl](https://kvnloo.github.io/aodl/) · [branch previews](https://kvnloo.github.io/aodl/preview/) |
 | Proof | `python3 tests/validate.py` (6 valid, 11 invalid) |
 
 There is **no** `.tex` source and **no** PDF in this repository. GitHub Flavored Markdown with `$` / `$$` is the typeset form until a compiler dry-run exists.

@@ -23,7 +23,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 REPO_BASE = "/aodl/"
-SKIP_BRANCHES = {"gh-pages", "HEAD"}
+SKIP_BRANCHES = {"gh-pages", "HEAD", "origin"}
 
 
 def run(cmd: list[str], cwd: Path | None = None, env: dict[str, str] | None = None) -> str:
@@ -39,24 +39,32 @@ def slug(name: str) -> str:
     return re.sub(r"[^A-Za-z0-9._-]+", "--", name).strip("-._") or "unnamed"
 
 
-def git_sha(ref: str) -> str:
-    return run(["git", "rev-parse", "--short", ref], cwd=ROOT).strip()
+def git_sha(ref: str) -> str | None:
+    proc = subprocess.run(
+        ["git", "rev-parse", "--verify", "--short", ref],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+    )
+    if proc.returncode != 0:
+        return None
+    return proc.stdout.strip()
 
 
 def origin_branches() -> list[str]:
     out = run(
-        ["git", "for-each-ref", "--format=%(refname:short)", "refs/remotes/origin"],
+        ["git", "for-each-ref", "--format=%(refname:lstrip=3)", "refs/remotes/origin"],
         cwd=ROOT,
     )
     names: list[str] = []
-    for line in out.splitlines():
-        ref = line.strip()
-        if not ref or ref == "origin/HEAD":
+    for short in out.splitlines():
+        name = short.strip()
+        if not name or name in SKIP_BRANCHES:
             continue
-        short = ref.removeprefix("origin/")
-        if short in SKIP_BRANCHES:
+        if git_sha(f"origin/{name}") is None:
+            print(f"skip {name}: origin/{name} is not a commit")
             continue
-        names.append(short)
+        names.append(name)
     return sorted(set(names), key=lambda n: (n != "main", n))
 
 
@@ -174,7 +182,10 @@ def main(argv: list[str]) -> int:
     scratch = Path(tempfile.mkdtemp(prefix="aodl-pages-"))
     try:
         for branch, ref in jobs:
-            sha = git_sha(ref)
+            sha = git_sha(ref) or git_sha("HEAD")
+            if not sha:
+                print(f"skip {branch}: no sha for {ref}")
+                continue
             base = REPO_BASE if branch == "main" else f"{REPO_BASE}preview/{slug(branch)}/"
             dist = scratch / slug(branch)
             if ref == "HEAD":

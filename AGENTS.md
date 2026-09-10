@@ -17,3 +17,37 @@ IR first. Pretty DSL later. Fail closed.
 - C(RAID) is a named hybrid program (`spec/craid.md`, `examples/valid/craid.json`). Unlabeled `hybrid` stays `not-inferred`. D→R feedback is `observation`, never `dependency`.
 - Network map: `docs/network.md`. Human contract: `docs/working-note.md`. No arXiv; no `.tex`.
 - Live catalog is GitHub Pages (`scripts/build-pages.py`, `.github/workflows/pages.yml`). Main → https://kvnloo.github.io/aodl/. Other branches → `/preview/<slug>/`. Workers never merge `main`.
+
+## Proof
+
+Commands are pinned for this tree. Do not invent a mutation score.
+
+| Layer | Command |
+|---|---|
+| Unit | `python3 tests/validate.py` |
+| Mutation | `n/a` — mutmut is not adopted here |
+| Catalog | `python3 scripts/build-pages.py --current-only` |
+
+1. New construct → one valid fixture and one invalid fixture.
+2. Fail, then pass (`skills/tdd/SKILL.md`).
+3. Open a PR. Fill `.github/PULL_REQUEST_TEMPLATE.md`. Never merge.
+
+Issues are not claims. Prefer labels `claimable` / `claimed` (24h lease). If nothing is claimable, stop.
+
+## Contribution loop
+
+This repo follows the [Verified OSS Loop](https://github.com/kvnloo/verified-oss-loop). Issues are not claims. AI work is untrusted until proven.
+
+1. Search open issues and PRs. Do not duplicate.
+2. Claim **one** `claimable` issue (24h lease). If nothing is claimable, stop.
+3. Fail, then pass (`skills/tdd/SKILL.md`).
+4. Open a PR with `.github/PULL_REQUEST_TEMPLATE.md`. **Never merge.**
+
+The onboarding detector saw no root `pyproject.toml` / `package.json`. Pin these commands; do not invent a mutation score.
+
+| Layer | Command |
+|---|---|
+| Unit | `python3 tests/validate.py` |
+| Catalog (if you touch `language/` or Pages) | `python3 scripts/build-pages.py --current-only` |
+| Mutation | `n/a` — fail-closed fixtures, not a mutator |
+| Runtime | `n/a` — static IR |

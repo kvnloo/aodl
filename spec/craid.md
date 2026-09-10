@@ -44,7 +44,7 @@ Fan-in at analysis is `reducer`. Unbounded scout spawn is the same as any other 
 |---|---|
 | Intent | this document (`examples/valid/craid.json`) |
 | Compiled plan | Hermes Kanban / Firstmate ship+scout / Dash spawn — whatever the runtime actually has |
-| Observed \(\mathcal{O}_t\) | what those workers did |
+| Observed $\mathcal{O}_t$ | what those workers did |
 
 Reverse-projecting a Claude Flow board or a Firstmate fleet into “C(RAID)” is a lie unless the policy was on the intent.
 
@@ -61,7 +61,7 @@ Blueprint is the **goal**: an autonomous product (first slice: autonomous produc
 | Backend | [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) | Kanban / profiles / A2A |
 | Distro (optional, Keel L9) | [kunchenguid/firstmate](https://github.com/kunchenguid/firstmate) | captain liaison; `humanGate` → captain-hold |
 | Twin | `kvnloo/solarpunk` | cores / living-night; consume `encodings/` |
-| Phone | [kvnloo/dash](https://github.com/kvnloo/dash) | observed \(V\), not \(\mathcal{O}_t\) |
+| Phone | [kvnloo/dash](https://github.com/kvnloo/dash) | observed $V$, not $\mathcal{O}_t$ |
 
 Autonomous PM is this graph over a backlog: research tickets fan out, analysis reduces, integration writes the spec/board, deploy is a gated ship. Firstmate's first mate **must not** do project work (hard rule 1) — that is the same shape as Keel L0, not a second Keel. Do not port `hermes-keel` into Firstmate.
 

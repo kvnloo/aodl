@@ -25,7 +25,7 @@ These repos are separate products that share ids. They are not a monorepo.
 
 | Repo | Owns | Does not own |
 |---|---|---|
-| [kvnloo/aodl](https://github.com/kvnloo/aodl) | \(\mathcal{O}_t\), schema, validator, visual join table, harness ids | scheduler, payment, Dash UI, Kanban |
+| [kvnloo/aodl](https://github.com/kvnloo/aodl) | $\mathcal{O}_t$, schema, validator, visual join table, harness ids | scheduler, payment, Dash UI, Kanban |
 | [kvnloo/dash](https://github.com/kvnloo/dash) | phone + Tailscale spawn of executor CLIs | orchestration calculus, Keel |
 | [kvnloo/frontier-kb](https://github.com/kvnloo/frontier-kb) | literature / permanent notes | runtime |
 | [kvnloo/hermes-keel](https://github.com/kvnloo/hermes-keel) | Hermes governance, Level 0 | Firstmate, Dash, AODL schema |
@@ -39,4 +39,6 @@ C(RAID) (`spec/craid.md`) is the named hybrid that compiles Blueprint's CR/CA/CI
 
 Ids for executors are `harnesses/catalog.json`. Dash `Harness.id` and Firstmate adapter names must match those ids when they talk about the same CLI (`omp`, `codex`, `grok`, `claude`, `hermes`, `pi`, `fx`).
 
-`o8` and `firstmate` are **not** AODL graphs. They may *compile* a graph (dispatch workers). Observed \(\mathcal{O}_t\) still comes from the workers they spawned.
+`o8` and `firstmate` are **not** AODL graphs. They may *compile* a graph (dispatch workers). Observed $\mathcal{O}_t$ still comes from the workers they spawned.
+
+Human contract: [`working-note.md`](working-note.md).

@@ -4,17 +4,27 @@
 
 Public name: **AODL**. Wire identifier: **`hotl-0.2`** (Hermes Orchestration Topology Language, kept for continuity with [NousResearch/hermes-agent#88589](https://github.com/NousResearch/hermes-agent/issues/88589)).
 
-This repository has two packages: a **specification** (schema + fail-closed validator) and a **design language** (living-night cores + topology silhouettes). It is not a scheduler, runtime, or payment system.
+This repository is a **specification** (schema + fail-closed validator) plus a **design-language join table**. It is not a scheduler, runtime, payment system, or paper.
+
+The formal language is a working note, not a preprint: [`docs/working-note.md`](docs/working-note.md). There is no `.tex` / PDF and nothing on arXiv.
 
 ## Why
 
 Harnesses describe **nodes** (Codex, OMP, Hermes, humans, tools) and then wave at the topology with English: swarm, mesh, supervisor, marketplace. Two systems can share a label and have different computational structure.
 
-An orchestration at logical time \(t\) is
+An orchestration at logical time $t$ is
 
-\[
+$$
 \mathcal{O}_t = (V_t, E_t, S_t, \Pi_t, \Gamma_t)
-\]
+$$
+
+| Symbol | Meaning |
+|---|---|
+| $V_t$ | nodes: agents, models, tools, humans, memories, tasks |
+| $E_t$ | typed relations (delegate, verify, depend, observe, …) |
+| $S_t$ | runtime state |
+| $\Pi_t$ | allocation / routing policy |
+| $\Gamma_t$ | goals, budgets, human gates (Keel) |
 
 Keep three objects distinct:
 
@@ -22,11 +32,22 @@ Keep three objects distinct:
 |---|---|
 | Intent graph | what the controller wants (`intentGraph` + `policies` + `constraints` + `provenance`) |
 | Compiled plan | what a specific runtime can safely support |
-| Observed \(\mathcal{O}_t\) | what actually exists now |
+| Observed $\mathcal{O}_t$ | what actually exists now |
 
-A marketplace is an **allocation policy** \(\Pi_t\) (announce → bid → award → execute → verify → settle), not a separate product. Autonomous payment is unsupported.
+A marketplace is an **allocation policy** $\Pi_t$ (announce → bid → award → execute → verify → settle), not a separate product. Autonomous payment is unsupported.
 
-Readable DSL is sugar. First proof of generality: the **same primitives** express ReAct and bounded recursion. Architecture search is search over programs in this IR.
+Readable DSL is sugar. First proof of generality: the **same primitives** express ReAct and bounded recursion. Architecture search is search over programs in this IR. Mesh is declared peer edges, not a kind. Keel is $\Gamma_t$, not a silhouette. Cores are a decoder, not the IR. C(RAID) is a named hybrid ([`spec/craid.md`](spec/craid.md)).
+
+## Formal language
+
+| Want | Open |
+|---|---|
+| Equations + stack | [`docs/working-note.md`](docs/working-note.md) |
+| Grammar | [`spec/hotl-0.2.ebnf`](spec/hotl-0.2.ebnf) |
+| Checkable IR | [`schema/hotl-0.2.schema.json`](schema/hotl-0.2.schema.json) |
+| Long research spec | [`spec/hotl-0.2.md`](spec/hotl-0.2.md) (ASCII; GitHub will not render `O_t` there) |
+| Intent → plan → observed | [`spec/architecture.mermaid`](spec/architecture.mermaid) |
+| Proof | `python3 tests/validate.py` |
 
 ## Packages
 
@@ -38,9 +59,12 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 | `language/` | UI catalog: capability cores, decode key, IR map. |
 
 ```
-schema/hotl-0.2.schema.json   current JSON Schema (draft 2020-12)
+docs/working-note.md        equations + stack (GitHub math)
+docs/network.md             sibling repos + harness ids
+schema/hotl-0.2.schema.json   checkable IR (draft 2020-12)
 schema/hotl-0.1.schema.json   archived 0.1
-spec/hotl-0.2.md            research spec
+spec/hotl-0.2.md            research spec (ASCII)
+spec/hotl-0.2.ebnf          grammar sketch
 spec/craid.md               C(RAID) named hybrid (R→A→I→D)
 encodings/visual.json       design-language catalog (canonical)
 encodings/ir-map.json       visual topology → HOTL 0.2
@@ -49,7 +73,6 @@ language/                   Vite catalog (port 5178)
 examples/valid/             fixtures that must pass
 examples/invalid/           fail-closed cases
 tests/validate.py           zero-dependency validator + join-table + catalog check
-docs/network.md             how this repo sits next to dash / frontier-kb / keel
 ```
 
 ## Validate
@@ -109,6 +132,7 @@ See [docs/network.md](docs/network.md).
 - Mixing this into `kvnloo/dash`
 - Treating Firstmate or o8 as AODL graphs
 - A second GitHub repo for the same ids (`kvnloo/aodl-ui` is not the contract)
+- An arXiv preprint before a compiler dry-run exists
 
 ## Provenance
 

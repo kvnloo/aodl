@@ -15,4 +15,4 @@ IR first. Pretty DSL later. Fail closed.
 - Harness ids live in `harnesses/catalog.json`. The eight supported ids are `hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`. Firstmate is a distro, not a harness id.
 - Do not port Keel into this repo or into Firstmate as a second scheduler. Keel is Hermes L0. Firstmate is Keel L9 (subordinate executor) when we use it.
 - C(RAID) is a named hybrid program (`spec/craid.md`, `examples/valid/craid.json`). Unlabeled `hybrid` stays `not-inferred`. D→R feedback is `observation`, never `dependency`.
-- Network map: `docs/network.md`.
+- Network map: `docs/network.md`. Human contract: `docs/working-note.md`. No arXiv; no `.tex`.

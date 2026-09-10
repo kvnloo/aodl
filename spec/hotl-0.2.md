@@ -1,5 +1,7 @@
 # HOTL/AODL 0.2 — research specification
 
+Human-facing equations and stack: [`docs/working-note.md`](../docs/working-note.md). This file is the long ASCII dump. GitHub will not typeset `O_t` here.
+
 ## Executive synthesis
 Prior art covers most mechanics (typed graphs, workflow execution, durable events, policy engines, provenance, telemetry, agent messaging). The missing layer is not “a graph”: it is a vendor-neutral, typed ontology and interchange contract that keeps desired topology, compiled plan, observed runtime, authority, evidence, and human approval distinct. HOTL should therefore be a specification/IR and validator, not a second scheduler.
 

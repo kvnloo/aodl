@@ -36,7 +36,7 @@ tests:
   red:
   green:
   sabotage:
-mutation: n/a
+mutation: n/a — mutmut is not adopted; do not invent a score
 runtime_evidence: []
 limitations: []
 ai_assistance:

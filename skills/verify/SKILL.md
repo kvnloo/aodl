@@ -4,19 +4,19 @@ Tests are necessary, not sufficient. Generation and verification are separate.
 
 ## Pyramid
 
-1. **Unit** — `python3 tests/validate.py` on the touched surface.
-2. **TDD** — red command, then green command (`skills/tdd/SKILL.md`).
-3. **Mutation** — `n/a`. AODL proves contracts with valid/invalid fixtures, not a mutator. Do not invent a score.
-4. **Runtime** — `n/a`. This repo does not execute graphs. If you did not run Pages/catalog locally, say so under `limitations`.
+1. **Unit** — `python3 tests/validate.py` (6 valid, 11 invalid, encodings join, harness catalog).
+2. **TDD** — red fixture, then green command (`skills/tdd/SKILL.md`).
+3. **Mutation** — `n/a`. Do not invent a score.
+4. **Catalog** — `python3 scripts/build-pages.py --current-only` must write `site/index.html` (not committed).
 
 ## Receipt
 
 Bind every result to `head_revision`. Tests from another SHA are not evidence. Fill `.github/PULL_REQUEST_TEMPLATE.md`.
 
-The implementer does not self-approve. Independent review is a different person or a frozen evaluator. Workers never merge.
+The implementer does not self-approve. Workers never merge.
 
 ## Fail closed
 
-- Unknown mutation tool → `n/a`, not `80`.
+- Unknown `specVersion`, implicit fan-in, unbounded spawn, payment grants, inferred `swarm` → error, not a warning.
 - Runtime you did not exercise → list it under `limitations`.
-- Secrets, tokens, `.env` → stop.
+- Secrets, transcripts, `.env` → stop.

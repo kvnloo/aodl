@@ -551,6 +551,21 @@ def validate_encodings() -> list[Issue]:
             continue
         if tid not in ir_ids:
             issues.append(Issue("encodings", f"fromHotl {kind} -> unknown topology {tid}"))
+    translation = ir_map.get("translation") or {}
+    if translation.get("symbol") != "tau" or translation.get("failClosed") != "bot" or translation.get("partial") is not True:
+        issues.append(Issue("encodings", "translation must be partial tau with failClosed bot"))
+    required_channels = ("provider", "model", "effort", "topology", "operatingMode", "state", "economics")
+    channels = ir_map.get("channels") or {}
+    for name in required_channels:
+        rec = channels.get(name) or {}
+        compile_mode = rec.get("compile")
+        if compile_mode not in {"none", "declared-only", "ir-map"}:
+            issues.append(Issue("encodings", f"channel {name} missing compile mode"))
+    if (channels.get("topology") or {}).get("compile") != "ir-map":
+        issues.append(Issue("encodings", "topology channel must compile through ir-map"))
+    hybrid = (ir_map.get("topologies") or {}).get("hybrid") or {}
+    if hybrid.get("status") != "not-inferred":
+        issues.append(Issue("encodings", "unlabeled hybrid must be not-inferred"))
     return issues
 
 REQUIRED_HARNESS_IDS = ("hermes", "omp", "o8", "grok", "codex", "claude", "pi", "fx")

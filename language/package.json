@@ -8,6 +8,7 @@
     "preview": "vite preview --host 127.0.0.1 --port 5178 --strictPort"
   },
   "dependencies": {
+    "katex": "^0.18.7",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

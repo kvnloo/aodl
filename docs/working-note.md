@@ -91,7 +91,7 @@ Firstmate hard rule 1 is the same *shape* on a different product: the liaison do
 
 ### Language is a decoder
 
-Living-night cores (hue, geometry, orbits, rune, cadence) are **visual channels**. They are not HOTL fields. [`encodings/ir-map.json`](../encodings/ir-map.json) is the only allowed join. Shape is a declared coordination class. Provider hue never becomes a node kind.
+Living-night cores (hue, geometry, orbits, rune, cadence) are **visual channels**. They are not HOTL fields. The translation is the partial map $\tau$ in [`spec/translation.md`](../spec/translation.md) / [`encodings/ir-map.json`](../encodings/ir-map.json). Shape is a declared coordination class. Provider hue never becomes a node kind. The live catalog ([kvnloo.github.io/aodl](https://kvnloo.github.io/aodl/)) typesets $\mathcal{O}_t$ and $\tau$ in KaTeX and binds the same JSON in React.
 
 Solarpunk draws $\mathcal{O}_t$. It does not define it.
 
@@ -122,12 +122,14 @@ Autonomous product management is this graph over a backlog. That is Blueprint st
 | Want | Open |
 |---|---|
 | Equation on GitHub | this file, and the README (both use `$$`) |
+| Live (LaTeX + React) | [kvnloo.github.io/aodl](https://kvnloo.github.io/aodl/) |
+| Visual ⇀ IR | [`spec/translation.md`](../spec/translation.md) · [`encodings/ir-map.json`](../encodings/ir-map.json) |
 | Grammar | [`spec/hotl-0.2.ebnf`](../spec/hotl-0.2.ebnf) |
 | Checkable IR | [`schema/hotl-0.2.schema.json`](../schema/hotl-0.2.schema.json) |
 | Research dump (ASCII, long) | [`spec/hotl-0.2.md`](../spec/hotl-0.2.md) |
 | Pipeline of intent → plan → observed | [`spec/architecture.mermaid`](../spec/architecture.mermaid) |
 | Named hybrid | [`spec/craid.md`](../spec/craid.md) |
-| Live UI | [kvnloo.github.io/aodl](https://kvnloo.github.io/aodl/) · [branch previews](https://kvnloo.github.io/aodl/preview/) |
+| Branch previews | [kvnloo.github.io/aodl/preview/](https://kvnloo.github.io/aodl/preview/) |
 | Proof | `python3 tests/validate.py` (6 valid, 11 invalid) |
 
 There is **no** `.tex` source and **no** PDF in this repository. GitHub Flavored Markdown with `$` / `$$` is the typeset form until a compiler dry-run exists.

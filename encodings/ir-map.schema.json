@@ -4,13 +4,43 @@
   "title": "AODL visual topology to HOTL 0.2 map",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "hotlSpecVersion", "encodingVersion", "rule", "channels", "fromHotl", "topologies"],
+  "required": ["schemaVersion", "hotlSpecVersion", "encodingVersion", "rule", "translation", "channels", "fromHotl", "topologies"],
   "properties": {
     "schemaVersion": { "const": 1 },
     "hotlSpecVersion": { "const": "0.2" },
     "encodingVersion": { "type": "string" },
     "rule": { "type": "string" },
-    "channels": { "type": "object" },
+    "translation": {
+      "type": "object",
+      "required": ["symbol", "partial", "failClosed", "latex"],
+      "additionalProperties": true,
+      "properties": {
+        "symbol": { "const": "tau" },
+        "partial": { "const": true },
+        "failClosed": { "const": "bot" },
+        "latex": { "type": "string" },
+        "inverseLatex": { "type": "string" },
+        "domain": { "type": "string" },
+        "codomain": { "type": "string" },
+        "threeObjects": { "type": "array", "items": { "type": "string" } },
+        "note": { "type": "string" }
+      }
+    },
+    "channels": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["layer", "compile"],
+        "properties": {
+          "layer": { "type": "string" },
+          "visual": { "type": "string" },
+          "hotl": { "type": ["string", "null"] },
+          "object": { "type": ["string", "null"] },
+          "compile": { "enum": ["none", "declared-only", "ir-map"] },
+          "job": { "type": "string" }
+        }
+      }
+    },
     "fromHotl": { "type": "object" },
     "topologies": {
       "type": "object",

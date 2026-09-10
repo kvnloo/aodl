@@ -49,7 +49,8 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 | Checkable IR | [`schema/hotl-0.2.schema.json`](schema/hotl-0.2.schema.json) |
 | Long research spec | [`spec/hotl-0.2.md`](spec/hotl-0.2.md) (ASCII; GitHub will not render `O_t` there) |
 | Intent → plan → observed | [`spec/architecture.mermaid`](spec/architecture.mermaid) |
-| Live UI | [kvnloo.github.io/aodl](https://kvnloo.github.io/aodl/) (branch previews: [`/preview/`](https://kvnloo.github.io/aodl/preview/)) |
+| Live UI (KaTeX + React) | [kvnloo.github.io/aodl](https://kvnloo.github.io/aodl/) (branch previews: [`/preview/`](https://kvnloo.github.io/aodl/preview/)) |
+| Visual ⇀ IR | [`spec/translation.md`](spec/translation.md) · [`encodings/ir-map.json`](encodings/ir-map.json) |
 | Proof | `python3 tests/validate.py` |
 
 ## Packages
@@ -59,7 +60,7 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 | `schema/` + `spec/` + `tests/validate.py` | HOTL 0.2 IR. Unknown version, implicit fan-in, unbounded spawn, payment grants fail closed. |
 | `encodings/` | Join table. Visual topology ids compile **only** through `ir-map.json`. |
 | `harnesses/catalog.json` | Formal supported harness ids (`hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`). |
-| `language/` | UI catalog: capability cores, decode key, IR map. |
+| `language/` | Catalog: $\mathcal{O}_t$ + $\tau$ as KaTeX and React; cores are the decoder below that. |
 
 ```
 docs/working-note.md        equations + stack (GitHub math)
@@ -70,9 +71,10 @@ spec/hotl-0.2.md            research spec (ASCII)
 spec/hotl-0.2.ebnf          grammar sketch
 spec/craid.md               C(RAID) named hybrid (R→A→I→D)
 encodings/visual.json       design-language catalog (canonical)
-encodings/ir-map.json       visual topology → HOTL 0.2
+encodings/ir-map.json       τ: visual topology → HOTL 0.2
+spec/translation.md        human form of τ (LaTeX)
 harnesses/catalog.json      supported harness + network ids
-language/                   Vite catalog (port 5178)
+language/                   Vite catalog: calculus + translation + decoder (port 5178)
 examples/valid/             fixtures that must pass
 examples/invalid/           fail-closed cases
 tests/validate.py           zero-dependency validator + join-table + catalog check

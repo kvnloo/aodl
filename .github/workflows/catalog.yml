@@ -1,0 +1,32 @@
+name: catalog
+
+on:
+  push:
+    paths:
+      - "language/**"
+      - "encodings/**"
+      - ".github/workflows/catalog.yml"
+  pull_request:
+    paths:
+      - "language/**"
+      - "encodings/**"
+      - ".github/workflows/catalog.yml"
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: language
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.2.21"
+      - name: Install
+        run: bun install
+      - name: Install Chromium
+        run: bunx playwright install --with-deps chromium
+      - name: Headless catalog
+        run: bun run test:e2e

@@ -9,3 +9,6 @@ __pycache__/
 language/node_modules/
 language/dist/
 site/
+
+language/playwright-report/
+language/test-results/

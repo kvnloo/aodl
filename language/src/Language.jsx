@@ -6,9 +6,9 @@ import visual from '../../encodings/visual.json';
 import irMap from '../../encodings/ir-map.json';
 
 const OBJECTS = [
-  { name: 'Intent', latex: String.raw`\mathrm{intent}`, meaning: 'Declared graph + policies + constraints + provenance.', owner: 'AODL document' },
-  { name: 'Compiled plan', latex: String.raw`\mathrm{plan}`, meaning: 'What this runtime can safely support.', owner: 'compiler profile (Hermes, Firstmate, …)' },
-  { name: 'Observed', latex: String.raw`\mathcal{O}_t^{\mathrm{obs}}`, meaning: 'What is actually running.', owner: 'events + receipts' },
+  { name: 'Intent', meaning: 'Declared graph + policies + constraints + provenance.', owner: 'AODL document' },
+  { name: 'Compiled plan', meaning: 'What this runtime can safely support.', owner: 'compiler profile (Hermes, Firstmate, …)' },
+  { name: 'Observed', meaning: 'What is actually running.', owner: 'events + receipts' },
 ];
 
 const SYMBOLS = [
@@ -53,20 +53,22 @@ export function Language() {
         <h2 id="aodl-object-title">Formal object</h2>
         <p>An orchestration at logical time <Tex math="t" /> is</p>
         <Tex display math={String.raw`\mathcal{O}_t = (V_t, E_t, S_t, \Pi_t, \Gamma_t)`} />
-        <table className="aodl-table">
-          <thead>
-            <tr><th>Symbol</th><th>Meaning</th><th>JSON</th></tr>
-          </thead>
-          <tbody>
-            {SYMBOLS.map((row) => (
-              <tr key={row.json}>
-                <td><Tex math={row.symbol} /></td>
-                <td>{row.meaning}</td>
-                <td><code>{row.json}</code></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="aodl-table-wrap">
+          <table className="aodl-table">
+            <thead>
+              <tr><th>Symbol</th><th>Meaning</th><th>JSON</th></tr>
+            </thead>
+            <tbody>
+              {SYMBOLS.map((row) => (
+                <tr key={row.json}>
+                  <td><Tex math={row.symbol} /></td>
+                  <td>{row.meaning}</td>
+                  <td><code>{row.json}</code></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section className="aodl-formal" aria-labelledby="aodl-three-title">
@@ -75,7 +77,7 @@ export function Language() {
         <div className="aodl-objects">
           {OBJECTS.map((obj) => (
             <article key={obj.name}>
-              <h3>{obj.name} <Tex math={obj.latex} /></h3>
+              <h3>{obj.name}</h3>
               <p>{obj.meaning}</p>
               <code>{obj.owner}</code>
             </article>
@@ -89,8 +91,8 @@ export function Language() {
       <section className="aodl-formal" aria-labelledby="aodl-tau-title">
         <h2 id="aodl-tau-title">Translation</h2>
         <p>
-          The visual language is a decoder of declared metadata. Compilation is the partial map in{' '}
-          <a href={`${REPO}/blob/main/spec/translation.md`}>spec/translation.md</a>.
+          The visual language is a decoder of declared metadata. Compilation is the partial map in the{' '}
+          <a className="aodl-path" href={`${REPO}/blob/main/spec/translation.md`}>translation spec</a>.
           This table is that map, rendered from JSON — not a screenshot of cores.
         </p>
         <Tex display math={irMap.translation.latex} />
@@ -102,55 +104,53 @@ export function Language() {
 
         <h3>Channels</h3>
         <p>Hue, geometry, runes, and cadence do not become HOTL kinds. Only topology compiles through the silhouette table.</p>
-        <table className="aodl-table">
-          <thead>
-            <tr>
-              <th>Channel</th>
-              <th>Visual</th>
-              <th>HOTL</th>
-              <th>object</th>
-              <th>Compile</th>
-            </tr>
-          </thead>
-          <tbody>
-            {channels.map(([id, ch]) => (
-              <tr key={id}>
-                <td><code>{id}</code></td>
-                <td>{ch.visual}</td>
-                <td>{ch.hotl ? <code>{ch.hotl}</code> : <Tex math={String.raw`\bot`} />}</td>
-                <td>{ch.object ? <code>{ch.object}</code> : '—'}</td>
-                <td><span className="aodl-compile" data-compile={ch.compile}>{compileLabel(ch.compile)}</span></td>
+        <div className="aodl-table-wrap">
+          <table className="aodl-table">
+            <thead>
+              <tr>
+                <th>Channel</th>
+                <th>Visual</th>
+                <th>HOTL</th>
+                <th>object</th>
+                <th>Compile</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <ul className="aodl-channel-notes">
-          {channels.map(([id, ch]) => (
-            <li key={id}><code>{id}</code> — {ch.job}</li>
-          ))}
-        </ul>
+            </thead>
+            <tbody>
+              {channels.map(([id, ch]) => (
+                <tr key={id} title={ch.job}>
+                  <td><code>{id}</code></td>
+                  <td>{ch.visual}</td>
+                  <td>{ch.hotl ? <code>{ch.hotl}</code> : <Tex math={String.raw`\bot`} />}</td>
+                  <td>{ch.object ? <code>{ch.object}</code> : '—'}</td>
+                  <td><span className="aodl-compile" data-compile={ch.compile}>{compileLabel(ch.compile)}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         <h3>Policy kinds (inverse)</h3>
-        <Tex display math={irMap.translation.inverseLatex} />
         <p>
           Inverse is a display hint. It never infers missing edges. <code>retry</code> has no silhouette.
         </p>
-        <table className="aodl-table">
-          <thead>
-            <tr>
-              <th><code>policies.kinds</code></th>
-              <th>Silhouette</th>
-            </tr>
-          </thead>
-          <tbody>
-            {fromHotl.map(([kind, tid]) => (
-              <tr key={kind}>
-                <td><code>{kind}</code></td>
-                <td>{tid ? <code>{tid}</code> : <Tex math={String.raw`\bot`} />}</td>
+        <div className="aodl-table-wrap">
+          <table className="aodl-table">
+            <thead>
+              <tr>
+                <th><code>policies.kinds</code></th>
+                <th>Silhouette</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {fromHotl.map(([kind, tid]) => (
+                <tr key={kind}>
+                  <td><code>{kind}</code></td>
+                  <td>{tid ? <code>{tid}</code> : <Tex math={String.raw`\bot`} />}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section className="aodl-map" aria-labelledby="aodl-map-title">
@@ -189,7 +189,7 @@ export function Language() {
         <pre className="aodl-kinds">{`policies.kinds: ["sequence", "retry", "fanout", "reducer", "human_gate"]`}</pre>
         <p>
           Fixture <code>examples/valid/craid.json</code>. Spec{' '}
-          <a href={`${REPO}/blob/main/spec/craid.md`}>spec/craid.md</a>. A hybrid badge is not C(RAID).
+          <a className="aodl-path" href={`${REPO}/blob/main/spec/craid.md`}>craid.md</a>. A hybrid badge is not C(RAID).
         </p>
       </section>
 

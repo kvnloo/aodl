@@ -19,6 +19,7 @@ html, body, #root {
   background: var(--dm-page);
   color: var(--ink);
   font-family: var(--sans);
+  overflow-x: clip;
 }
 
 button, summary {

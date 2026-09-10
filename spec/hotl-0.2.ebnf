@@ -1,0 +1,10 @@
+Document ::= Header Graph Policies Constraints Provenance
+Header ::= "hotl" "0.2" Identifier Revision
+Graph ::= "graph" "{" Node* Edge* "}"
+Node ::= "node" Identifier ":" Kind Ports CapabilityBlock [Lifecycle]
+Edge ::= "edge" Identifier Relation Endpoint "->" Endpoint Delivery Authority Evidence
+Kind ::= task|executor|model|tool|service|memory|stateStore|humanGate|environment|artifact|verifier
+Relation ::= dependency|data|message|delegation|critique|verification|allocation|control|observation|artifact
+Policy ::= route|sequence|parallel|race|fanout|reducer|handoff|quorum|recursion|blackboard|auction|retry|human_gate
+
+Typing rules: endpoints and ports must exist; output schema must be compatible with input schema; relation does not imply transport or authority. Every delegation edge declares a grant and finite delegation depth. Dynamic spawn/recursion requires a finite maxChildren/maxDepth and reserved budget. Fan-in declares all/any/quorum/reducer. Auction requires announce,bid,award,execute,verify,settle phases and a trust/payment boundary; payment execution is unsupported. Unknown identifiers, ambiguous ports, hidden side effects, implicit fan-in, unbounded recursion, undeclared privileged capability, conflicting idempotency key, or missing evidence requirement are errors. Canonical JSON sorting makes parse→IR→print round-trip stable; formatting and comments are non-semantic.

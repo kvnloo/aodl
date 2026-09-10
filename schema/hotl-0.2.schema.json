@@ -1,0 +1,326 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.hermes-agent.nousresearch.com/hotl/0.2/schema.json",
+  "title": "HOTL 0.2 orchestration document",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "specVersion",
+    "graphId",
+    "revision",
+    "intentGraph",
+    "policies",
+    "constraints",
+    "provenance"
+  ],
+  "properties": {
+    "specVersion": {
+      "const": "0.2"
+    },
+    "graphId": {
+      "type": "string"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "intentGraph": {
+      "type": "object",
+      "required": [
+        "nodes",
+        "edges"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/edge"
+          }
+        }
+      }
+    },
+    "policies": {
+      "type": "object"
+    },
+    "constraints": {
+      "type": "object",
+      "required": [
+        "budgets",
+        "termination"
+      ],
+      "properties": {
+        "budgets": {
+          "type": "object"
+        },
+        "termination": {
+          "type": "object"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "sourceHash"
+      ],
+      "properties": {
+        "sourceHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source": {
+          "type": "string"
+        }
+      }
+    },
+    "plan": {
+      "type": "object"
+    },
+    "eventLog": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/event"
+      }
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "ports",
+        "capabilities"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_.:-]{0,127}$"
+        },
+        "kind": {
+          "enum": [
+            "task",
+            "executor",
+            "model",
+            "tool",
+            "service",
+            "memory",
+            "stateStore",
+            "humanGate",
+            "environment",
+            "artifact",
+            "verifier"
+          ]
+        },
+        "ports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "direction",
+              "schema"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "in",
+                  "out"
+                ]
+              },
+              "schema": {
+                "type": "string"
+              },
+              "classification": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "authorityCeiling": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lifecycle": {
+          "enum": [
+            "declared",
+            "ready",
+            "running",
+            "succeeded",
+            "failed",
+            "cancelled"
+          ]
+        }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "relation",
+        "from",
+        "to",
+        "fromPort",
+        "toPort",
+        "delivery",
+        "authority",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "relation": {
+          "enum": [
+            "dependency",
+            "data",
+            "message",
+            "delegation",
+            "critique",
+            "verification",
+            "allocation",
+            "control",
+            "observation",
+            "artifact"
+          ]
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "fromPort": {
+          "type": "string"
+        },
+        "toPort": {
+          "type": "string"
+        },
+        "delivery": {
+          "type": "object",
+          "required": [
+            "order",
+            "idempotent"
+          ],
+          "properties": {
+            "order": {
+              "enum": [
+                "ordered",
+                "unordered",
+                "latest"
+              ]
+            },
+            "idempotent": {
+              "type": "boolean"
+            },
+            "timeoutMs": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "maxRetries": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "authority": {
+          "type": "object",
+          "required": [
+            "grant",
+            "delegationDepth"
+          ],
+          "properties": {
+            "grant": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "delegationDepth": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "budget": {
+          "type": "object"
+        },
+        "evidence": {
+          "type": "object"
+        },
+        "provenance": {
+          "type": "object",
+          "required": [
+            "sourceHash"
+          ]
+        }
+      }
+    },
+    "event": {
+      "type": "object",
+      "required": [
+        "eventId",
+        "type",
+        "sourceHash",
+        "revision",
+        "causalParents",
+        "payload"
+      ],
+      "properties": {
+        "eventId": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "spawn",
+            "bind",
+            "route",
+            "retry",
+            "cancel",
+            "addNode",
+            "removeNode",
+            "addEdge",
+            "removeEdge",
+            "stateUpdate",
+            "snapshot"
+          ]
+        },
+        "sourceHash": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "integer"
+        },
+        "causalParents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "payload": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

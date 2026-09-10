@@ -1,0 +1,13 @@
+flowchart LR
+  intent[HOTL 0.2 intent graph\nversion + source hash] --> validate[static validator\ntypes • authority • bounds]
+  validate --> plan[dry-run compiler plan]
+  plan --> hermes[Hermes adapter\nKanban + Keel only]
+  hermes --> events[append-only events\nnonces + provenance]
+  events --> observed[observed O_t\nsnapshots / replay]
+  observed --> projection[Starmap-style projection\nexplicit timeDomain + edge semantics]
+  projection --> human[human gate\nsealed evidence + identity]
+  human --> ledger[canonical Kanban / Keel\nno second scheduler]
+  subgraph Runtime[External runtimes]
+    adapter[OMP / Pi / other\ncapability-audited adapters]
+  end
+  plan -. unsupported => fail closed .-> adapter

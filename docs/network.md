@@ -15,6 +15,12 @@ These repos are separate products that share ids. They are not a monorepo.
          hermes  omp  grok  codex  claude  pi  fx
                          o8 (control room)
                       firstmate (distro)
+                         │
+              protocol: C(RAID)  spec/craid.md
+                         │
+              kvnloo/blueprint   goal (autonomous PM first)
+              kvnloo/evolve       legacy Claude Flow (inspo)
+              kvnloo/solarpunk    digital twin / cores
 ```
 
 | Repo | Owns | Does not own |
@@ -25,6 +31,11 @@ These repos are separate products that share ids. They are not a monorepo.
 | [kvnloo/hermes-keel](https://github.com/kvnloo/hermes-keel) | Hermes governance, Level 0 | Firstmate, Dash, AODL schema |
 | [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) | Kanban, profiles, Telegram, A2A | AODL (proposed, #88589) |
 | [kunchenguid/firstmate](https://github.com/kunchenguid/firstmate) | captain liaison, worktrees, PRs | Hermes execution truth |
+| [kvnloo/blueprint](https://github.com/kvnloo/blueprint) | product / PM goal | IR, scheduler |
+| [kvnloo/evolve](https://github.com/kvnloo/evolve) | legacy C(RAID) orchestration (Claude Flow) | current IR |
+| `kvnloo/solarpunk` | digital twin / HomeForge cores | HOTL fields |
+
+C(RAID) (`spec/craid.md`) is the named hybrid that compiles Blueprint's CR/CA/CI/CD loop. Solarpunk draws it. AODL validates it.
 
 Ids for executors are `harnesses/catalog.json`. Dash `Harness.id` and Firstmate adapter names must match those ids when they talk about the same CLI (`omp`, `codex`, `grok`, `claude`, `hermes`, `pi`, `fx`).
 

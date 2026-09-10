@@ -305,10 +305,12 @@
         "explicit policies.kinds listing every active pattern"
       ],
       "doesNotImply": [
-        "union of all silhouettes"
+        "union of all silhouettes",
+        "craid",
+        "swarm"
       ],
-      "example": null,
-      "note": "Hybrid silhouette is invalid until every active policy kind is declared."
+      "example": "examples/valid/craid.json",
+      "note": "Unlabeled hybrid is invalid. The named program is C(RAID): Continuous Research, Analysis, Integration, Deployment. kinds must list sequence, fanout, reducer, human_gate. D to R is observation, never dependency. See spec/craid.md."
     },
     "unknown": {
       "status": "unspecified",

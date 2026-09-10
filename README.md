@@ -41,6 +41,7 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 schema/hotl-0.2.schema.json   current JSON Schema (draft 2020-12)
 schema/hotl-0.1.schema.json   archived 0.1
 spec/hotl-0.2.md            research spec
+spec/craid.md               C(RAID) named hybrid (R→A→I→D)
 encodings/visual.json       design-language catalog (canonical)
 encodings/ir-map.json       visual topology → HOTL 0.2
 harnesses/catalog.json      supported harness + network ids
@@ -80,6 +81,12 @@ Ids are fixed in [`harnesses/catalog.json`](harnesses/catalog.json). Unknown ids
 
 [kunchenguid/firstmate](https://github.com/kunchenguid/firstmate) is a **distro**, not a ninth harness. Fork: [kvnloo/firstmate](https://github.com/kvnloo/firstmate).
 
+## C(RAID)
+
+Named hybrid, not a new kind. Continuous Research → Analysis → Integration → Deployment. Feedback is `observation`. Unlabeled `hybrid` stays closed. Spec: [`spec/craid.md`](spec/craid.md). Fixture: `examples/valid/craid.json`.
+
+Blueprint is the product goal. C(RAID) is the protocol. AODL is the IR. Solarpunk is the digital twin.
+
 ## Network
 
 | Repo | Job |
@@ -89,6 +96,8 @@ Ids are fixed in [`harnesses/catalog.json`](harnesses/catalog.json). Unknown ids
 | [kvnloo/frontier-kb](https://github.com/kvnloo/frontier-kb) | research notes |
 | [kvnloo/hermes-keel](https://github.com/kvnloo/hermes-keel) | Hermes governance, Level 0 only |
 | [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) | Kanban / profiles / A2A |
+| [kvnloo/blueprint](https://github.com/kvnloo/blueprint) | product goal; autonomous PM is step 1 |
+| [kvnloo/evolve](https://github.com/kvnloo/evolve) | legacy C(RAID) / Claude Flow (inspo) |
 
 See [docs/network.md](docs/network.md).
 

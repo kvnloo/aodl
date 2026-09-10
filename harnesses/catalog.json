@@ -122,6 +122,14 @@
     "hermes-agent": {
       "repo": "https://github.com/NousResearch/hermes-agent",
       "owns": "Kanban, profiles, gateway, Telegram router"
+    },
+    "blueprint": {
+      "repo": "https://github.com/kvnloo/blueprint",
+      "owns": "product goal. First slice: autonomous product management expressed as C(RAID)."
+    },
+    "evolve": {
+      "repo": "https://github.com/kvnloo/evolve",
+      "owns": "legacy C(RAID)/Claude Flow orchestration. Distilled into AODL; not a second IR."
     }
   }
 }

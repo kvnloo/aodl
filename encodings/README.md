@@ -17,6 +17,7 @@ This directory is the **only** allowed link between HOTL/AODL IR and the visual 
    - `not-inferred` — silhouette exists; compiling it requires extra declared policy (swarm, hybrid)
    - `unspecified` — topology was not reported
 4. Marketplace is `policies.kinds: ["auction"]` (allocation policy \(\Pi_t\)), not a topology product. Payment stays unsupported.
-5. zerOS / HomeForge consumes `visual.json`. It does not own new topology ids. Add ids here first.
+5. `hybrid` stays `not-inferred`. The named program is **C(RAID)** (`spec/craid.md`, `examples/valid/craid.json`). A hybrid badge is not C(RAID).
+6. zerOS / HomeForge consumes `visual.json`. It does not own new topology ids. Add ids here first.
 
 `python3 tests/validate.py` checks the join table as well as IR fixtures.

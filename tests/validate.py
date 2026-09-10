@@ -108,6 +108,7 @@ INVALID_EXPECT = {
     "missing-port": "unknown port",
     "self-edge": "self-edge",
     "dependency-cycle": "dependency cycle",
+    "craid-feedback-cycle": "dependency cycle",
     "payment-execution": "payment execution",
     "hidden-privilege": "privileged capability",
     "missing-endpoint": "unknown node",

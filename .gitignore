@@ -5,3 +5,6 @@ __pycache__/
 .env
 .env.*
 *.pem
+
+language/node_modules/
+language/dist/

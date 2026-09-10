@@ -1,0 +1,87 @@
+.aodl-language {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 36px 28px 80px;
+}
+
+.aodl-language__hero h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 42px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.aodl-language__hero p {
+  max-width: 46rem;
+  color: var(--ink-2);
+  line-height: 1.45;
+}
+
+.aodl-language__hero code { color: var(--gold); }
+
+.aodl-map {
+  margin: 36px 0 0;
+  border-top: 1px solid var(--hair-2);
+  padding-top: 28px;
+}
+
+.aodl-map h2 {
+  margin: 0 0 8px;
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.aodl-map > p {
+  color: var(--ink-2);
+  max-width: 46rem;
+  line-height: 1.45;
+}
+
+.aodl-map__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.aodl-map__card {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--hair);
+  border-radius: 8px;
+}
+
+.aodl-map__card header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.aodl-map__card header b { font-size: 13px; }
+
+.aodl-map__status {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.aodl-map__status[data-status="not-inferred"] { color: #ef8a43; }
+.aodl-map__status[data-status="unspecified"] { color: var(--ink-3); }
+
+.aodl-map__card p {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.aodl-map__card code {
+  color: var(--ink-2);
+  font-size: 11px;
+}

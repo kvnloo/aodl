@@ -506,6 +506,52 @@ def validate(doc: object) -> list[Issue]:
     return [Issue("version", f"unknown specVersion {version!r}")]
 
 
+
+def validate_encodings() -> list[Issue]:
+    issues: list[Issue] = []
+    visual_path = ROOT / "encodings" / "visual.json"
+    ir_path = ROOT / "encodings" / "ir-map.json"
+    graphs_path = ROOT / "encodings" / "topology-graphs.json"
+    for path in (visual_path, ir_path, graphs_path):
+        if not path.exists():
+            issues.append(Issue("encodings", f"missing {path.relative_to(ROOT)}"))
+            return issues
+    visual = load_json(visual_path)
+    ir_map = load_json(ir_path)
+    graphs = load_json(graphs_path)
+    if not isinstance(visual, dict) or not isinstance(ir_map, dict) or not isinstance(graphs, dict):
+        issues.append(Issue("type", "encodings documents must be objects"))
+        return issues
+    vis_ids = set((visual.get("topologies") or {}).keys())
+    ir_ids = set((ir_map.get("topologies") or {}).keys())
+    graph_ids = set(graphs.keys())
+    if vis_ids != ir_ids:
+        issues.append(Issue("encodings", f"visual/ir topology id mismatch extra={sorted(ir_ids-vis_ids)} missing={sorted(vis_ids-ir_ids)}"))
+    if vis_ids != graph_ids:
+        issues.append(Issue("encodings", f"visual/graph id mismatch extra={sorted(graph_ids-vis_ids)} missing={sorted(vis_ids-graph_ids)}"))
+    swarm = (ir_map.get("topologies") or {}).get("swarm") or {}
+    if swarm.get("status") != "not-inferred":
+        issues.append(Issue("encodings", "swarm must be not-inferred"))
+    market = (ir_map.get("topologies") or {}).get("marketplace") or {}
+    kinds = (market.get("policies") or {}).get("kinds") or []
+    if "auction" not in kinds:
+        issues.append(Issue("encodings", "marketplace must map to auction policy"))
+    payment = ((market.get("policies") or {}).get("auction") or {}).get("payment")
+    if payment not in {None, "unsupported", False}:
+        issues.append(Issue("payment", "marketplace payment execution is unsupported"))
+    for tid, rec in (ir_map.get("topologies") or {}).items():
+        if rec.get("status") not in {"expressible", "not-inferred", "unspecified"}:
+            issues.append(Issue("encodings", f"{tid} has unknown ir status {rec.get('status')!r}"))
+        example = rec.get("example")
+        if example and not (ROOT / example).exists():
+            issues.append(Issue("encodings", f"{tid} example missing {example}"))
+    for kind, tid in (ir_map.get("fromHotl") or {}).items():
+        if tid is None:
+            continue
+        if tid not in ir_ids:
+            issues.append(Issue("encodings", f"fromHotl {kind} -> unknown topology {tid}"))
+    return issues
+
 def load_json(path: Path) -> object:
     return json.loads(path.read_text())
 
@@ -554,6 +600,15 @@ def _run_corpus() -> int:
     if extra:
         print(f"FAIL unexpected invalid fixtures: {sorted(extra)}")
         failed += 1
+
+    encoding_issues = validate_encodings()
+    if encoding_issues:
+        failed += 1
+        print("FAIL encodings join table")
+        for issue in encoding_issues:
+            print(f"  {issue}")
+    else:
+        print("ok   encodings/visual.json ↔ encodings/ir-map.json")
 
     if failed:
         print(f"{failed} failure(s)")

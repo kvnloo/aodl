@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kvnloo/aodl/encodings/ir-map.schema.json",
+  "title": "AODL visual topology to HOTL 0.2 map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "hotlSpecVersion", "encodingVersion", "rule", "channels", "fromHotl", "topologies"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "hotlSpecVersion": { "const": "0.2" },
+    "encodingVersion": { "type": "string" },
+    "rule": { "type": "string" },
+    "channels": { "type": "object" },
+    "fromHotl": { "type": "object" },
+    "topologies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": { "enum": ["expressible", "not-inferred", "unspecified"] },
+          "policies": { "type": "object" },
+          "typicalNodes": { "type": "array", "items": { "type": "string" } },
+          "typicalEdges": { "type": "array", "items": { "type": "string" } },
+          "requires": { "type": "array", "items": { "type": "string" } },
+          "doesNotImply": { "type": "array", "items": { "type": "string" } },
+          "forbidden": { "type": "array", "items": { "type": "string" } },
+          "example": { "type": ["string", "null"] },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  }
+}

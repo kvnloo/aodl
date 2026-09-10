@@ -13,6 +13,10 @@ python3 tests/validate.py examples/valid/pipeline.json
 
 **Contribute:** schema, fixtures, encodings, harness catalog, docs. Open a PR against `main`. Workers do not merge `main`.
 
+### Autodevelop
+
+If you were told to autodevelop or pick the next issue: read `AGENTS.md` and `skills/autodevelop/SKILL.md`. Claim one `claimable` issue, fail then pass, open a PR with an evidence receipt. Do not invent a parallel process.
+
 ## Proof
 
 1. Add or change a construct → one **valid** fixture and one **invalid** fixture.

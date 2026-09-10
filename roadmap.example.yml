@@ -1,0 +1,11 @@
+# Example only. Copy to a dated roadmap if maintainers want a YAML queue.
+# Priority still lives in GitHub issues + AGENTS.md.
+roadmap_revision: replace-with-git-sha
+updated_at: 2026-09-10T00:00:00Z
+owners: [kvnloo]
+items:
+  - issue: null
+    priority: P1
+    acceptance: python3 tests/validate.py
+    claimable: false
+    note: IR contract first. Do not infer swarm. Workers never merge.

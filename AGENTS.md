@@ -17,3 +17,20 @@ IR first. Pretty DSL later. Fail closed.
 - C(RAID) is a named hybrid program (`spec/craid.md`, `examples/valid/craid.json`). Unlabeled `hybrid` stays `not-inferred`. D→R feedback is `observation`, never `dependency`.
 - Network map: `docs/network.md`. Human contract: `docs/working-note.md`. No arXiv; no `.tex`.
 - Live catalog is GitHub Pages (`scripts/build-pages.py`, `.github/workflows/pages.yml`). Main → https://kvnloo.github.io/aodl/. Other branches → `/preview/<slug>/`. Workers never merge `main`.
+
+## Proof
+
+This repo follows the [Verified OSS Loop](https://github.com/kvnloo/verified-oss-loop). Issues are not claims. AI work is untrusted until proven.
+
+| Layer | Command |
+|---|---|
+| Unit | `python3 tests/validate.py` |
+| Catalog | `python3 scripts/build-pages.py --current-only` (if you touch `language/` or Pages) |
+| Mutation | `n/a` — fail-closed fixtures, not a mutator |
+| Runtime | `n/a` — static IR |
+
+1. Search open issues and PRs. Do not duplicate.
+2. Claim **one** `claimable` issue (24h lease). If nothing is claimable, stop.
+3. New construct → one valid fixture and one invalid fixture.
+4. Fail, then pass (`skills/tdd/SKILL.md`).
+5. Open a PR with `.github/PULL_REQUEST_TEMPLATE.md`. **Never merge.**

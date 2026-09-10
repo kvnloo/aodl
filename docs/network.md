@@ -26,6 +26,7 @@ These repos are separate products that share ids. They are not a monorepo.
 | Repo | Owns | Does not own |
 |---|---|---|
 | [kvnloo/aodl](https://github.com/kvnloo/aodl) | $\mathcal{O}_t$, schema, validator, visual join table, harness ids | scheduler, payment, Dash UI, Kanban |
+| [kvnloo/verified-oss-loop](https://github.com/kvnloo/verified-oss-loop) | claim leases, evidence receipts, never-merge | AODL schema, Dash UI |
 | [kvnloo/dash](https://github.com/kvnloo/dash) | phone + Tailscale spawn of executor CLIs | orchestration calculus, Keel |
 | [kvnloo/frontier-kb](https://github.com/kvnloo/frontier-kb) | literature / permanent notes | runtime |
 | [kvnloo/hermes-keel](https://github.com/kvnloo/hermes-keel) | Hermes governance, Level 0 | Firstmate, Dash, AODL schema |

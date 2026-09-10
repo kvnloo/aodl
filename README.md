@@ -123,6 +123,7 @@ Blueprint is the product goal. C(RAID) is the protocol. AODL is the IR. Solarpun
 | Repo | Job |
 |---|---|
 | [kvnloo/aodl](https://github.com/kvnloo/aodl) | this IR |
+| [kvnloo/verified-oss-loop](https://github.com/kvnloo/verified-oss-loop) | contribution contract (claims, evidence, never-merge) |
 | [kvnloo/dash](https://github.com/kvnloo/dash) | phone + Tailscale spawn of executor CLIs |
 | [kvnloo/frontier-kb](https://github.com/kvnloo/frontier-kb) | research notes |
 | [kvnloo/hermes-keel](https://github.com/kvnloo/hermes-keel) | Hermes governance, Level 0 only |
@@ -150,4 +151,4 @@ See `spec/provenance.md`.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). MIT. CI: `python3 tests/validate.py`.
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). MIT. CI: `python3 tests/validate.py`. Workers never merge `main`.

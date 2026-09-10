@@ -1,0 +1,49 @@
+## Summary
+
+<!-- What this PR does, in one paragraph. -->
+
+## Checklist
+
+- [ ] **Ownership respected**: changes stay inside `AGENTS.md` boundaries
+- [ ] **Searched issues/PRs**: no duplicate in-flight work
+- [ ] **Claimed issue**: work started after a bounded claim, not from the issue title alone
+- [ ] **Fail-then-pass**: bug fixes include the red command and the green command
+- [ ] **No secrets**: no tokens, API keys, `.env`, or pairing files
+- [ ] **Mode** (select one):
+  - [ ] **Unattended** — donated compute (cloud agent)
+  - [ ] **Copilot** — human-supervised
+- [ ] **Workers never merge**: this PR waits for a human maintainer
+
+## Testing
+
+```bash
+python3 tests/validate.py
+```
+
+If you touched `language/` or Pages:
+
+```bash
+python3 scripts/build-pages.py --current-only
+```
+
+## Evidence
+
+```yaml
+issue:
+base_revision:
+head_revision:
+tests:
+  red:
+  green:
+  sabotage:
+mutation: n/a — mutmut is not adopted; do not invent a score
+runtime_evidence: []
+limitations: []
+ai_assistance:
+```
+
+Tests from another head are not evidence. If mutation is `n/a`, write `n/a` — do not invent a score.
+
+## Related
+
+<!-- Fixes #123 -->

@@ -1,7 +1,8 @@
 .aodl-language {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 36px 28px 80px;
+  padding: 36px 20px 80px;
+  overflow-x: clip;
 }
 
 .aodl-language__kicker {
@@ -15,7 +16,7 @@
 .aodl-language__hero h1 {
   margin: 0;
   font-family: var(--serif);
-  font-size: 56px;
+  font-size: clamp(40px, 8vw, 56px);
   font-weight: 500;
   letter-spacing: -0.03em;
 }
@@ -23,8 +24,18 @@
 .aodl-language__hero p,
 .aodl-formal > p,
 .aodl-map > p,
-.aodl-decoder > p {
+.aodl-decoder > p,
+.aodl-tex--display,
+.aodl-rule,
+.aodl-note,
+.aodl-kinds {
   max-width: 46rem;
+}
+
+.aodl-language__hero p,
+.aodl-formal > p,
+.aodl-map > p,
+.aodl-decoder > p {
   color: var(--ink-2);
   line-height: 1.5;
 }
@@ -42,6 +53,8 @@
 }
 
 .aodl-language__preview a { color: var(--gold); }
+
+.aodl-path { white-space: nowrap; }
 
 .aodl-formal,
 .aodl-map,
@@ -71,10 +84,20 @@
   margin: 18px 0;
   overflow-x: auto;
   color: var(--ink);
+  text-align: left;
 }
 
 .aodl-tex .katex { font-size: 1.05em; }
 .aodl-tex--display .katex { font-size: 1.28em; }
+.aodl-tex--display .katex-display {
+  margin: 0;
+  text-align: left;
+}
+
+.aodl-table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+}
 
 .aodl-table {
   width: 100%;
@@ -101,7 +124,7 @@
 
 .aodl-objects {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 12px;
   margin: 16px 0;
 }
@@ -115,9 +138,6 @@
 .aodl-objects h3 {
   margin: 0 0 8px;
   font-size: 16px;
-  display: flex;
-  gap: 8px;
-  align-items: baseline;
 }
 
 .aodl-objects p {
@@ -141,17 +161,6 @@
 .aodl-compile[data-compile="declared-only"] { color: var(--gold); }
 .aodl-compile[data-compile="ir-map"] { color: var(--green); }
 
-.aodl-channel-notes {
-  margin: 8px 0 0;
-  padding: 0;
-  list-style: none;
-  color: var(--ink-3);
-  font-size: 12px;
-  line-height: 1.45;
-}
-
-.aodl-channel-notes li { margin: 0 0 4px; }
-
 .aodl-kinds {
   margin: 12px 0;
   padding: 12px 14px;
@@ -163,7 +172,7 @@
 
 .aodl-map__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 12px;
   margin-top: 18px;
 }
@@ -174,6 +183,7 @@
   padding: 14px;
   border: 1px solid var(--hair);
   border-radius: 8px;
+  min-width: 0;
 }
 
 .aodl-map__card header {

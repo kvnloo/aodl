@@ -6,6 +6,7 @@ export function Tex({ math, display = false, className = '' }) {
     () =>
       katex.renderToString(math, {
         displayMode: display,
+        output: 'html',
         throwOnError: false,
         strict: 'ignore',
         trust: false,

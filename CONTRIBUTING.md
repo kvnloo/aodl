@@ -11,7 +11,7 @@ python3 tests/validate.py
 python3 tests/validate.py examples/valid/pipeline.json
 ```
 
-**Contribute:** schema, fixtures, encodings, harness catalog, docs. Open a PR against `main`. Workers do not merge `main`.
+**Contribute:** schema, fixtures, encodings, harness catalog, docs. Open a PR against `preview` (`feature_target` under rolling). Overnight unattended PRs target `nightly`. Workers do not merge `main` or `dev`.
 
 ### Autodevelop
 

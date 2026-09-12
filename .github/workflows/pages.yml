@@ -4,6 +4,12 @@ name: pages
 # Deploy only from main (or manual dispatch). Feature-branch and delete
 # events kick a main rebuild so a stale branch artifact cannot overwrite live Pages.
 # github-pages environment: no branch restriction (needed for Actions Pages).
+#
+# Concurrency MUST be per-ref. A single group `pages` cancelled kick-main on
+# feature branches when the dispatched main rebuild started (same group,
+# cancel-in-progress). That looked like Pages "failed" while the dispatch
+# had already fired. Preview/nightly git channels are Verified OSS Loop
+# (oss-onboard --with-automation); this workflow is the Pages catalog only.
 
 on:
   push:
@@ -17,7 +23,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:

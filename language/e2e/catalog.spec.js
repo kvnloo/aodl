@@ -3,9 +3,11 @@ import { expect, test } from '@playwright/test';
 const SECTIONS = [
   'Formal object',
   'Three objects, never substituted',
+  'Readings',
   'Translation',
   'Silhouettes',
   'Named hybrid — C(RAID)',
+  'Adapters',
   'Visual decoder',
 ];
 

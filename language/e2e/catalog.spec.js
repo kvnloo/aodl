@@ -62,7 +62,8 @@ test('no duplicate encoding expand or HomeForge design.html', async ({ page }) =
   await expect(page.locator('details')).toHaveCount(0);
   await expect(page.locator('a[href*="design.html"]')).toHaveCount(0);
   await expect(page.locator('.agent-core-language')).toHaveCount(1);
-  await expect(page.locator('.agent-core-language .agent-capability-core')).toHaveCount(3);
+  await expect(page.locator('.agent-core-language__levels .agent-capability-core')).toHaveCount(3);
+  await expect(page.locator('.aodl-map .aodl-topology-block__core .agent-capability-core')).toHaveCount(16);
 });
 
 test('silhouettes stay the connected-node surface; no extra Timebound section', async ({ page }) => {

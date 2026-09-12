@@ -6,7 +6,7 @@ import {
   useNodesState,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { TopologyBadge } from './AgentCoreLanguage.jsx';
+import { TopologyBadge } from './TopologyBadge.jsx';
 import { AodlFlowEdge } from './AodlFlowEdge.jsx';
 import { AodlFlowNode } from './AodlFlowNode.jsx';
 import { silhouetteToFlow, VIEW_H, VIEW_W, visualForKind } from './aodl-flow.js';

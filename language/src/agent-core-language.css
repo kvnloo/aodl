@@ -61,7 +61,10 @@
 .agent-core-level:focus-within { border-color: var(--hair-2); outline: none; }
 .agent-core-level.is-selected { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 2.5%, transparent); }
 .agent-core-level__stage { display: grid; place-items: center; overflow: hidden; background: radial-gradient(circle at 50% 50%, #111410 0 18%, #060706 66%); }
-.agent-core-level.is-expanded .agent-core-level__stage { overflow: visible; min-height: 202px; }
+.agent-core-level[data-zoom="pattern"] .agent-core-level__stage {
+  overflow: visible;
+  min-height: 202px;
+}
 .agent-core-level:nth-child(1) { --level-accent: #7ee3a0; }
 .agent-core-level:nth-child(2) { --level-accent: #b86bec; }
 .agent-core-level:nth-child(3) { --level-accent: #ff3926; }
@@ -80,6 +83,9 @@
 .agent-capability-core__topology-envelope { position: absolute; inset: 3%; z-index: 0; border: 1px solid color-mix(in srgb, var(--core-topology) 64%, transparent); border-radius: 50%; }
 .agent-capability-core[data-topology="solo"] .agent-capability-core__topology-envelope { inset: 9%; border-right-color: transparent; transform: rotate(-32deg); }
 .agent-capability-core[data-topology="paired"] .agent-capability-core__topology-envelope { inset: 5%; }
+.agent-capability-core[data-topology="marketplace"] .agent-capability-core__topology-envelope {
+  border-style: dashed;
+}
 .agent-capability-core[data-topology="council"] .agent-capability-core__topology-envelope,
 .agent-capability-core[data-topology="swarm"] .agent-capability-core__topology-envelope { inset: 0; border-color: color-mix(in srgb, var(--core-topology) 82%, transparent); }
 .agent-capability-core[data-topology="swarm"] .agent-capability-core__topology-envelope::before { content: ''; position: absolute; inset: -3px; border-radius: 50%; background: conic-gradient(from 22deg, var(--core-topology), transparent 18%, var(--core-effort) 30%, transparent 44%, var(--core-provider) 57%, transparent 70%, var(--core-topology) 85%, transparent); -webkit-mask: radial-gradient(circle, transparent 0 78%, #000 81% 87%, transparent 90%); mask: radial-gradient(circle, transparent 0 78%, #000 81% 87%, transparent 90%); opacity: calc(.35 + var(--core-power) * .4); }

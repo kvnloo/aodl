@@ -131,6 +131,7 @@ INVALID_EXPECT = {
     "unknown-harness": "unknown harness",
     "verifier-merge-grant": "merge grant",
     "gate-identity-delegated": "humanGate identity",
+    "langchain-as-harness": "unknown harness",
 }
 
 _CATALOG_UNSET = object()

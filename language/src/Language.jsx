@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AgentCoreLanguage } from './AgentCoreLanguage.jsx';
-import { SilhouetteFlow } from './OrchestrationCanvas.jsx';
+import { TopologyBlock } from './TopologyBlock.jsx';
 import { Tex } from './Equation.jsx';
 import { CHANNEL_ORDER, compileLabel } from './translation.js';
 import visual from '../../encodings/visual.json';
@@ -36,9 +36,36 @@ const ADAPTERS = [
   { name: 'MCP', maps: 'Tools. Ports, not O_t.' },
   { name: 'A2A', maps: 'Peers. message / delegation.' },
   { name: 'AG-UI', maps: 'User surface. Visual τ / events.' },
-  { name: 'LangGraph-class', maps: 'Fragments and DAG runtimes. Validator stays upstream.' },
+  { name: 'LangGraph-class', maps: 'Compiler profile: existing HOTL 0.2 kinds. profiles/langchain.md. Not a harness id.' },
   { name: 'This network', maps: 'Hermes, Keel, Codex, Firstmate distro. Observed V, not competitors.' },
 ];
+
+function SilhouetteCard({ id, topology, rec }) {
+  const [exploded, setExploded] = useState(false);
+  const kinds = rec.policies?.kinds;
+  const toggle = () => setExploded((open) => !open);
+  return (
+    <article className="aodl-map__card" data-zoom={exploded ? 'pattern' : 'core'} data-topology={id}>
+      <header>
+        <button type="button" className="aodl-map__unit" aria-expanded={exploded} onClick={toggle}>
+          <b>{topology.label}</b>
+        </button>
+        <span className="aodl-map__status" data-status={rec.status}>{rec.status}</span>
+      </header>
+      <TopologyBlock
+        topologyId={id}
+        providerId="multi"
+        exploded={exploded}
+        onToggle={toggle}
+        label={`${topology.label} mapped ${rec.status}`}
+      />
+      <p>{rec.note || topology.description}</p>
+      {kinds ? <code>policies.kinds: {kinds.join(', ')}</code> : null}
+      {rec.requires ? <code>requires: {rec.requires.join(', ')}</code> : null}
+      {rec.example ? <code>{rec.example}</code> : null}
+    </article>
+  );
+}
 
 export function Language() {
   const topologies = Object.entries(visual.topologies);
@@ -199,27 +226,15 @@ export function Language() {
       <section className="aodl-map" aria-labelledby="aodl-map-title">
         <h2 id="aodl-map-title">Silhouettes</h2>
         <p>
-          Each drawing has an explicit HOTL 0.2 status. <code>not-inferred</code> means the drawing exists and still
-          fails closed until the listed policy is declared. Marketplace is allocation policy <Tex math={String.raw`\Pi_t`} />, not a product.
+          Each unit is a living core of a declared coordination class. Click the core to break it
+          into the silhouette — the actual pattern — then a node to edit language. Status{' '}
+          <code>not-inferred</code> means the drawing exists and still fails closed until the listed
+          policy is declared. Marketplace is allocation policy <Tex math={String.raw`\Pi_t`} />, not a product.
         </p>
         <div className="aodl-map__grid">
-          {topologies.map(([id, topology]) => {
-            const rec = irMap.topologies[id];
-            const kinds = rec.policies?.kinds;
-            return (
-              <article className="aodl-map__card" key={id}>
-                <header>
-                  <b>{topology.label}</b>
-                  <span className="aodl-map__status" data-status={rec.status}>{rec.status}</span>
-                </header>
-                <SilhouetteFlow topologyId={id} providerId="multi" label={`${topology.label} mapped ${rec.status}`} />
-                <p>{rec.note || topology.description}</p>
-                {kinds ? <code>policies.kinds: {kinds.join(', ')}</code> : null}
-                {rec.requires ? <code>requires: {rec.requires.join(', ')}</code> : null}
-                {rec.example ? <code>{rec.example}</code> : null}
-              </article>
-            );
-          })}
+          {topologies.map(([id, topology]) => (
+            <SilhouetteCard key={id} id={id} topology={topology} rec={irMap.topologies[id]} />
+          ))}
         </div>
       </section>
 
@@ -263,7 +278,8 @@ export function Language() {
         <h2 id="aodl-decoder-title">Visual decoder</h2>
         <p>
           Living-night cores compress declared metadata: provider hue, model geometry, effort orbits, topology envelope, mode rune, runtime cadence.
-          They are <strong>not</strong> <Tex math={String.raw`\mathcal{O}_t`} />. HomeForge / Solarpunk consumes this catalog; it does not own ids.
+          They are <strong>not</strong> <Tex math={String.raw`\mathcal{O}_t`} />. Click a core to disclose the silhouette of its declared topology, then a node to edit.
+          HomeForge / Solarpunk consumes this catalog; it does not own ids.
         </p>
         <AgentCoreLanguage />
       </section>
@@ -271,6 +287,8 @@ export function Language() {
       <footer className="aodl-language__foot">
         <a href={`${REPO}/blob/main/docs/working-note.md`}>working note</a>
         <a href={`${REPO}/blob/main/spec/translation.md`}>translation</a>
+        <a href={`${REPO}/blob/main/profiles/o8.md`}>o8 profile</a>
+        <a href={`${REPO}/blob/main/profiles/langchain.md`}>langchain profile</a>
         <a href={`${REPO}/blob/main/spec/hotl-0.2.ebnf`}>EBNF</a>
         <a href={`${REPO}/blob/main/schema/hotl-0.2.schema.json`}>schema</a>
         <a href={REPO}>kvnloo/aodl</a>

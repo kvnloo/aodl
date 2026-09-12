@@ -271,23 +271,17 @@ export function silhouetteToFlow(topologyId, providerId = 'multi') {
   };
 }
 
-export function decoderVisual(level) {
+/** Declared visual channels for a topology unit. Mode stays unknown; it is not IR. */
+export function topologyUnit(topologyId, providerId = 'multi') {
+  const topology = visual.topologies[topologyId] || visual.topologies.unknown;
   return {
-    providerId: level.providerId,
-    modelId: level.modelId,
-    effortId: level.effortId,
-    topologyId: level.topologyId,
-    operatingModeId: level.operatingModeId,
+    id: topologyId,
+    name: topology.label,
+    providerId,
+    modelId: providerId === 'multi' ? 'multi' : 'unknown',
+    effortId: 'standard',
+    topologyId,
+    operatingModeId: 'unknown',
   };
 }
 
-export function decoderHotl(level, state) {
-  const lifecycle = state === 'running' ? 'running' : 'declared';
-  return {
-    id: level.id,
-    kind: 'task',
-    ports: portsFor(level.id),
-    lifecycle,
-    capabilities: [],
-  };
-}

@@ -134,6 +134,7 @@ Autonomous product management is this graph over a backlog. That is Blueprint st
 | C(RAID) R-phase capture (2026-09-11) | [`research-craid-20260911.md`](research-craid-20260911.md) |
 | Branch previews | [kvnloo.github.io/aodl/preview/](https://kvnloo.github.io/aodl/preview/) |
 | o8 compiler profile | [`profiles/o8.md`](../profiles/o8.md) |
+| LangChain / LangGraph / LangSmith profile | [`profiles/langchain.md`](../profiles/langchain.md) |
 | Proof | `python3 tests/validate.py` |
 
 There is **no** `.tex` source and **no** PDF in this repository. GitHub Flavored Markdown with `$` / `$$` is the typeset form until a compiler dry-run exists.

@@ -52,6 +52,7 @@ export function AodlUnit({ id, data, selected }) {
       data-mode={mode}
       style={{
         '--dot': `${radius * 2}px`,
+        '--dot-n': String(radius * 2),
         '--topology-node': hue || '#9ca39a',
         '--node-x': `${Number(data.left) || 0}px`,
         '--node-y': `${Number(data.top) || 0}px`,

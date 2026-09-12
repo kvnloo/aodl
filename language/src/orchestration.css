@@ -19,6 +19,7 @@
   --xy-selection-border: 0;
   --xy-edge-stroke: color-mix(in srgb, var(--topology-edge, #d9bd7a) 68%, var(--ink-3));
   --xy-edge-stroke-width: 1.05;
+  container-type: inline-size;
   position: relative;
   width: var(--flow-w, 72px);
   height: var(--flow-h, 44px);
@@ -165,18 +166,12 @@
   place-items: center;
   width: var(--dot, 12px);
   height: var(--dot, 12px);
-  overflow: hidden;
-  border-radius: 50%;
+  overflow: visible;
+  border-radius: 0;
   transform-origin: center center;
-  transition:
-    width var(--aodl-grow-ms) var(--aodl-grow-ease),
-    height var(--aodl-grow-ms) var(--aodl-grow-ease),
-    transform var(--aodl-grow-ms) var(--aodl-grow-ease);
 }
 
 .aodl-flow-node.is-expanded .aodl-flow-glyph {
-  width: 64px;
-  height: 64px;
   pointer-events: none;
 }
 
@@ -189,6 +184,7 @@
   box-shadow: inset 0 0 0 0.7px color-mix(in srgb, var(--topology-node) 72%, white);
   opacity: 1;
   transform: scale(1);
+  transform-origin: center center;
   transition:
     opacity 280ms 40ms ease,
     transform var(--aodl-grow-ms) var(--aodl-grow-ease);
@@ -198,23 +194,26 @@
 .aodl-flow-node[data-mode="decoder"] .aodl-flow-glyph__dot {
   z-index: 0;
   opacity: 0;
-  transform: scale(1.85);
+  transform: scale(calc(64 / var(--dot-n, 12)));
   pointer-events: none;
 }
 
 .aodl-flow-glyph .agent-capability-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
   opacity: 0;
-  transform: scale(0.22);
-  transform-origin: center;
+  transform: translate(-50%, -50%) scale(calc(var(--dot-n, 12) / 64));
+  transform-origin: center center;
   transition:
     opacity 300ms 80ms ease,
     transform var(--aodl-grow-ms) var(--aodl-grow-ease);
 }
 
-.aodl-flow-node.is-expanded .aodl-flow-glyph .agent-capability-core,
-.aodl-flow-node[data-mode="decoder"] .aodl-flow-glyph .agent-capability-core {
+.aodl-flow-node.is-expanded .aodl-flow-glyph .agent-capability-core {
   opacity: 1;
-  transform: none;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .aodl-flow-node[data-mode="decoder"] {
@@ -229,6 +228,14 @@
   height: auto;
   overflow: visible;
   border-radius: 0;
+}
+
+.aodl-flow-node[data-mode="decoder"] .aodl-flow-glyph .agent-capability-core {
+  position: static;
+  left: auto;
+  top: auto;
+  opacity: 1;
+  transform: none;
 }
 
 .aodl-flow-node[data-mode="decoder"].is-expanded {
@@ -262,9 +269,9 @@
 
 .aodl-flow-node[data-mode="silhouette"].is-expanded .aodl-flow-sheet-clip {
   position: absolute;
-  left: calc(-1 * var(--node-x, 0px));
-  top: calc(52px - var(--node-y, 0px));
-  width: min(240px, calc(100vw - 48px));
+  left: 0;
+  top: calc(32px + (var(--dot, 12px) / 2) + 8px);
+  width: min(240px, calc(100cqw - var(--node-x, 0px) - 8px));
   max-width: min(240px, calc(100vw - 48px));
   z-index: 12;
 }
@@ -335,6 +342,7 @@
   opacity: 0.55;
 }
 
+.aodl-silhouette-flow .aodl-flow-handle,
 .aodl-flow-node:not(.is-expanded) + .aodl-flow-handle,
 .aodl-flow-node:not(.is-expanded) ~ .aodl-flow-handle,
 .react-flow__node:has(.aodl-flow-node:not(.is-expanded)) .aodl-flow-handle {

@@ -99,14 +99,56 @@ test('clicking a silhouette node grows it into the editor with a long ease', asy
   await node.click();
   await expect(node).toHaveAttribute('data-expanded', 'true');
   await expect(node.locator('select[name="kind"]')).toBeVisible();
-  const glyph = node.locator('.aodl-flow-glyph');
-  const glyphBox = await glyph.boundingBox();
-  expect(glyphBox.width).toBeGreaterThan(40);
+  await expect.poll(async () => {
+    return node.locator('.agent-capability-core').evaluate((el) => el.getBoundingClientRect().width);
+  }).toBeGreaterThan(40);
+  const coreBox = await node.locator('.agent-capability-core').boundingBox();
+  expect(coreBox.width).toBeGreaterThan(40);
   const sheetBox = await node.locator('.aodl-flow-sheet').boundingBox();
   expect(sheetBox.width).toBeGreaterThan(80);
   expect(sheetBox.height).toBeGreaterThan(80);
   const sheetOpacity = await node.locator('.aodl-flow-sheet').evaluate((el) => getComputedStyle(el).opacity);
   expect(Number(sheetOpacity)).toBeGreaterThan(0.9);
+});
+
+test('silhouette grow stays on the clicked dot at phone and desktop', async ({ page }) => {
+  for (const width of [390, 1280]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto('/');
+    const pipe = card(page, 'Pipeline');
+    await pipe.scrollIntoViewIfNeeded();
+    const node = pipe.locator('.aodl-flow-node').first();
+    const before = await node.evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      return { cx: r.x + r.width / 2, cy: r.y + r.height / 2, w: r.width };
+    });
+    expect(before.w).toBeLessThan(28);
+    await node.click();
+    await expect(node).toHaveAttribute('data-expanded', 'true');
+    await expect.poll(async () => {
+      return node.locator('.agent-capability-core').evaluate((el) => el.getBoundingClientRect().height);
+    }).toBeGreaterThan(40);
+    const after = await node.evaluate((el) => {
+      const core = el.querySelector('.agent-capability-core');
+      const sheet = el.querySelector('.aodl-flow-sheet');
+      const c = core.getBoundingClientRect();
+      const s = sheet.getBoundingClientRect();
+      return {
+        cx: c.x + c.width / 2,
+        cy: c.y + c.height / 2,
+        coreH: c.height,
+        sheetY: s.y,
+        sheetW: s.width,
+      };
+    });
+    expect(Math.abs(after.cx - before.cx), `core x jump at ${width}px`).toBeLessThan(16);
+    expect(Math.abs(after.cy - before.cy), `core y jump at ${width}px`).toBeLessThan(16);
+    expect(after.coreH).toBeGreaterThan(40);
+    expect(after.sheetY).toBeGreaterThan(after.cy);
+    expect(after.sheetW).toBeGreaterThan(80);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
+    expect(overflow, `overflow at ${width}px`).toBe(false);
+  }
 });
 
 test('expanded silhouette edits language fields and kind retints the core', async ({ page }) => {
@@ -151,8 +193,10 @@ test('decoder cores expand in place without nesting buttons', async ({ page }) =
   const expanded = runner.locator('.aodl-flow-node[data-expanded="true"]');
   await expect(expanded).toHaveCount(1);
   await expect(expanded.locator('select[name="kind"]')).toBeVisible();
-  const after = await expanded.boundingBox();
-  expect(after.height).toBeGreaterThan(before.height + 40);
+  await expect.poll(async () => {
+    const box = await expanded.boundingBox();
+    return box ? box.height : 0;
+  }).toBeGreaterThan(before.height + 40);
   await expect(runner.locator('button button')).toHaveCount(0);
   await expect(ladder.locator('.agent-capability-core')).toHaveCount(3);
 });

@@ -7,6 +7,7 @@ const SECTIONS = [
   'Translation',
   'Silhouettes',
   'Named hybrid — C(RAID)',
+  'Timebound graph',
   'Adapters',
   'Visual decoder',
 ];
@@ -62,7 +63,36 @@ test('no duplicate encoding expand or HomeForge design.html', async ({ page }) =
   await expect(page.locator('details')).toHaveCount(0);
   await expect(page.locator('a[href*="design.html"]')).toHaveCount(0);
   await expect(page.locator('.agent-core-language')).toHaveCount(1);
-  await expect(page.locator('.agent-capability-core')).toHaveCount(3);
+  await expect(page.locator('.agent-core-language .agent-capability-core')).toHaveCount(3);
+});
+
+test('timebound graph expands cores into typed xyflow nodes', async ({ page }) => {
+  const orch = page.locator('.aodl-orchestration');
+  await expect(orch.getByRole('heading', { name: 'Timebound graph' })).toBeVisible();
+  await expect(page.locator('[data-mode="play"]')).toHaveCount(0);
+  await expect(page.locator('[data-combo]')).toHaveCount(0);
+  await orch.getByRole('button', { name: 'expand C(RAID)' }).click();
+  const graph = orch.locator('.aodl-program-shell[data-program="craid"]');
+  await expect(graph.locator('.aodl-flow-node')).toHaveCount(10);
+  await expect(graph.locator('.agent-capability-core')).toHaveCount(10);
+  await expect(graph.locator('[data-relation="observation"]')).toHaveCount(1);
+  await graph.getByRole('button', { name: 'expand scoutA' }).click();
+  const sheet = graph.locator('.aodl-flow-node[data-expanded="true"]');
+  await expect(sheet).toHaveCount(1);
+  await sheet.locator('select[name="kind"]').selectOption('tool');
+  await expect(graph.locator('.aodl-flow-node[data-kind="tool"]')).toHaveCount(1);
+  await graph.getByRole('button', { name: 'Collapse to core' }).click();
+  await expect(orch.locator('.aodl-program-shell')).toHaveCount(0);
+});
+
+test('o8 list mission is two packets, not one invented DAG', async ({ page }) => {
+  const orch = page.locator('.aodl-orchestration');
+  await orch.getByRole('button', { name: 'expand o8 list' }).click();
+  const graph = orch.locator('.aodl-program-shell[data-program="o8list"]');
+  await expect(graph.locator('.aodl-flow-node')).toHaveCount(6);
+  await expect(graph.locator('[data-relation="allocation"]')).toHaveCount(2);
+  await expect(graph.locator('[data-relation="dependency"]')).toHaveCount(0);
+  await expect(graph.locator('.aodl-flow')).toHaveAttribute('data-events', '3');
 });
 
 test('no horizontal overflow at phone and desktop', async ({ page }) => {

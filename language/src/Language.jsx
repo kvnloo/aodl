@@ -1,5 +1,6 @@
 import React from 'react';
 import { AgentCoreLanguage, TopologyBadge } from './AgentCoreLanguage.jsx';
+import { OrchestrationCanvas } from './OrchestrationCanvas.jsx';
 import { Tex } from './Equation.jsx';
 import { CHANNEL_ORDER, compileLabel } from './translation.js';
 import visual from '../../encodings/visual.json';
@@ -8,13 +9,13 @@ import irMap from '../../encodings/ir-map.json';
 const OBJECTS = [
   { name: 'Intent', meaning: 'Declared graph + policies + constraints + provenance.', owner: 'AODL document' },
   { name: 'Compiled plan', meaning: 'What this runtime can safely support.', owner: 'compiler profile (Hermes, Firstmate, …)' },
-  { name: 'Observed', meaning: 'What is actually running.', owner: 'events + receipts' },
+  { name: 'Observed', meaning: 'What is actually running.', owner: 'eventLog + observedGraph + receipts' },
 ];
 
 const SYMBOLS = [
   { symbol: String.raw`V_t`, meaning: 'agents, models, tools, humans, memories, tasks, artifacts', json: 'intentGraph.nodes' },
   { symbol: String.raw`E_t`, meaning: 'typed relations: depend, data, message, delegate, verify, observe, …', json: 'intentGraph.edges' },
-  { symbol: String.raw`S_t`, meaning: 'runtime state (lifecycle, events)', json: 'observed — not the document' },
+  { symbol: String.raw`S_t`, meaning: 'runtime state (lifecycle, events)', json: 'observedGraph + eventLog' },
   { symbol: String.raw`\Pi_t`, meaning: 'routing / execution / allocation policy', json: 'policies' },
   { symbol: String.raw`\Gamma_t`, meaning: 'goals, budgets, verification, human gates', json: 'constraints + humanGate' },
 ];
@@ -234,6 +235,8 @@ export function Language() {
           <a className="aodl-path" href={`${REPO}/blob/main/spec/craid.md`}>craid.md</a>. A hybrid badge is not C(RAID).
         </p>
       </section>
+
+      <OrchestrationCanvas />
 
       <section className="aodl-formal" aria-labelledby="aodl-adapters-title">
         <h2 id="aodl-adapters-title">Adapters</h2>

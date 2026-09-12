@@ -82,6 +82,20 @@ PRIVILEGED = frozenset(
         "credential",
     }
 )
+# Irreversible gate actions. Review is a verifier; these stay on humanGate.
+IRREVERSIBLE = frozenset({"merge", "deploy", "approve"})
+CLOSED_02 = {
+    "specVersion",
+    "graphId",
+    "revision",
+    "intentGraph",
+    "policies",
+    "constraints",
+    "provenance",
+    "plan",
+    "eventLog",
+    "observedGraph",
+}
 REQUIRED_02 = (
     "specVersion",
     "graphId",
@@ -115,6 +129,8 @@ INVALID_EXPECT = {
     "isolated-node": "isolated node",
     "control-room-as-executor": "control-room",
     "unknown-harness": "unknown harness",
+    "verifier-merge-grant": "merge grant",
+    "gate-identity-delegated": "humanGate identity",
 }
 
 _CATALOG_UNSET = object()
@@ -214,20 +230,34 @@ def _privileged(values: object) -> list[str]:
     return [str(v) for v in values if str(v).lower() in PRIVILEGED]
 
 
+def _irreversible(values: object) -> list[str]:
+    if not isinstance(values, list):
+        return []
+    return [str(v) for v in values if str(v).lower() in IRREVERSIBLE]
+
+
+def _validate_observed_graph(graph: dict[str, object], issues: list[Issue]) -> None:
+    """Same node/edge rules as intent. Policies stay on the intent document."""
+    shadow: dict[str, object] = {
+        "specVersion": "0.2",
+        "graphId": "observed",
+        "revision": 0,
+        "intentGraph": graph,
+        "policies": {
+            "kinds": [],
+            "fanIn": "all",
+            "dynamic": {"allowed": False, "maxChildren": 0, "maxDepth": 0},
+        },
+        "constraints": {"budgets": {"tokens": 0}, "termination": {"on": "observed"}},
+        "provenance": {"sourceHash": "0" * 64},
+    }
+    issues.extend(validate_02(shadow))
+
+
 def validate_02(doc: dict[str, object]) -> list[Issue]:
     issues: list[Issue] = []
     _require(doc, REQUIRED_02, "document", issues)
-    extra = set(doc) - {
-        "specVersion",
-        "graphId",
-        "revision",
-        "intentGraph",
-        "policies",
-        "constraints",
-        "provenance",
-        "plan",
-        "eventLog",
-    }
+    extra = set(doc) - CLOSED_02
     if extra:
         issues.append(Issue("closed", f"unknown fields {sorted(extra)}"))
 
@@ -393,6 +423,28 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
             issues.append(Issue("authority", f"delegation edge {edge.get('id')} must declare a grant"))
         if _privileged(grant):
             issues.append(Issue("payment", f"edge {edge.get('id')} payment execution is unsupported"))
+        to_node = nodes.get(str(to))
+        from_node = nodes.get(str(frm))
+        if to_node is not None and to_node.get("kind") == "verifier" and _irreversible(grant):
+            issues.append(
+                Issue(
+                    "gate",
+                    f"edge {edge.get('id')} merge grant to verifier {to_node.get('id')}; review is not the gate",
+                )
+            )
+        if (
+            edge.get("relation") == "delegation"
+            and from_node is not None
+            and to_node is not None
+            and from_node.get("kind") == "humanGate"
+            and to_node.get("kind") == "executor"
+        ):
+            issues.append(
+                Issue(
+                    "gate",
+                    f"edge {edge.get('id')} humanGate identity cannot be delegated to an executor",
+                )
+            )
 
         eprov = _as_dict(edge.get("provenance"), f"edge {edge.get('id')}.provenance", issues) or {}
         if not isinstance(eprov.get("sourceHash"), str) or not HASH_RE.match(str(eprov["sourceHash"])):
@@ -463,6 +515,17 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
             issues.append(
                 Issue("privilege", f"node {ident} privileged capability {leaked} is undeclared on authorityCeiling")
             )
+        if node.get("kind") == "verifier":
+            held = _irreversible(node.get("capabilities")) + _irreversible(node.get("authorityCeiling"))
+            if held:
+                issues.append(
+                    Issue("gate", f"verifier {ident} cannot hold merge grant {held}; review is not the gate")
+                )
+
+    if "observedGraph" in doc:
+        observed = _as_dict(doc.get("observedGraph"), "observedGraph", issues)
+        if observed is not None:
+            _validate_observed_graph(observed, issues)
 
     return issues
 

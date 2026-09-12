@@ -1,0 +1,263 @@
+.aodl-orchestration {
+  margin: 40px 0 0;
+  border-top: 1px solid var(--hair-2);
+  padding-top: 28px;
+}
+
+.aodl-orchestration h2 {
+  margin: 0 0 8px;
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.aodl-orchestration > p {
+  max-width: 46rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+.aodl-orchestration code {
+  color: var(--gold);
+}
+
+.aodl-orch-programs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+@media (min-width: 720px) {
+  .aodl-orch-programs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.aodl-program-core {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 4px 10px;
+  border: 1px solid var(--hair);
+  background: #070807;
+}
+
+.aodl-program-core span {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+}
+
+.aodl-program-core:hover,
+.aodl-program-core:focus-visible {
+  border-color: var(--hair-2);
+  outline: none;
+}
+
+.aodl-program-shell {
+  grid-column: 1 / -1;
+  display: flex;
+  min-width: 0;
+  min-height: 420px;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--hair-2);
+  background:
+    radial-gradient(120% 80% at 50% 20%, rgba(216, 189, 120, 0.08), transparent 46%),
+    #050605;
+}
+
+.aodl-program-chrome {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--hair);
+}
+
+.aodl-program-chrome strong {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.aodl-program-kinds {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ink-3);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+}
+
+.aodl-program-chrome button {
+  padding: 4px 8px;
+  border: 1px solid var(--hair);
+  color: var(--ink-2);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.aodl-flow {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  height: 360px;
+  min-height: 360px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(236, 232, 223, 0.04), transparent 42%),
+    repeating-linear-gradient(0deg, transparent 0 27px, rgba(236, 232, 223, 0.03) 27px 28px),
+    repeating-linear-gradient(90deg, transparent 0 27px, rgba(236, 232, 223, 0.03) 27px 28px),
+    #050605;
+}
+
+.aodl-time-axis {
+  pointer-events: none;
+  position: absolute;
+  z-index: 4;
+  right: 12px;
+  bottom: 10px;
+  display: flex;
+  gap: 18px;
+  color: var(--ink-3);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.aodl-flow .react-flow {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.aodl-flow .react-flow__renderer,
+.aodl-flow .react-flow__viewport,
+.aodl-flow .react-flow__container {
+  overflow: hidden;
+}
+
+.aodl-flow .react-flow__node {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  width: auto;
+}
+
+.aodl-flow .react-flow__node.selected {
+  box-shadow: none;
+}
+
+.aodl-flow .react-flow__attribution {
+  display: none;
+}
+
+.aodl-flow-core-hit {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.aodl-flow-node {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+
+.aodl-flow-node.is-selected .aodl-flow-core-hit {
+  outline: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+  outline-offset: 4px;
+}
+
+.aodl-flow-sheet {
+  z-index: 4;
+  display: grid;
+  gap: 6px;
+  min-width: 220px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--hair-2);
+  background: #0b0c0b;
+  color: var(--ink-2);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.aodl-flow-sheet .sheet-id {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 16px;
+}
+
+.aodl-flow-sheet label {
+  display: grid;
+  gap: 2px;
+  color: var(--ink-3);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.aodl-flow-sheet select,
+.aodl-flow-sheet input {
+  min-width: 0;
+  padding: 4px 6px;
+  border: 1px solid var(--hair);
+  background: #070807;
+  color: var(--ink);
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.aodl-flow-handle {
+  width: 6px;
+  height: 6px;
+  border: 0;
+  background: var(--gold);
+  opacity: 0.55;
+}
+
+.aodl-flow-edge-hit {
+  pointer-events: none;
+}
+
+.aodl-flow-edge {
+  stroke-width: 1.6;
+  stroke: #ece8df;
+}
+
+.aodl-flow-edge.relation-observation,
+.aodl-flow-edge-hit.relation-observation {
+  stroke-dasharray: 5 4;
+}
+
+.aodl-flow-edge.relation-verification {
+  stroke: #7ee3a0;
+}
+
+.aodl-flow-edge.relation-allocation {
+  stroke: #5adfff;
+}
+
+.aodl-flow-edge.relation-control,
+.aodl-flow-edge.relation-delegation {
+  stroke: var(--gold);
+}

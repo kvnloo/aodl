@@ -45,6 +45,7 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 | Want | Open |
 |---|---|
 | Equations + stack | [`docs/working-note.md`](docs/working-note.md) |
+| C(RAID) R-phase capture | [`docs/research-craid-20260911.md`](docs/research-craid-20260911.md) (not a preprint) |
 | Grammar | [`spec/hotl-0.2.ebnf`](spec/hotl-0.2.ebnf) |
 | Checkable IR | [`schema/hotl-0.2.schema.json`](schema/hotl-0.2.schema.json) |
 | Long research spec | [`spec/hotl-0.2.md`](spec/hotl-0.2.md) (ASCII; GitHub will not render `O_t` there) |

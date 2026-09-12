@@ -21,6 +21,24 @@ const SYMBOLS = [
 
 const REPO = 'https://github.com/kvnloo/aodl';
 
+const READINGS = [
+  { name: 'λ_A', maps: 'Intra-node calculus (oracle, bounded fix). Graph stays AODL.' },
+  { name: 'Pact / Scribble / MPST', maps: '`message` is a session. Duality failure is ⊥.' },
+  { name: 'AgentFlow ADG', maps: 'Recovers a graph from framework source. Audit, not authority.' },
+  { name: 'STP sheaves', maps: 'Intent, plan, observed do not glue by assertion.' },
+  { name: 'RLM', maps: 'Query slices of O_t. Do not dump the window.' },
+  { name: 'AdaptOrch / Evo-Bench', maps: 'Search over compiled Π, not over schema versions.' },
+  { name: 'Oversight inverted-U', maps: 'Human attention is a budget already legal under constraints.budgets.' },
+];
+
+const ADAPTERS = [
+  { name: 'MCP', maps: 'Tools. Ports, not O_t.' },
+  { name: 'A2A', maps: 'Peers. message / delegation.' },
+  { name: 'AG-UI', maps: 'User surface. Visual τ / events.' },
+  { name: 'LangGraph-class', maps: 'Fragments and DAG runtimes. Validator stays upstream.' },
+  { name: 'This network', maps: 'Hermes, Keel, Codex, Firstmate distro. Observed V, not competitors.' },
+];
+
 export function Language() {
   const topologies = Object.entries(visual.topologies);
   const channels = CHANNEL_ORDER.map((id) => [id, irMap.channels[id]]);
@@ -86,6 +104,30 @@ export function Language() {
         <p className="aodl-note">
           Unsupported semantics fail closed. The validator does not infer swarm, consensus, intelligence, payment, or health from a drawing.
         </p>
+      </section>
+
+      <section className="aodl-formal" aria-labelledby="aodl-readings-title">
+        <h2 id="aodl-readings-title">Readings</h2>
+        <p>
+          Intent, plan, and observed are three sheaves over the same graph — not three names for one thing.
+          Compatible observations may glue; obstruction fails closed or a verifier may abduct.
+          Never an invented edge, and never a fourth object standing in for missing receipts.
+        </p>
+        <div className="aodl-table-wrap">
+          <table className="aodl-table">
+            <thead>
+              <tr><th>Cousin</th><th>Maps onto</th></tr>
+            </thead>
+            <tbody>
+              {READINGS.map((row) => (
+                <tr key={row.name}>
+                  <td>{row.name}</td>
+                  <td>{row.maps}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section className="aodl-formal" aria-labelledby="aodl-tau-title">
@@ -191,6 +233,29 @@ export function Language() {
           Fixture <code>examples/valid/craid.json</code>. Spec{' '}
           <a className="aodl-path" href={`${REPO}/blob/main/spec/craid.md`}>craid.md</a>. A hybrid badge is not C(RAID).
         </p>
+      </section>
+
+      <section className="aodl-formal" aria-labelledby="aodl-adapters-title">
+        <h2 id="aodl-adapters-title">Adapters</h2>
+        <p>
+          Three protocol layers, never a fourth IR. Chain-of-thought trees are not orchestration graphs.
+          Visual <Tex math={String.raw`\tau`} /> does not compile ToT into <code>fanout</code>.
+        </p>
+        <div className="aodl-table-wrap">
+          <table className="aodl-table">
+            <thead>
+              <tr><th>Layer</th><th>Job</th></tr>
+            </thead>
+            <tbody>
+              {ADAPTERS.map((row) => (
+                <tr key={row.name}>
+                  <td>{row.name}</td>
+                  <td>{row.maps}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section className="aodl-decoder" aria-labelledby="aodl-decoder-title">

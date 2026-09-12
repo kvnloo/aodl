@@ -129,6 +129,7 @@ Autonomous product management is this graph over a backlog. That is Blueprint st
 | Research dump (ASCII, long) | [`spec/hotl-0.2.md`](../spec/hotl-0.2.md) |
 | Pipeline of intent → plan → observed | [`spec/architecture.mermaid`](../spec/architecture.mermaid) |
 | Named hybrid | [`spec/craid.md`](../spec/craid.md) |
+| C(RAID) R-phase capture (2026-09-11) | [`research-craid-20260911.md`](research-craid-20260911.md) |
 | Branch previews | [kvnloo.github.io/aodl/preview/](https://kvnloo.github.io/aodl/preview/) |
 | Proof | `python3 tests/validate.py` (6 valid, 11 invalid) |
 
@@ -145,3 +146,7 @@ A paper is premature until at least:
 3. One measured claim (token-slice break-even, or transfer of a controller policy) that can fail
 
 Until then this note, the schema, and the fixtures *are* the language.
+
+## 9. Research capture (not a paper)
+
+A 2026-09-11 C(RAID) R-phase pass is [`research-craid-20260911.md`](research-craid-20260911.md). It does not change the schema. Closest academic cousins: $\lambda_A$ (intra-node calculus), Pact/MPST (message choreography), sheaf readings of the three objects, RLM/rate-distortion for slices, Evo-Bench for search over programs. Protocol layers MCP / A2A / AG-UI stay adapters. Frontier-kb holds the literature notes. A paper is still premature until §8.

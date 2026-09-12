@@ -38,11 +38,13 @@ Readable DSL is sugar. JSON is the IR. EBNF in [`spec/hotl-0.2.ebnf`](../spec/ho
 |---|---|---|
 | Intent | declared graph + policies + constraints + provenance | AODL document |
 | Compiled plan | what *this* runtime can safely support | compiler profile (Hermes Kanban, Firstmate ship, …) |
-| Observed $\mathcal{O}_t$ | what is actually running | events + receipts |
+| Observed $\mathcal{O}_t$ | what is actually running | `eventLog` + `observedGraph` + receipts |
 
 A Dash `/roster` is observed $V$, not $\mathcal{O}_t$. A glowing core is not a plan. A Kanban board is not intent unless the policy was recorded.
 
 Unsupported semantics **fail closed**. The validator does not infer swarm, consensus, intelligence, payment, or health from a drawing.
+
+`humanGate` is the irreversible action (merge, deploy, approve). Review is a `verifier` and may be an orchestrator. See [`profiles/o8.md`](../profiles/o8.md). The catalog timebound graph is a decoder of declared cores plus `eventLog` / `observedGraph`; it is not a scheduler and it is not an artifact viewer. Clicking a node is the same inspect surface those two will share.
 
 ## 4. Stack
 
@@ -131,7 +133,9 @@ Autonomous product management is this graph over a backlog. That is Blueprint st
 | Named hybrid | [`spec/craid.md`](../spec/craid.md) |
 | C(RAID) R-phase capture (2026-09-11) | [`research-craid-20260911.md`](research-craid-20260911.md) |
 | Branch previews | [kvnloo.github.io/aodl/preview/](https://kvnloo.github.io/aodl/preview/) |
-| Proof | `python3 tests/validate.py` (6 valid, 11 invalid) |
+| o8 compiler profile | [`profiles/o8.md`](../profiles/o8.md) |
+| LangChain / LangGraph / LangSmith profile | [`profiles/langchain.md`](../profiles/langchain.md) |
+| Proof | `python3 tests/validate.py` |
 
 There is **no** `.tex` source and **no** PDF in this repository. GitHub Flavored Markdown with `$` / `$$` is the typeset form until a compiler dry-run exists.
 

@@ -10,7 +10,8 @@ IR first. Pretty DSL later. Fail closed.
 - Do not add a runtime, scheduler, or payment executor here.
 - Do not commit ChatGPT/Hermes transcripts or secrets.
 - Unknown `specVersion` is an error, not a warning.
-- Hermes adapter mapping belongs as a **compiler profile**, not as a second Kanban.
+- Hermes adapter mapping belongs as a **compiler profile**, not as a second Kanban. o8's profile is `profiles/o8.md`; LangChain/LangGraph/LangSmith is `profiles/langchain.md`. Neither is a harness id. The compiler still lives next to the runtime.
+- `humanGate` is merge/deploy/approve. Review is a `verifier`. Optional `observedGraph` has the same shape as `intentGraph`. List-missions are many components, not one invented DAG.
 - HomeForge/zerOS consumes `encodings/visual.json`. Do not invent topology ids in solarpunk first.
 - Harness ids live in `harnesses/catalog.json`. The eight supported ids are `hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`. Firstmate is a distro, not a harness id.
 - Do not port Keel into this repo or into Firstmate as a second scheduler. Keel is Hermes L0. Firstmate is Keel L9 (subordinate executor) when we use it.

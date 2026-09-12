@@ -32,4 +32,6 @@ Firstmate sits **on** Claude Code / Grok / Pi / OMP / Codex. It is not a ninth e
 - `kind`: `executor` | `control-room` | `distro`
 - Executor nodes may name a supported id via `harness`; `control-room` ids are never executors.
 
+Compiler profiles live in `profiles/` and in the harness repos. AODL does not become o8's scheduler. See [`profiles/o8.md`](../profiles/o8.md). Unmapped CLIs omit `harness`; do not bulk-add runtimes.
+
 Adding an id requires a catalog row **and** a validator update of `REQUIRED_HARNESS_IDS`. Dash adapters and Firstmate primaries are separate proofs.

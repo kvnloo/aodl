@@ -53,7 +53,11 @@ Events have `{eventId,type,candidateId,sourceHash,revision,causalParents,actor,l
 
 Nodes minimally distinguish task, executor, model, tool/service, memory/stateStore, humanGate, environment/sandbox, artifact, verifier. Each has lifecycle `declared→ready→running→succeeded|failed|cancelled`, ports, capability declarations and authority ceiling. A model is not automatically an executor; an edge never grants authority implicitly.
 
+`humanGate` is the irreversible action (merge, deploy, approve). Review is a `verifier` and may be an orchestrator. Delegating review is a `verification` or `critique` edge; it does not transfer gate identity. A verifier with a merge grant is invalid. A `delegation` of `humanGate` identity onto an executor is invalid.
+
 An executor node may name a supported id from `harnesses/catalog.json` with `harness`. The catalog row must have kind `executor`; control rooms compile graphs and are not nodes in them.
+
+A document may include optional top-level `observedGraph` with the same shape as `intentGraph`. Runtimes emit `eventLog` and `observedGraph`. Never substitute plan or observation for intent. A mission that is a list of packets is many components with no invented `dependency`. Isolation is a degree-0 orphan, not a requirement that the document be one DAG.
 
 Edges require relation, source/target port, cardinality, data schema/classification, authority grant/delegation depth, guard, delivery/order/idempotency, timeout/retry/backpressure, resource limits, evidence requirement, provenance and validity interval. Data and control are separate relations.
 

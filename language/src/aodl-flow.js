@@ -112,6 +112,10 @@ export function visualForKind(kind) {
   return KIND_VISUAL[kind] || UNKNOWN_VISUAL;
 }
 
+export function hueForVisual(channels, fallback) {
+  return visual.providers[channels?.providerId]?.hue || fallback || visual.providers.unknown.hue;
+}
+
 /** Same drawings as the Silhouettes SVG. Coordinates are viewBox 72×44. */
 export const TOPOLOGY_GRAPHS = {
   solo: { nodes: [[36, 22, 7]], edges: [] },

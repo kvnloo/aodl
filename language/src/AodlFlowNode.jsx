@@ -1,5 +1,4 @@
 import { Handle, Position } from '@xyflow/react';
-import { CapabilityCore } from './CapabilityCore.jsx';
 import { HARNESS_IDS, KIND_VISUAL, LIFECYCLES, NODE_KINDS, visualForKind } from './aodl-flow.js';
 import './orchestration.css';
 
@@ -12,22 +11,10 @@ export function AodlUnit({ id, data, selected }) {
   const hotl = data.hotl || { id, kind: 'task', ports: [] };
   const ports = hotl.ports || [];
   const expanded = Boolean(data.expanded);
-  const mode = data.mode === 'decoder' ? 'decoder' : 'silhouette';
   const inPort = portOf(ports, 'in');
   const outPort = portOf(ports, 'out');
   const radius = Number(data.radius) || 6;
-  const hue = data.hue || visual.providerHue;
-  const compactCore = mode === 'silhouette';
-  const level = {
-    id: hotl.id,
-    name: data.level?.name || hotl.id,
-    rank: data.level?.rank || hotl.kind,
-    providerId: visual.providerId,
-    modelId: visual.modelId,
-    effortId: visual.effortId,
-    topologyId: visual.topologyId,
-    operatingModeId: visual.operatingModeId,
-  };
+  const hue = data.hue || '#9ca39a';
 
   const patch = (next) => {
     const merged = { ...hotl, ...next };
@@ -49,11 +36,11 @@ export function AodlUnit({ id, data, selected }) {
       data-kind={hotl.kind}
       data-expanded={expanded ? 'true' : 'false'}
       data-node={hotl.id}
-      data-mode={mode}
+      data-mode="silhouette"
       style={{
         '--dot': `${radius * 2}px`,
         '--dot-n': String(radius * 2),
-        '--topology-node': hue || '#9ca39a',
+        '--topology-node': hue,
         '--node-x': `${Number(data.left) || 0}px`,
         '--node-y': `${Number(data.top) || 0}px`,
       }}
@@ -61,7 +48,7 @@ export function AodlUnit({ id, data, selected }) {
       <button
         type="button"
         className="aodl-flow-core-hit nodrag nopan"
-        aria-label={`expand ${hotl.id}`}
+        aria-label={`edit ${hotl.id}`}
         aria-expanded={expanded}
         onClick={(event) => {
           event.stopPropagation();
@@ -70,11 +57,6 @@ export function AodlUnit({ id, data, selected }) {
       >
         <span className="aodl-flow-glyph">
           <i className="aodl-flow-glyph__dot" />
-          <CapabilityCore
-            compact={compactCore}
-            level={data.level || level}
-            state={data.runtimeState || (hotl.lifecycle === 'running' ? 'running' : 'claimed')}
-          />
         </span>
       </button>
       <div className="aodl-flow-sheet-clip">
@@ -83,7 +65,7 @@ export function AodlUnit({ id, data, selected }) {
           onClick={(event) => event.stopPropagation()}
           onSubmit={(event) => event.preventDefault()}
         >
-          <p className="sheet-id">{data.level?.name || hotl.kind}</p>
+          <p className="sheet-id">{hotl.kind}</p>
           <label>
             kind
             <select name="kind" value={hotl.kind} onChange={(event) => patch({ kind: event.target.value })}>

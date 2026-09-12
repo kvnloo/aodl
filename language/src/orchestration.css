@@ -119,11 +119,6 @@
   inset: 0;
 }
 
-.aodl-flow-node[data-mode="decoder"] .aodl-flow-core-hit {
-  width: auto;
-  height: auto;
-}
-
 .aodl-flow-node {
   position: relative;
   display: grid;
@@ -171,10 +166,6 @@
   transform-origin: center center;
 }
 
-.aodl-flow-node.is-expanded .aodl-flow-glyph {
-  pointer-events: none;
-}
-
 .aodl-flow-glyph__dot {
   position: absolute;
   inset: 0;
@@ -190,56 +181,10 @@
     transform var(--aodl-grow-ms) var(--aodl-grow-ease);
 }
 
-.aodl-flow-node.is-expanded .aodl-flow-glyph__dot,
-.aodl-flow-node[data-mode="decoder"] .aodl-flow-glyph__dot {
-  z-index: 0;
-  opacity: 0;
-  transform: scale(calc(64 / var(--dot-n, 12)));
-  pointer-events: none;
-}
-
-.aodl-flow-glyph .agent-capability-core {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 1;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(calc(var(--dot-n, 12) / 64));
-  transform-origin: center center;
-  transition:
-    opacity 300ms 80ms ease,
-    transform var(--aodl-grow-ms) var(--aodl-grow-ease);
-}
-
-.aodl-flow-node.is-expanded .aodl-flow-glyph .agent-capability-core {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.aodl-flow-node[data-mode="decoder"] {
-  width: auto;
-  height: auto;
-  overflow: visible;
-}
-
-.aodl-flow-node[data-mode="decoder"] .aodl-flow-core-hit,
-.aodl-flow-node[data-mode="decoder"] .aodl-flow-glyph {
-  width: auto;
-  height: auto;
-  overflow: visible;
-  border-radius: 0;
-}
-
-.aodl-flow-node[data-mode="decoder"] .aodl-flow-glyph .agent-capability-core {
-  position: static;
-  left: auto;
-  top: auto;
-  opacity: 1;
-  transform: none;
-}
-
-.aodl-flow-node[data-mode="decoder"].is-expanded {
-  width: min(240px, 100%);
+.aodl-flow-node.is-expanded .aodl-flow-glyph__dot {
+  box-shadow:
+    inset 0 0 0 0.7px color-mix(in srgb, var(--topology-node) 72%, white),
+    0 0 0 1.5px color-mix(in srgb, var(--gold, #d8bd78) 75%, white);
 }
 
 .aodl-flow-sheet-clip {
@@ -398,7 +343,6 @@
   .aodl-flow-node,
   .aodl-flow-glyph,
   .aodl-flow-glyph__dot,
-  .aodl-flow-glyph .agent-capability-core,
   .aodl-flow-sheet-clip,
   .aodl-flow-sheet {
     transition: none !important;

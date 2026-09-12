@@ -227,7 +227,8 @@ export function Language() {
         <h2 id="aodl-map-title">Silhouettes</h2>
         <p>
           Each unit is a living core of a declared coordination class. Click the core to break it
-          into the silhouette — the actual pattern — then a node to edit language. Status{' '}
+          into the silhouette — dots and wires, not more cores. Click a node to edit that
+          participant; it stays a node. Status{' '}
           <code>not-inferred</code> means the drawing exists and still fails closed until the listed
           policy is declared. Marketplace is allocation policy <Tex math={String.raw`\Pi_t`} />, not a product.
         </p>
@@ -278,7 +279,7 @@ export function Language() {
         <h2 id="aodl-decoder-title">Visual decoder</h2>
         <p>
           Living-night cores compress declared metadata: provider hue, model geometry, effort orbits, topology envelope, mode rune, runtime cadence.
-          They are <strong>not</strong> <Tex math={String.raw`\mathcal{O}_t`} />. Click a core to disclose the silhouette of its declared topology, then a node to edit.
+          They are <strong>not</strong> <Tex math={String.raw`\mathcal{O}_t`} />. Click a core to disclose the silhouette of its declared topology, then a node to edit that participant. The node stays a node.
           HomeForge / Solarpunk consumes this catalog; it does not own ids.
         </p>
         <AgentCoreLanguage />

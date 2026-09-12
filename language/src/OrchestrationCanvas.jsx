@@ -9,7 +9,7 @@ import '@xyflow/react/dist/style.css';
 import { TopologyBadge } from './TopologyBadge.jsx';
 import { AodlFlowEdge } from './AodlFlowEdge.jsx';
 import { AodlFlowNode } from './AodlFlowNode.jsx';
-import { silhouetteToFlow, VIEW_H, VIEW_W, visualForKind } from './aodl-flow.js';
+import { hueForVisual, silhouetteToFlow, VIEW_H, VIEW_W, visualForKind } from './aodl-flow.js';
 import './orchestration.css';
 
 const nodeTypes = { aodlCore: AodlFlowNode };
@@ -21,11 +21,20 @@ function SilhouetteGraph({ topologyId, providerId, label }) {
   const [edges, , onEdgesChange] = useEdgesState(seed.edges);
   const open = nodes.some((node) => node.data.expanded);
 
-  const onPatch = useCallback((nodeId, hotl, visual) => {
+  const onPatch = useCallback((nodeId, hotl, nextVisual) => {
+    const visual = nextVisual || visualForKind(hotl.kind);
     setNodes((current) =>
       current.map((node) =>
         node.id === nodeId
-          ? { ...node, data: { ...node.data, hotl, visual: visual || visualForKind(hotl.kind) } }
+          ? {
+            ...node,
+            data: {
+              ...node.data,
+              hotl,
+              visual,
+              hue: hueForVisual(visual, node.data.hue),
+            },
+          }
           : node,
       ),
     );

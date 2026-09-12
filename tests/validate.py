@@ -113,7 +113,12 @@ INVALID_EXPECT = {
     "hidden-privilege": "privileged capability",
     "missing-endpoint": "unknown node",
     "isolated-node": "isolated node",
+    "control-room-as-executor": "control-room",
+    "unknown-harness": "unknown harness",
 }
+
+_CATALOG_UNSET = object()
+_harness_catalog: object = _CATALOG_UNSET
 
 
 class Issue:
@@ -259,6 +264,7 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
         issues.append(Issue("required", "intentGraph.nodes must be non-empty"))
 
     nodes_l: list[dict[str, object]] = []
+    harness_catalog: object = _CATALOG_UNSET
     for i, item in enumerate(raw_nodes):
         node = _as_dict(item, f"nodes[{i}]", issues)
         if node is None:
@@ -266,6 +272,40 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
         _require(node, ("id", "kind", "ports", "capabilities"), f"nodes[{i}]", issues)
         if node.get("kind") not in NODE_KINDS_02:
             issues.append(Issue("kind", f"nodes[{i}].kind {node.get('kind')!r} is unknown"))
+        if "harness" in node:
+            harness_id = node.get("harness")
+            if node.get("kind") != "executor":
+                issues.append(Issue("harness", f"node {node.get('id')} harness is only allowed on executor nodes"))
+            if harness_catalog is _CATALOG_UNSET:
+                harness_catalog = _load_harness_catalog()
+                if harness_catalog is None:
+                    issues.append(Issue("harness", "missing harnesses/catalog.json"))
+                elif not isinstance(harness_catalog, dict):
+                    issues.append(Issue("harness", "harnesses/catalog.json must be an object"))
+            if isinstance(harness_catalog, dict):
+                supported = harness_catalog.get("supported")
+                harnesses = harness_catalog.get("harnesses")
+                if not isinstance(supported, list) or harness_id not in supported:
+                    issues.append(Issue("harness", f"node {node.get('id')} unknown harness id {harness_id!r}"))
+                elif not isinstance(harnesses, dict) or not isinstance(harnesses.get(harness_id), dict):
+                    issues.append(Issue("harness", f"node {node.get('id')} harness {harness_id!r} has no catalog row"))
+                else:
+                    harness_kind = harnesses[harness_id].get("kind")
+                    if harness_kind == "control-room":
+                        issues.append(
+                            Issue(
+                                "harness",
+                                f"node {node.get('id')} harness {harness_id!r} is a control-room, not an executor; "
+                                "control rooms compile graphs, they are not nodes in them",
+                            )
+                        )
+                    elif harness_kind != "executor":
+                        issues.append(
+                            Issue(
+                                "harness",
+                                f"node {node.get('id')} harness {harness_id!r} kind {harness_kind!r} is not an executor",
+                            )
+                        )
         ports = _as_list(node.get("ports"), f"nodes[{i}].ports", issues) or []
         seen_ports: set[str] = set()
         for j, port in enumerate(ports):
@@ -575,12 +615,19 @@ FIRSTMATE_STATUS = {"primary", "crew", "none"}
 REQUIRED_NETWORK = ("aodl", "dash", "frontier-kb", "hermes-keel", "hermes-agent")
 
 
+def _load_harness_catalog() -> object:
+    global _harness_catalog
+    if _harness_catalog is _CATALOG_UNSET:
+        path = ROOT / "harnesses" / "catalog.json"
+        _harness_catalog = load_json(path) if path.exists() else None
+    return _harness_catalog
+
+
 def validate_catalog() -> list[Issue]:
     issues: list[Issue] = []
-    path = ROOT / "harnesses" / "catalog.json"
-    if not path.exists():
+    doc = _load_harness_catalog()
+    if doc is None:
         return [Issue("catalog", "missing harnesses/catalog.json")]
-    doc = load_json(path)
     if not isinstance(doc, dict):
         return [Issue("type", "harnesses/catalog.json must be an object")]
     supported = doc.get("supported")

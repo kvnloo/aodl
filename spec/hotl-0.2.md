@@ -53,6 +53,8 @@ Events have `{eventId,type,candidateId,sourceHash,revision,causalParents,actor,l
 
 Nodes minimally distinguish task, executor, model, tool/service, memory/stateStore, humanGate, environment/sandbox, artifact, verifier. Each has lifecycle `declared→ready→running→succeeded|failed|cancelled`, ports, capability declarations and authority ceiling. A model is not automatically an executor; an edge never grants authority implicitly.
 
+An executor node may name a supported id from `harnesses/catalog.json` with `harness`. The catalog row must have kind `executor`; control rooms compile graphs and are not nodes in them.
+
 Edges require relation, source/target port, cardinality, data schema/classification, authority grant/delegation depth, guard, delivery/order/idempotency, timeout/retry/backpressure, resource limits, evidence requirement, provenance and validity interval. Data and control are separate relations.
 
 ## Safe operational core

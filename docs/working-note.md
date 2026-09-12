@@ -150,3 +150,5 @@ Until then this note, the schema, and the fixtures *are* the language.
 ## 9. Research capture (not a paper)
 
 A 2026-09-11 C(RAID) R-phase pass is [`research-craid-20260911.md`](research-craid-20260911.md). It does not change the schema. Closest academic cousins: $\lambda_A$ (intra-node calculus), Pact/MPST (message choreography), sheaf readings of the three objects, RLM/rate-distortion for slices, Evo-Bench for search over programs. Protocol layers MCP / A2A / AG-UI stay adapters. Frontier-kb holds the literature notes. A paper is still premature until §8.
+
+Catalog **Readings** and **Adapters** sections are on the language page (no schema change). The 100-wide competitor join stays in Dash `docs/research/competitors-100-20260911.md` and frontier-kb `inbox/cursor/`. Same conclusion: cousins and ports, not HOTL 0.3 kinds. Keyword search bleeds astrophysics and municipal-water papers; the join table is the filter.

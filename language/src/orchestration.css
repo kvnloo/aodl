@@ -1,0 +1,363 @@
+.aodl-pretotype {
+  margin: 32px 0 0;
+  border-top: 1px solid var(--hair-2);
+  padding-top: 28px;
+}
+
+.aodl-pretotype h2 {
+  margin: 0 0 8px;
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.aodl-pretotype > p {
+  max-width: 46rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+.aodl-pretotype code {
+  color: var(--gold);
+}
+
+.aodl-playfield-stage {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+.aodl-program-core {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 4px 10px;
+  border: 1px solid var(--hair);
+  background: #070807;
+}
+
+.aodl-program-core span {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aodl-program-core:hover {
+  border-color: var(--hair-2);
+}
+
+.aodl-program-shell {
+  grid-column: 1 / -1;
+  display: flex;
+  min-width: 0;
+  min-height: 420px;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--hair-2);
+  background:
+    radial-gradient(120% 80% at 50% 20%, rgba(216, 189, 120, 0.08), transparent 46%),
+    #050605;
+}
+
+.aodl-program-chrome {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--hair);
+}
+
+.aodl-program-chrome strong {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.aodl-program-kinds {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ink-3);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aodl-program-chrome button {
+  padding: 4px 8px;
+  border: 1px solid var(--hair);
+  color: var(--ink-2);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.aodl-program-chrome button[aria-pressed="true"],
+.aodl-program-chrome button[data-mode="play"][aria-pressed="true"] {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.aodl-playfield {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  height: 360px;
+  min-height: 360px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(236, 232, 223, 0.04), transparent 42%),
+    repeating-linear-gradient(0deg, transparent 0 27px, rgba(236, 232, 223, 0.03) 27px 28px),
+    repeating-linear-gradient(90deg, transparent 0 27px, rgba(236, 232, 223, 0.03) 27px 28px),
+    #050605;
+}
+
+.aodl-playfield.is-play {
+  cursor: none;
+}
+
+.aodl-playfield .react-flow {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.aodl-playfield .react-flow__renderer,
+.aodl-playfield .react-flow__pane,
+.aodl-playfield .react-flow__viewport {
+  overflow: hidden;
+}
+
+.aodl-playfield .react-flow__node {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.aodl-playfield .react-flow__attribution {
+  display: none;
+}
+
+.aodl-flow-node {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+
+.aodl-flow-core-hit {
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.aodl-flow-sheet {
+  position: absolute;
+  top: calc(100% + 6px);
+  z-index: 4;
+  min-width: 120px;
+  padding: 8px 10px;
+  border: 1px solid var(--hair-2);
+  background: #0b0c0b;
+  color: var(--ink-2);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.aodl-flow-sheet .sheet-id {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 16px;
+}
+
+.aodl-flow-sheet p {
+  margin: 0;
+}
+
+.aodl-playfield .react-flow__handle {
+  width: 6px;
+  height: 6px;
+  border: 0;
+  background: var(--gold);
+  opacity: 0.55;
+}
+
+.aodl-playfield.is-play .react-flow__handle {
+  pointer-events: none;
+}
+
+.aodl-playfield .react-flow__edge-path.aodl-flow-edge {
+  stroke-width: 1.6;
+  stroke: #ece8df;
+}
+
+.aodl-playfield .react-flow__edge-path.relation-verification {
+  stroke: #7ee3a0;
+}
+
+.aodl-playfield .react-flow__edge-path.relation-data {
+  stroke: #5adfff;
+}
+
+.aodl-playfield .react-flow__edge-path.relation-control {
+  stroke: var(--gold);
+}
+
+.aodl-playfield .react-flow__edge-path.relation-observation {
+  stroke: var(--gold);
+  stroke-dasharray: 5 7;
+  opacity: 0.75;
+}
+
+.osu-layer,
+.osu-slider,
+.osu-trail {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.osu-slider {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.osu-slider-path {
+  fill: none;
+  stroke: #fff5b3;
+  stroke-width: 14;
+  stroke-linecap: round;
+  opacity: 0.35;
+}
+
+.osu-slider-path.is-illegal {
+  stroke: #ef5942;
+}
+
+.osu-circle,
+.osu-slider-hit {
+  position: absolute;
+  z-index: 5;
+  pointer-events: auto;
+  border: 2px solid #fff5b3;
+  background: color-mix(in srgb, #fff5b3 12%, transparent);
+  box-shadow: 0 0 18px rgba(255, 245, 179, 0.35);
+}
+
+.osu-circle {
+  border-radius: 50%;
+}
+
+.osu-circle.is-spin {
+  border-style: dashed;
+  border-width: 3px;
+}
+
+.osu-slider-hit {
+  border-radius: 18px;
+  color: transparent;
+  font-size: 0;
+}
+
+.osu-circle[data-hit="open"],
+.osu-slider-hit[data-hit="open"] {
+  border-color: #fff;
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 22px rgba(255, 245, 179, 0.7);
+}
+
+.osu-approach {
+  position: absolute;
+  z-index: 4;
+  pointer-events: none;
+  border: 2px solid #fff5b3;
+  border-radius: 50%;
+  opacity: 0.85;
+}
+
+.osu-cursor {
+  position: absolute;
+  z-index: 8;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(255, 245, 179, 0.8);
+}
+
+.osu-trail {
+  z-index: 3;
+}
+
+.osu-trail polyline {
+  fill: none;
+  stroke: #fff5b3;
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+
+.osu-hud {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 6;
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+  pointer-events: none;
+  text-shadow: 0 0 12px rgba(5, 6, 5, 0.9);
+}
+
+.osu-combo {
+  font-family: var(--serif);
+  font-size: 42px;
+  line-height: 0.9;
+  color: #fff;
+}
+
+.osu-score,
+.osu-acc {
+  color: var(--ink-2);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.osu-faster {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.osu-hp {
+  display: block;
+  width: 88px;
+  height: 4px;
+  margin-top: 6px;
+  background: color-mix(in srgb, #ef5942 24%, #1a0c0c);
+}
+
+.osu-hp::after {
+  content: "";
+  display: block;
+  width: calc(var(--hp, 1) * 100%);
+  height: 100%;
+  background: #7ee3a0;
+}

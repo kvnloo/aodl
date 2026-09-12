@@ -1,5 +1,6 @@
 import React from 'react';
 import { AgentCoreLanguage, TopologyBadge } from './AgentCoreLanguage.jsx';
+import { OrchestrationCanvas } from './OrchestrationCanvas.jsx';
 import { Tex } from './Equation.jsx';
 import { CHANNEL_ORDER, compileLabel } from './translation.js';
 import visual from '../../encodings/visual.json';
@@ -66,6 +67,8 @@ export function Language() {
           The same language is below as mathematics and as React bound to <code>encodings/ir-map.json</code>.
         </p>
       </header>
+
+      <OrchestrationCanvas />
 
       <section className="aodl-formal" aria-labelledby="aodl-object-title">
         <h2 id="aodl-object-title">Formal object</h2>

@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 const SECTIONS = [
+  'Pretotype',
   'Formal object',
   'Three objects, never substituted',
   'Readings',
@@ -62,7 +63,33 @@ test('no duplicate encoding expand or HomeForge design.html', async ({ page }) =
   await expect(page.locator('details')).toHaveCount(0);
   await expect(page.locator('a[href*="design.html"]')).toHaveCount(0);
   await expect(page.locator('.agent-core-language')).toHaveCount(1);
-  await expect(page.locator('.agent-capability-core')).toHaveCount(3);
+  await expect(page.locator('.agent-core-language .agent-capability-core')).toHaveCount(3);
+});
+
+test('pretotype expands a core into a typed xyflow graph', async ({ page }) => {
+  const proto = page.locator('.aodl-pretotype');
+  await expect(proto.locator('[data-program]')).toHaveCount(4);
+  await proto.locator('[data-program="craid"]').click();
+  await expect(page.locator('.react-flow')).toBeVisible();
+  await expect(page.locator('.react-flow__node')).toHaveCount(10);
+  await expect(page.locator('.agent-capability-core').nth(0)).toBeVisible();
+  await expect(proto.locator('[data-relation="observation"]')).toHaveCount(1);
+  await proto.getByRole('button', { name: 'Collapse to core' }).click();
+  await expect(page.locator('.react-flow')).toHaveCount(0);
+  await expect(proto.locator('[data-program="craid"]')).toBeVisible();
+});
+
+test('play mode is a timing controller on the cores', async ({ page }) => {
+  const proto = page.locator('.aodl-pretotype');
+  await proto.locator('[data-program="pipeline"]').click();
+  await expect(proto.locator('[data-mode="play"]')).toBeVisible();
+  await expect(proto.locator('[data-combo]')).toHaveAttribute('data-combo', '0');
+  const open = proto.locator('[data-hit="open"]');
+  await expect(open).toBeVisible();
+  await expect(open).toHaveAttribute('data-window', '300', { timeout: 2500 });
+  await open.click({ position: { x: 32, y: 32 } });
+  await expect(proto.locator('[data-combo]')).not.toHaveAttribute('data-combo', '0');
+  await expect(proto.locator('[data-speed]')).toBeVisible();
 });
 
 test('no horizontal overflow at phone and desktop', async ({ page }) => {

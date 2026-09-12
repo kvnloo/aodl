@@ -212,7 +212,7 @@ function normalizeRuntimeState(value) {
   return 'unknown';
 }
 
-function CapabilityCore({ level, state = 'running' }) {
+function CapabilityCore({ level, state = 'running', compact = false }) {
   const normalizedState = normalizeRuntimeState(state);
   const provider = agentEncodings.providers[level.providerId] || agentEncodings.providers.unknown;
   const model = agentEncodings.models[level.modelId] || agentEncodings.models.unknown;
@@ -227,7 +227,7 @@ function CapabilityCore({ level, state = 'running' }) {
   const label = `${level.name}: ${provider.label} provider, ${model.label} model, ${effort.label} effort, ${topology.label} topology, ${operatingMode.label} mode, ${normalizedState}`;
   return (
     <span
-      className="agent-capability-core"
+      className={`agent-capability-core${compact ? ' is-compact' : ''}`}
       data-tier={level.id}
       data-state={normalizedState}
       data-core={model.core}
@@ -239,7 +239,7 @@ function CapabilityCore({ level, state = 'running' }) {
         '--core-topology': topology.nodeAccent,
         '--core-energy': energy,
         '--core-power': power,
-        '--core-size': `${Math.round(54 + power * 84)}px`,
+        '--core-size': compact ? '64px' : `${Math.round(54 + power * 84)}px`,
         '--core-duration': `${16 - power * 10}s`,
         '--agent-state-accent': agentEncodings.runtimeStates[normalizedState]?.accent || agentEncodings.runtimeStates.unknown.accent,
       }}
@@ -332,4 +332,4 @@ function AgentCoreLanguage() {
   );
 }
 
-export { AgentCoreLanguage, TopologyBadge, CAPABILITY_LEVELS };
+export { AgentCoreLanguage, CapabilityCore, TopologyBadge, CAPABILITY_LEVELS };

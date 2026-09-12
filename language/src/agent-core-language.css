@@ -73,6 +73,7 @@
 .agent-core-level__specs b { color: var(--ink-3); font-size: 7px; text-transform: uppercase; }
 
 .agent-capability-core { --core-size: 108px; --core-provider: #9ca39a; --core-model: #9ca39a; --core-effort: #9ca39a; --core-topology: #9ca39a; --core-primary: var(--core-provider); --core-secondary: var(--core-model); --core-thermal: color-mix(in srgb, var(--core-model) 18%, #060706); --core-duration: 9.5s; position: relative; width: var(--core-size); height: var(--core-size); display: inline-grid; place-items: center; isolation: isolate; }
+.agent-capability-core.is-compact { --core-size: 64px; }
 .agent-capability-core__aura { position: absolute; inset: 12%; z-index: -2; border-radius: 50%; background: color-mix(in srgb, var(--core-provider) calc(10% + var(--core-energy) * 12%), transparent); box-shadow: 0 0 calc(var(--core-size) * .34) calc(var(--core-size) * .03) color-mix(in srgb, var(--core-provider) calc(14% + var(--core-energy) * 14%), transparent); animation: agent-capability-breathe 4.8s ease-in-out infinite; }
 .agent-capability-core__topology-envelope { position: absolute; inset: 3%; z-index: 0; border: 1px solid color-mix(in srgb, var(--core-topology) 64%, transparent); border-radius: 50%; }
 .agent-capability-core[data-topology="solo"] .agent-capability-core__topology-envelope { inset: 9%; border-right-color: transparent; transform: rotate(-32deg); }

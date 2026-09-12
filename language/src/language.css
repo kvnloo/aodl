@@ -25,7 +25,6 @@
 .aodl-formal > p,
 .aodl-map > p,
 .aodl-decoder > p,
-.aodl-orchestration > p,
 .aodl-tex--display,
 .aodl-rule,
 .aodl-note,
@@ -185,6 +184,7 @@
   border: 1px solid var(--hair);
   border-radius: 8px;
   min-width: 0;
+  overflow: visible;
 }
 
 .aodl-map__card header {

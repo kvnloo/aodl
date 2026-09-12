@@ -1,6 +1,6 @@
 import React from 'react';
-import { AgentCoreLanguage, TopologyBadge } from './AgentCoreLanguage.jsx';
-import { OrchestrationCanvas } from './OrchestrationCanvas.jsx';
+import { AgentCoreLanguage } from './AgentCoreLanguage.jsx';
+import { SilhouetteFlow } from './OrchestrationCanvas.jsx';
 import { Tex } from './Equation.jsx';
 import { CHANNEL_ORDER, compileLabel } from './translation.js';
 import visual from '../../encodings/visual.json';
@@ -212,7 +212,7 @@ export function Language() {
                   <b>{topology.label}</b>
                   <span className="aodl-map__status" data-status={rec.status}>{rec.status}</span>
                 </header>
-                <TopologyBadge topologyId={id} providerId="multi" label={`${topology.label} mapped ${rec.status}`} />
+                <SilhouetteFlow topologyId={id} providerId="multi" label={`${topology.label} mapped ${rec.status}`} />
                 <p>{rec.note || topology.description}</p>
                 {kinds ? <code>policies.kinds: {kinds.join(', ')}</code> : null}
                 {rec.requires ? <code>requires: {rec.requires.join(', ')}</code> : null}
@@ -235,8 +235,6 @@ export function Language() {
           <a className="aodl-path" href={`${REPO}/blob/main/spec/craid.md`}>craid.md</a>. A hybrid badge is not C(RAID).
         </p>
       </section>
-
-      <OrchestrationCanvas />
 
       <section className="aodl-formal" aria-labelledby="aodl-adapters-title">
         <h2 id="aodl-adapters-title">Adapters</h2>

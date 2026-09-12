@@ -1,4 +1,4 @@
-import { BaseEdge, getBezierPath } from '@xyflow/react';
+import { BaseEdge, getStraightPath } from '@xyflow/react';
 
 export function AodlFlowEdge({
   id,
@@ -11,7 +11,7 @@ export function AodlFlowEdge({
   data,
   markerEnd,
 }) {
-  const [edgePath] = getBezierPath({
+  const [edgePath] = getStraightPath({
     sourceX,
     sourceY,
     sourcePosition,
@@ -20,13 +20,14 @@ export function AodlFlowEdge({
     targetPosition,
   });
   const relation = data?.relation ?? 'dependency';
+  const extras = `${data?.soft ? ' is-soft' : ''}${data?.directed ? ' is-directed' : ''}`;
   return (
     <>
       <BaseEdge
         id={id}
         path={edgePath}
         markerEnd={markerEnd}
-        className={`aodl-flow-edge relation-${relation}`}
+        className={`aodl-flow-edge relation-${relation}${extras}`}
       />
       <path
         d={edgePath}
@@ -34,7 +35,7 @@ export function AodlFlowEdge({
         stroke="transparent"
         strokeWidth={18}
         data-relation={relation}
-        className={`aodl-flow-edge-hit relation-${relation}`}
+        className={`aodl-flow-edge-hit relation-${relation}${extras}`}
       />
     </>
   );

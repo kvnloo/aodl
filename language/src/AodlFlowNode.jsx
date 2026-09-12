@@ -1,22 +1,27 @@
 import { Handle, Position } from '@xyflow/react';
-import { CapabilityCore } from './AgentCoreLanguage.jsx';
+import { CapabilityCore } from './CapabilityCore.jsx';
 import { HARNESS_IDS, KIND_VISUAL, LIFECYCLES, NODE_KINDS, visualForKind } from './aodl-flow.js';
+import './orchestration.css';
 
 function portOf(ports, direction) {
   return (ports || []).find((p) => p.direction === direction) || { id: direction, schema: '' };
 }
 
-export function AodlFlowNode({ id, data, selected }) {
+export function AodlUnit({ id, data, selected }) {
   const visual = data.visual || KIND_VISUAL.task;
   const hotl = data.hotl || { id, kind: 'task', ports: [] };
   const ports = hotl.ports || [];
   const expanded = Boolean(data.expanded);
+  const mode = data.mode === 'decoder' ? 'decoder' : 'silhouette';
   const inPort = portOf(ports, 'in');
   const outPort = portOf(ports, 'out');
+  const radius = Number(data.radius) || 6;
+  const hue = data.hue || visual.providerHue;
+  const compactCore = mode === 'silhouette';
   const level = {
     id: hotl.id,
-    name: hotl.id,
-    rank: hotl.kind,
+    name: data.level?.name || hotl.id,
+    rank: data.level?.rank || hotl.kind,
     providerId: visual.providerId,
     modelId: visual.modelId,
     effortId: visual.effortId,
@@ -29,7 +34,8 @@ export function AodlFlowNode({ id, data, selected }) {
     if (next.kind && next.kind !== 'executor') {
       delete merged.harness;
     }
-    data.onPatch?.(id, merged, visualForKind(merged.kind));
+    const nextVisual = next.kind ? visualForKind(merged.kind) : visual;
+    data.onPatch?.(id, merged, nextVisual);
   };
 
   const patchPort = (direction, schema) => {
@@ -43,22 +49,40 @@ export function AodlFlowNode({ id, data, selected }) {
       data-kind={hotl.kind}
       data-expanded={expanded ? 'true' : 'false'}
       data-node={hotl.id}
+      data-mode={mode}
+      style={{
+        '--dot': `${radius * 2}px`,
+        '--topology-node': hue || '#9ca39a',
+        '--node-x': `${Number(data.left) || 0}px`,
+        '--node-y': `${Number(data.top) || 0}px`,
+      }}
     >
-      <Handle type="target" position={Position.Left} className="aodl-flow-handle" />
       <button
         type="button"
         className="aodl-flow-core-hit nodrag nopan"
         aria-label={`expand ${hotl.id}`}
+        aria-expanded={expanded}
+        onClick={(event) => {
+          event.stopPropagation();
+          data.onToggleExpand?.(id, event.shiftKey);
+        }}
       >
-        <CapabilityCore compact level={level} state={hotl.lifecycle === 'running' ? 'running' : 'claimed'} />
+        <span className="aodl-flow-glyph">
+          <i className="aodl-flow-glyph__dot" />
+          <CapabilityCore
+            compact={compactCore}
+            level={data.level || level}
+            state={data.runtimeState || (hotl.lifecycle === 'running' ? 'running' : 'claimed')}
+          />
+        </span>
       </button>
-      {expanded ? (
+      <div className="aodl-flow-sheet-clip">
         <form
           className="aodl-flow-sheet nodrag nopan"
           onClick={(event) => event.stopPropagation()}
           onSubmit={(event) => event.preventDefault()}
         >
-          <p className="sheet-id">{hotl.id}</p>
+          <p className="sheet-id">{data.level?.name || hotl.kind}</p>
           <label>
             kind
             <select name="kind" value={hotl.kind} onChange={(event) => patch({ kind: event.target.value })}>
@@ -126,8 +150,17 @@ export function AodlFlowNode({ id, data, selected }) {
             />
           </label>
         </form>
-      ) : null}
-      <Handle type="source" position={Position.Right} className="aodl-flow-handle" />
+      </div>
     </div>
+  );
+}
+
+export function AodlFlowNode({ id, data, selected }) {
+  return (
+    <>
+      <Handle type="target" position={Position.Left} className="aodl-flow-handle" />
+      <AodlUnit id={id} data={data} selected={selected} />
+      <Handle type="source" position={Position.Right} className="aodl-flow-handle" />
+    </>
   );
 }

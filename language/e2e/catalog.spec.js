@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 const SECTIONS = [
   'Formal object',
   'Three objects, never substituted',
+  'Intent and participation',
   'Readings',
   'Translation',
   'Silhouettes',
@@ -54,6 +55,13 @@ test('translation spec link stays on one line', async ({ page }) => {
   const box = await link.boundingBox();
   const fontSize = await link.evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
   expect(box.height).toBeLessThan(fontSize * 1.8);
+});
+
+test('intent contract stays HOTL 0.2', async ({ page }) => {
+  const section = page.locator('section[aria-labelledby="aodl-contract-title"]');
+  await expect(section).toContainText('Preserve chosen challenge');
+  await expect(section).toContainText('No fail event type');
+  await expect(page.locator('h2', { hasText: 'Timebound' })).toHaveCount(0);
 });
 
 test('no duplicate encoding expand or HomeForge design.html', async ({ page }) => {

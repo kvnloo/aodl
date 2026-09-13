@@ -45,6 +45,19 @@ EDGE_REL_02 = {
     "observation",
     "artifact",
 }
+EVENT_TYPES_02 = {
+    "spawn",
+    "bind",
+    "route",
+    "retry",
+    "cancel",
+    "addNode",
+    "removeNode",
+    "addEdge",
+    "removeEdge",
+    "stateUpdate",
+    "snapshot",
+}
 NODE_ROLES_01 = {
     "orchestrator",
     "worker",
@@ -132,6 +145,8 @@ INVALID_EXPECT = {
     "verifier-merge-grant": "merge grant",
     "gate-identity-delegated": "humanGate identity",
     "langchain-as-harness": "unknown harness",
+    "fail-event": "unknown event",
+    "open-questions-field": "unknown fields",
 }
 
 _CATALOG_UNSET = object()
@@ -527,6 +542,27 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
         observed = _as_dict(doc.get("observedGraph"), "observedGraph", issues)
         if observed is not None:
             _validate_observed_graph(observed, issues)
+
+    if "eventLog" in doc:
+        raw_events = _as_list(doc.get("eventLog"), "eventLog", issues)
+        if raw_events is not None:
+            for i, item in enumerate(raw_events):
+                event = _as_dict(item, f"eventLog[{i}]", issues)
+                if event is None:
+                    continue
+                _require(
+                    event,
+                    ("eventId", "type", "sourceHash", "revision", "causalParents", "payload"),
+                    f"eventLog[{i}]",
+                    issues,
+                )
+                etype = event.get("type")
+                if etype not in EVENT_TYPES_02:
+                    issues.append(Issue("event", f"unknown event type {etype!r}"))
+                if not isinstance(event.get("causalParents"), list):
+                    issues.append(Issue("event", f"eventLog[{i}].causalParents must be an array"))
+                if not isinstance(event.get("payload"), dict):
+                    issues.append(Issue("event", f"eventLog[{i}].payload must be an object"))
 
     return issues
 

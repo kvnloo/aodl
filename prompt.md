@@ -40,7 +40,7 @@ scope: <one sentence>
 Then add `claimed` and remove `claimable`.
 
 5. Orient before edit (`skills/orient/SKILL.md`). If GitNexus MCP is already there: `query` → `context` → `impact`. Do not run `gitnexus analyze` unless a human asked.
-6. Fail, then pass (`skills/tdd/SKILL.md`). Unit command: `python3 tests/validate.py`. Mutation: `n/a` (fail-closed fixtures; do not invent a score).
+6. Fail, then pass (`skills/tdd/SKILL.md`). Unit command: `python3 tests/validate.py`. Compile: `python3 tests/compile.py`. Mutation: `n/a` (fail-closed fixtures; do not invent a score).
 7. Smallest complete change (`skills/anti-slop/SKILL.md`). If pstack is already installed, `/poteto-mode` is allowed; still never merge.
 8. Open a PR on https://github.com/kvnloo/aodl at `feature_target` (day) or `overnight_target` (overnight) with `.github/PULL_REQUEST_TEMPLATE.md` filled. Bind evidence to `head_revision`. **Do not merge `main` or `dev`.**
 

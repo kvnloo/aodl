@@ -13,7 +13,7 @@ Fail, then pass. The red command is part of the evidence receipt.
 
 ## Stack
 
-Unit command: `python3 tests/validate.py`. Mutation is `n/a` until mutmut is adopted. Do not copy Dash `bun test` or `mutate.ts` into this repo.
+Unit command: `python3 tests/validate.py`. Compile: `python3 tests/compile.py`. Mutation is `n/a` until mutmut is adopted. Do not copy Dash `bun test` or `mutate.ts` into this repo.
 
 ## Do not
 

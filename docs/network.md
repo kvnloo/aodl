@@ -25,9 +25,10 @@ These repos are separate products that share ids. They are not a monorepo.
 
 | Repo | Owns | Does not own |
 |---|---|---|
-| [kvnloo/aodl](https://github.com/kvnloo/aodl) | $\mathcal{O}_t$, schema, validator, visual join table, harness ids | scheduler, payment, Dash UI, Kanban |
+| [kvnloo/aodl](https://github.com/kvnloo/aodl) | $\mathcal{O}_t$, schema, validator, visual join table, harness ids | scheduler, payment, Dash UI, Kanban, Ripple |
 | [kvnloo/verified-oss-loop](https://github.com/kvnloo/verified-oss-loop) | claim leases, evidence receipts, never-merge | AODL schema, Dash UI |
 | [kvnloo/dash](https://github.com/kvnloo/dash) | phone + Tailscale spawn of executor CLIs | orchestration calculus, Keel |
+| [kvnloo/ripple](https://github.com/kvnloo/ripple) | Dash-consumed ephemeral intent surface (Ripple is the brand; ChatGPT's phrase is the kind/gloss) | AODL IR, this catalog, S-Pen as a product (S-Pen is an input) |
 | [kvnloo/frontier-kb](https://github.com/kvnloo/frontier-kb) | literature / permanent notes | runtime |
 | [kvnloo/hermes-keel](https://github.com/kvnloo/hermes-keel) | Hermes governance, Level 0 | Firstmate, Dash, AODL schema |
 | [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) | Kanban, profiles, Telegram, A2A | AODL (proposed, #88589) |
@@ -42,4 +43,4 @@ Ids for executors are `harnesses/catalog.json`. Dash `Harness.id` and Firstmate 
 
 `o8` and `firstmate` are **not** AODL graphs. They may *compile* a graph (dispatch workers). Observed $\mathcal{O}_t$ still comes from the workers they spawned.
 
-Human contract: [`working-note.md`](working-note.md).
+Human contract: [`working-note.md`](working-note.md). Intent/participation profile: [`profiles/intent-contract.md`](../profiles/intent-contract.md). Hermes dry-run: [`profiles/hermes.md`](../profiles/hermes.md). AODL owns the formal contract. Hermes owns contextual runtime. Dash/OMP/o8 decode it. Ripple is the Dash-consumed ephemeral intent surface; AODL does not own it. Do not grow a second catalog or scheduler here.

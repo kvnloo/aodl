@@ -18,6 +18,7 @@
 
 ```bash
 python3 tests/validate.py
+python3 tests/compile.py
 ```
 
 If you touched `language/` or Pages:

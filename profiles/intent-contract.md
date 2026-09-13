@@ -38,7 +38,7 @@ A failed attempt is `lifecycle: failed` plus `stateUpdate`. The learning edge is
 
 Human attention is a declared budget (`constraints.budgets.attention`). It is not evidence of spend.
 
-Ephemeral UI is a live projection of unresolved $\Gamma_t$ through visual $\tau$. It is not a fourth object and not the source of truth. Do not add tldraw, galleries, or catalog widgets here.
+Ephemeral UI is a live projection of unresolved $\Gamma_t$ through visual $\tau$. It is not a fourth object and not the source of truth. The brand is **Ripple** (`kvnloo/ripple`): a Dash-consumed ephemeral intent surface. ChatGPT's "Ephemeral Intent Surface" is the kind/gloss, not the product name. S-Pen is an input, not a product. Do not add tldraw, galleries, or catalog widgets here. Do not implement Ripple in this tree.
 
 ## Named program (not a kind)
 
@@ -59,6 +59,7 @@ AODL owns the vocabulary. Sibling planes own the rest:
 | Hermes | contextual memory, runtime | a second Kanban |
 | o8 | governed coding execution | `o8` as `executor.harness` |
 | Dash | mobile / voice HITL | Dash UI in this tree |
+| Ripple | Dash-consumed ephemeral intent surface (brand; AODL does not own it) | widgets, orbs, a third gallery, S-Pen as a product |
 | Firstmate | attention governor (captain-hold) | Keel ported here |
 | Evolution Lab | experiments / policy learning | LandingPageGym, tiny-net armies |
 | Kerdoios | where work runs | speculative execution compiler |

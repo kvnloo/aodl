@@ -50,7 +50,7 @@ Readable DSL is sugar. JSON is the IR. EBNF in [`spec/hotl-0.2.ebnf`](../spec/ho
 
 A Dash `/roster` is observed $V$, not $\mathcal{O}_t$. A glowing core is not a plan. A Kanban board is not intent unless the policy was recorded.
 
-An LLM prompt is not intent until it is this document. A live `openQuestions` widget is not $\Gamma_t$. A `fail` event is not in the 0.2 enum; failure is `lifecycle: failed` plus `observation` and a legal mutation (`retry` / `addNode` / `addEdge`). ChatGPT names (intent contract, participation contract, ephemeral intent surface, resolution episode) compile **through** this table. They do not become fields.
+An LLM prompt is not intent until it is this document. A live `openQuestions` widget is not $\Gamma_t$. A `fail` event is not in the 0.2 enum; failure is `lifecycle: failed` plus `observation` and a legal mutation (`retry` / `addNode` / `addEdge`). ChatGPT names (intent contract, participation contract, ephemeral intent surface, resolution episode) compile **through** this table. They do not become fields. **Ripple** (`kvnloo/ripple`) is the brand for the Dash-consumed ephemeral intent surface; AODL does not own it. S-Pen is an input, not a product.
 
 Unsupported semantics **fail closed**. The validator does not infer swarm, consensus, intelligence, payment, or health from a drawing.
 
@@ -78,6 +78,7 @@ AODL                      IR: intent / plan / observed
 | Distro | [kunchenguid/firstmate](https://github.com/kunchenguid/firstmate) | captain-hold on D. Do not port Keel here. |
 | Twin | `kvnloo/solarpunk` | `encodings/visual.json` only |
 | Phone | [kvnloo/dash](https://github.com/kvnloo/dash) | spawn of catalog ids |
+| Ephemeral surface | [kvnloo/ripple](https://github.com/kvnloo/ripple) | Dash-consumed intent surface. Not AODL. Kind/gloss, not a HOTL field. |
 | Notes | [kvnloo/frontier-kb](https://github.com/kvnloo/frontier-kb) | literature, not runtime |
 | Goal | [kvnloo/blueprint](https://github.com/kvnloo/blueprint) | product; PM is step 1 |
 

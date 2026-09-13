@@ -2,7 +2,7 @@
 
 Status: **working note**. Not a preprint. Not on arXiv. Claims that need measurement stay unlabeled.
 
-This is the place that holds the stack together: IR, Keel, visual language, mesh, C(RAID). The machine contract is still `schema/` + `tests/validate.py`. This file is the human contract.
+This is the place that holds the stack together: IR, Keel, visual language, mesh, C(RAID). The machine contract is still `schema/` + `tests/validate.py` + `compiler/hermes.py`. This file is the human contract.
 
 ## 1. What this is
 
@@ -18,7 +18,7 @@ The north star is an **intent-and-participation contract**: a person can direct 
 
 Outcome can be correct while stripping the part of the work the human wanted to experience. $\Gamma_t$ therefore carries both termination/acceptance **and** a participation policy: interrupt only when expected information gain is worth the interruption. Recoverable gaps go to tools and memory. Review is a `verifier`. `humanGate` is merge / deploy / approve.
 
-The orchestration graph is the **strategy** chosen to satisfy intent. It is the compiled plan, not the contract. Compiler profile: [`profiles/intent-contract.md`](../profiles/intent-contract.md). Fixture: `examples/valid/intent-loop.json`.
+The orchestration graph is the **strategy** chosen to satisfy intent. It is the compiled plan, not the contract. Compiler profiles: [`profiles/intent-contract.md`](../profiles/intent-contract.md) (vocabulary) and [`profiles/hermes.md`](../profiles/hermes.md) (Kanban dry-run). Fixtures: `examples/valid/intent-loop.json`, `examples/valid/hermes-dry-run.json`.
 
 ## 2. Formal object
 
@@ -143,9 +143,10 @@ Autonomous product management is this graph over a backlog. That is Blueprint st
 | C(RAID) R-phase capture (2026-09-11) | [`research-craid-20260911.md`](research-craid-20260911.md) |
 | Branch previews | [kvnloo.github.io/aodl/preview/](https://kvnloo.github.io/aodl/preview/) |
 | Intent / participation profile | [`profiles/intent-contract.md`](../profiles/intent-contract.md) |
-| Proof | `python3 tests/validate.py` (8 valid, 15 invalid) |
+| Hermes dry-run | [`profiles/hermes.md`](../profiles/hermes.md) · [`compiler/hermes.py`](../compiler/hermes.py) |
+| Proof | `python3 tests/validate.py` (9 valid, 15 invalid) · `python3 tests/compile.py` |
 
-There is **no** `.tex` source and **no** PDF in this repository. GitHub Flavored Markdown with `$` / `$$` is the typeset form until a compiler dry-run exists.
+There is **no** `.tex` source and **no** PDF in this repository. GitHub Flavored Markdown with `$` / `$$` is the typeset form. The dry-run compiler is in-tree; it does not execute.
 
 ## 8. What would make a paper later
 
@@ -153,11 +154,25 @@ Prior art already covers graphs, workflows, actors, auctions, provenance, and po
 
 A paper is premature until at least:
 
-1. Hermes dry-run compiler (intent → Kanban ids + deps; message/mesh/auction stop compilation)
+1. Hermes dry-run compiler (intent → Kanban ids + deps; message/mesh/auction stop compilation) — **landed** as read-only [`compiler/hermes.py`](../compiler/hermes.py). Status leaves `dry-run-unclaimed`. Does not execute.
 2. Keel profile (`humanGate` → L0 receipts; router cannot be an `execute` node)
 3. One measured claim (token-slice break-even, or transfer of a controller policy) that can fail
 
-Until then this note, the schema, and the fixtures *are* the language.
+### 8.1 Language basics (AODL-owned Fabric slice)
+
+ChatGPT's Intent-Resolution Fabric, only the pieces this IR can express. Ripple is not this tree.
+
+| Fabric step | This tree |
+|---|---|
+| 1 shared vocabulary | landed — [`profiles/intent-contract.md`](../profiles/intent-contract.md) (PR #10) |
+| 2 passive observation as dry-run / read-only compile | **landed** — predict Kanban, do not execute |
+| 3 contextual resolver | Hermes runtime, not this tree |
+| 4 ephemeral UI | Ripple, not this tree |
+| 5 active clarification | already expressible: `humanGate` + `constraints.budgets.attention`. No widget |
+| 6 capability-aware routing | catalog bind only; no router. Unknown `executor.harness` fails closed |
+| 7–10 learning / modalities / physical / distillation | NO |
+
+Until a measured claim exists, this note, the schema, the fixtures, and the dry-run *are* the language.
 
 ## 9. Research capture (not a paper)
 

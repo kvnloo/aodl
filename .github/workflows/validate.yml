@@ -15,3 +15,5 @@ jobs:
           python-version: "3.12"
       - name: Fail-closed IR + encodings + harness catalog
         run: python3 tests/validate.py
+      - name: Hermes dry-run compiler
+        run: python3 tests/compile.py

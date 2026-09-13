@@ -67,4 +67,4 @@ AODL owns the vocabulary. Sibling planes own the rest:
 
 Reject: HOTL 0.3 kinds, sheaf JSON fields, `langchain` / `llm` harness ids, hue/geometry/mode runes as IR, UI-first builds, training-first, physical-world-first.
 
-Proof: `python3 tests/validate.py`.
+Proof: `python3 tests/validate.py`. Dry-run: [`profiles/hermes.md`](hermes.md), `python3 tests/compile.py`. Fixture `plan` is claimed by `compiler/hermes.py`.

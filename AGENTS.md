@@ -2,7 +2,7 @@
 
 IR first. Pretty DSL later. Fail closed.
 
-- Schema + `tests/validate.py` are the IR contract. Every new construct needs a valid fixture and a negative fixture.
+- Schema + `tests/validate.py` are the IR contract. Hermes dry-run is `compiler/hermes.py`. Every new construct needs a valid fixture and a negative fixture.
 - Visual topology ids live in `encodings/visual.json` and compile only through `encodings/ir-map.json`. Add both, plus a silhouette in `topology-graphs.json`, in one change.
 - Do not infer `swarm` from graph shape. `swarm` is `not-inferred` until finite dynamic bounds are declared.
 - Marketplace is `policies.kinds: ["auction"]`, payment unsupported.
@@ -10,7 +10,7 @@ IR first. Pretty DSL later. Fail closed.
 - Do not add a runtime, scheduler, or payment executor here.
 - Do not commit ChatGPT/Hermes transcripts or secrets.
 - Unknown `specVersion` is an error, not a warning.
-- Hermes adapter mapping belongs as a **compiler profile**, not as a second Kanban.
+- Hermes adapter mapping belongs as a **compiler profile** (`profiles/hermes.md`) plus a read-only dry-run (`compiler/hermes.py`). It is not a second Kanban. Status leaves `dry-run-unclaimed`. Message, mesh, auction, and payment stop compilation.
 - Intent/participation mapping belongs as `profiles/intent-contract.md`. Do not add `openQuestions`, sheaf JSON, or a `fail` event type. Failure is `lifecycle: failed` plus `observation` and a legal `eventLog` mutation (`retry` / `addNode` / `addEdge`).
 - HomeForge/zerOS consumes `encodings/visual.json`. Do not invent topology ids in solarpunk first.
 - Harness ids live in `harnesses/catalog.json`. The eight supported ids are `hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`. Firstmate is a distro, not a harness id.
@@ -28,9 +28,10 @@ Rollout is Arch-style `rolling` (`.verified-oss-loop/rollout.yml`). `python3 .ve
 | Layer | Command |
 |---|---|
 | Unit | `python3 tests/validate.py` |
+| Compile | `python3 tests/compile.py` |
 | Catalog | `python3 scripts/build-pages.py --current-only` (if you touch `language/` or Pages) |
 | Mutation | `n/a` — fail-closed fixtures, not a mutator |
-| Runtime | `n/a` — static IR |
+| Runtime | `n/a` — static IR. Dry-run does not spawn Hermes. |
 
 1. Search open issues and PRs. Do not duplicate.
 2. Claim **one** `claimable` issue (24h lease). If nothing is claimable, stop.

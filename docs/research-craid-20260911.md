@@ -120,7 +120,7 @@ The language improvement is: **one IR that those systems already implement under
 
 ## 5. How to push the paradigm (ordered)
 
-Still blocked on the working-note’s three gates (Hermes dry-run, Keel profile, one measured claim). This list is the R-phase backlog, not 0.3.
+Hermes dry-run is in-tree (`compiler/hermes.py`). Still blocked on Keel profile and one measured claim. This list is the R-phase backlog, not 0.3.
 
 1. **Keep the interchange conservative.** Adapter profiles: $\lambda_A$ (intra-node), MPST/Pact (message), MCP (tools), A2A (peers), AG-UI/A2UI (user), OpenTelemetry/PROV (observed). Unsupported fields stop compilation.
 2. **Name human attention in $\Gamma_t$.** Oversight inverted-U. C(RAID) D is a `humanGate` with a budget, not “ask more.”

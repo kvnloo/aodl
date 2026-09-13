@@ -362,7 +362,62 @@
   },
   "plan": {
     "compiler": "hermes",
-    "status": "dry-run-unclaimed"
+    "profile": "hermes",
+    "status": "dry-run",
+    "specVersion": "0.2",
+    "graphId": "intent-contract-loop",
+    "revision": 0,
+    "sourceHash": "f450c07104057409329d6c5191d950b99a8d17b8ead7e2bb28051b660c35e225",
+    "idempotencyKey": "c29b0b3e25c2ca564412086015906d23ea619bebe4156b9a1a039846caff11ab",
+    "tasks": [
+      {
+        "id": "t_71ac05c4",
+        "node": "agent",
+        "kind": "executor",
+        "harness": "hermes",
+        "parents": [
+          "t_48c50402"
+        ],
+        "reviewChildren": [
+          "t_dd624ac2"
+        ]
+      },
+      {
+        "id": "t_dd624ac2",
+        "node": "check",
+        "kind": "verifier",
+        "parents": [],
+        "reviewChildren": []
+      },
+      {
+        "id": "t_53d50f5d",
+        "node": "kevin",
+        "kind": "humanGate",
+        "parents": [],
+        "reviewChildren": []
+      },
+      {
+        "id": "t_f14bccc0",
+        "node": "lookup",
+        "kind": "tool",
+        "parents": [],
+        "reviewChildren": []
+      },
+      {
+        "id": "t_8ed5d178",
+        "node": "taste",
+        "kind": "memory",
+        "parents": [],
+        "reviewChildren": []
+      },
+      {
+        "id": "t_48c50402",
+        "node": "want",
+        "kind": "task",
+        "parents": [],
+        "reviewChildren": []
+      }
+    ]
   },
   "eventLog": [
     {

@@ -144,7 +144,7 @@ See [docs/network.md](docs/network.md).
 - Shipping the private ChatGPT voice thread that motivated the IR
 - Mixing this into `kvnloo/dash`
 - Treating Firstmate or o8 as AODL graphs
-- A second GitHub repo for the same ids (`kvnloo/aodl-ui` is not the contract)
+- A second GitHub repo for the same ids (`kvnloo/ripple` is the ephemeral surface, not the IR contract)
 - An arXiv preprint before a compiler dry-run exists
 
 ## Provenance

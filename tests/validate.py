@@ -115,6 +115,8 @@ INVALID_EXPECT = {
     "isolated-node": "isolated node",
     "control-room-as-executor": "control-room",
     "unknown-harness": "unknown harness",
+    "fail-event": "unknown event",
+    "open-questions-field": "unknown fields",
 }
 
 _CATALOG_UNSET = object()

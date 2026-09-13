@@ -11,6 +11,7 @@ IR first. Pretty DSL later. Fail closed.
 - Do not commit ChatGPT/Hermes transcripts or secrets.
 - Unknown `specVersion` is an error, not a warning.
 - Hermes adapter mapping belongs as a **compiler profile**, not as a second Kanban.
+- Intent/participation mapping belongs as `profiles/intent-contract.md`. Do not add `openQuestions`, sheaf JSON, or a `fail` event type. Failure is `lifecycle: failed` plus `observation` and a legal `eventLog` mutation (`retry` / `addNode` / `addEdge`).
 - HomeForge/zerOS consumes `encodings/visual.json`. Do not invent topology ids in solarpunk first.
 - Harness ids live in `harnesses/catalog.json`. The eight supported ids are `hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`. Firstmate is a distro, not a harness id.
 - Do not port Keel into this repo or into Firstmate as a second scheduler. Keel is Hermes L0. Firstmate is Keel L9 (subordinate executor) when we use it.

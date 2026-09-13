@@ -45,6 +45,19 @@ EDGE_REL_02 = {
     "observation",
     "artifact",
 }
+EVENT_TYPES_02 = {
+    "spawn",
+    "bind",
+    "route",
+    "retry",
+    "cancel",
+    "addNode",
+    "removeNode",
+    "addEdge",
+    "removeEdge",
+    "stateUpdate",
+    "snapshot",
+}
 NODE_ROLES_01 = {
     "orchestrator",
     "worker",
@@ -465,6 +478,27 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
             issues.append(
                 Issue("privilege", f"node {ident} privileged capability {leaked} is undeclared on authorityCeiling")
             )
+
+    if "eventLog" in doc:
+        raw_events = _as_list(doc.get("eventLog"), "eventLog", issues)
+        if raw_events is not None:
+            for i, item in enumerate(raw_events):
+                event = _as_dict(item, f"eventLog[{i}]", issues)
+                if event is None:
+                    continue
+                _require(
+                    event,
+                    ("eventId", "type", "sourceHash", "revision", "causalParents", "payload"),
+                    f"eventLog[{i}]",
+                    issues,
+                )
+                etype = event.get("type")
+                if etype not in EVENT_TYPES_02:
+                    issues.append(Issue("event", f"unknown event type {etype!r}"))
+                if not isinstance(event.get("causalParents"), list):
+                    issues.append(Issue("event", f"eventLog[{i}].causalParents must be an array"))
+                if not isinstance(event.get("payload"), dict):
+                    issues.append(Issue("event", f"eventLog[{i}].payload must be an object"))
 
     return issues
 

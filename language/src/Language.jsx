@@ -11,6 +11,14 @@ const OBJECTS = [
   { name: 'Observed', meaning: 'What is actually running.', owner: 'events + receipts' },
 ];
 
+const CONTRACT = [
+  { piece: 'Normalized intent, outcome, invariants, acceptance, evidence', hotl: 'this document — not a top-level intentContract or openQuestions field' },
+  { piece: 'Orchestration strategy', hotl: 'compiled plan. Never substitute for intent.' },
+  { piece: 'Unresolved question', hotl: 'humanGate only when interrupting beats a later error; else tool, memory, or observation' },
+  { piece: 'Failure', hotl: 'lifecycle failed + observation + retry/addNode/addEdge. No fail event type.' },
+  { piece: 'Ephemeral UI', hotl: 'live τ of unresolved Γ_t. Not a fourth object.' },
+];
+
 const SYMBOLS = [
   { symbol: String.raw`V_t`, meaning: 'agents, models, tools, humans, memories, tasks, artifacts', json: 'intentGraph.nodes' },
   { symbol: String.raw`E_t`, meaning: 'typed relations: depend, data, message, delegate, verify, observe, …', json: 'intentGraph.edges' },
@@ -103,6 +111,33 @@ export function Language() {
         </div>
         <p className="aodl-note">
           Unsupported semantics fail closed. The validator does not infer swarm, consensus, intelligence, payment, or health from a drawing.
+        </p>
+      </section>
+
+      <section className="aodl-formal" aria-labelledby="aodl-contract-title">
+        <h2 id="aodl-contract-title">Intent and participation</h2>
+        <p>
+          Automate unwanted friction. Preserve chosen challenge. AODL is the contract, not the army.
+          Interrupt only when expected information gain is worth the human&apos;s attention.
+        </p>
+        <div className="aodl-table-wrap">
+          <table className="aodl-table">
+            <thead>
+              <tr><th>Contract piece</th><th>HOTL 0.2</th></tr>
+            </thead>
+            <tbody>
+              {CONTRACT.map((row) => (
+                <tr key={row.piece}>
+                  <td>{row.piece}</td>
+                  <td>{row.hotl}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="aodl-note">
+          Profile <a className="aodl-path" href={`${REPO}/blob/main/profiles/intent-contract.md`}>intent-contract.md</a>.
+          Fixture <code>examples/valid/intent-loop.json</code>.
         </p>
       </section>
 
@@ -269,6 +304,7 @@ export function Language() {
 
       <footer className="aodl-language__foot">
         <a href={`${REPO}/blob/main/docs/working-note.md`}>working note</a>
+        <a href={`${REPO}/blob/main/profiles/intent-contract.md`}>intent contract</a>
         <a href={`${REPO}/blob/main/spec/translation.md`}>translation</a>
         <a href={`${REPO}/blob/main/spec/hotl-0.2.ebnf`}>EBNF</a>
         <a href={`${REPO}/blob/main/schema/hotl-0.2.schema.json`}>schema</a>

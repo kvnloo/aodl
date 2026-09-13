@@ -38,7 +38,7 @@ Keep three objects distinct:
 
 A marketplace is an **allocation policy** $\Pi_t$ (announce → bid → award → execute → verify → settle), not a separate product. Autonomous payment is unsupported.
 
-Readable DSL is sugar. First proof of generality: the **same primitives** express ReAct and bounded recursion. Architecture search is search over programs in this IR. Mesh is declared peer edges, not a kind. Keel is $\Gamma_t$, not a silhouette. Cores are a decoder, not the IR. C(RAID) is a named hybrid ([`spec/craid.md`](spec/craid.md)).
+Readable DSL is sugar. First proof of generality: the **same primitives** express ReAct and bounded recursion. Architecture search is search over programs in this IR. Mesh is declared peer edges, not a kind. Keel is $\Gamma_t$, not a silhouette. Cores are a decoder, not the IR. C(RAID) is a named hybrid ([`spec/craid.md`](spec/craid.md)). The intent/participation contract is a compiler profile ([`profiles/intent-contract.md`](profiles/intent-contract.md)), not HOTL 0.3.
 
 ## Formal language
 
@@ -52,6 +52,7 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 | Intent → plan → observed | [`spec/architecture.mermaid`](spec/architecture.mermaid) |
 | Live UI (KaTeX + React) | [kvnloo.github.io/aodl](https://kvnloo.github.io/aodl/) (branch previews: [`/preview/`](https://kvnloo.github.io/aodl/preview/)) |
 | Visual ⇀ IR | [`spec/translation.md`](spec/translation.md) · [`encodings/ir-map.json`](encodings/ir-map.json) |
+| Intent / participation (LLM) | [`profiles/intent-contract.md`](profiles/intent-contract.md) |
 | Proof | `python3 tests/validate.py` |
 
 ## Packages
@@ -62,6 +63,7 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 | `encodings/` | Join table. Visual topology ids compile **only** through `ir-map.json`. |
 | `harnesses/catalog.json` | Formal supported harness ids (`hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`). |
 | `language/` | Catalog: $\mathcal{O}_t$ + $\tau$ as KaTeX and React; cores are the decoder below that. |
+| `profiles/` | Compiler profiles (Hermes, intent-contract). Not node kinds. |
 
 ```
 docs/working-note.md        equations + stack (GitHub math)
@@ -76,6 +78,7 @@ encodings/ir-map.json       τ: visual topology → HOTL 0.2
 spec/translation.md        human form of τ (LaTeX)
 harnesses/catalog.json      supported harness + network ids
 language/                   Vite catalog: calculus + translation + decoder (port 5178)
+profiles/                   compiler profiles (not kinds)
 examples/valid/             fixtures that must pass
 examples/invalid/           fail-closed cases
 tests/validate.py           zero-dependency validator + join-table + catalog check

@@ -12,6 +12,14 @@ AODL is that description. Wire id: `hotl-0.2`. Public name: AODL.
 
 It is **not** a scheduler, a Kanban, a payment system, or a glowing core.
 
+The north star is an **intent-and-participation contract**: a person can direct increasingly capable systems without losing authorship or continuity of thought. The scarce resource is continuity of thought.
+
+**Automate unwanted friction. Preserve chosen challenge.**
+
+Outcome can be correct while stripping the part of the work the human wanted to experience. $\Gamma_t$ therefore carries both termination/acceptance **and** a participation policy: interrupt only when expected information gain is worth the interruption. Recoverable gaps go to tools and memory. Review is a `verifier`. `humanGate` is merge / deploy / approve.
+
+The orchestration graph is the **strategy** chosen to satisfy intent. It is the compiled plan, not the contract. Compiler profile: [`profiles/intent-contract.md`](../profiles/intent-contract.md). Fixture: `examples/valid/intent-loop.json`.
+
 ## 2. Formal object
 
 An orchestration at logical time $t$ is
@@ -41,6 +49,8 @@ Readable DSL is sugar. JSON is the IR. EBNF in [`spec/hotl-0.2.ebnf`](../spec/ho
 | Observed $\mathcal{O}_t$ | what is actually running | events + receipts |
 
 A Dash `/roster` is observed $V$, not $\mathcal{O}_t$. A glowing core is not a plan. A Kanban board is not intent unless the policy was recorded.
+
+An LLM prompt is not intent until it is this document. A live `openQuestions` widget is not $\Gamma_t$. A `fail` event is not in the 0.2 enum; failure is `lifecycle: failed` plus `observation` and a legal mutation (`retry` / `addNode` / `addEdge`). ChatGPT names (intent contract, participation contract, ephemeral intent surface, resolution episode) compile **through** this table. They do not become fields.
 
 Unsupported semantics **fail closed**. The validator does not infer swarm, consensus, intelligence, payment, or health from a drawing.
 
@@ -131,7 +141,8 @@ Autonomous product management is this graph over a backlog. That is Blueprint st
 | Named hybrid | [`spec/craid.md`](../spec/craid.md) |
 | C(RAID) R-phase capture (2026-09-11) | [`research-craid-20260911.md`](research-craid-20260911.md) |
 | Branch previews | [kvnloo.github.io/aodl/preview/](https://kvnloo.github.io/aodl/preview/) |
-| Proof | `python3 tests/validate.py` (6 valid, 11 invalid) |
+| Intent / participation profile | [`profiles/intent-contract.md`](../profiles/intent-contract.md) |
+| Proof | `python3 tests/validate.py` (8 valid, 15 invalid) |
 
 There is **no** `.tex` source and **no** PDF in this repository. GitHub Flavored Markdown with `$` / `$$` is the typeset form until a compiler dry-run exists.
 

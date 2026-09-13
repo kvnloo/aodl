@@ -42,4 +42,4 @@ Ids for executors are `harnesses/catalog.json`. Dash `Harness.id` and Firstmate 
 
 `o8` and `firstmate` are **not** AODL graphs. They may *compile* a graph (dispatch workers). Observed $\mathcal{O}_t$ still comes from the workers they spawned.
 
-Human contract: [`working-note.md`](working-note.md).
+Human contract: [`working-note.md`](working-note.md). Intent/participation profile: [`profiles/intent-contract.md`](../profiles/intent-contract.md). AODL owns the formal contract. Hermes owns contextual runtime. Dash/OMP/o8 decode it. Do not grow a second catalog or scheduler here.

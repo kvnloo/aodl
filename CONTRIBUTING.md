@@ -39,6 +39,7 @@ If you were told to autodevelop or pick the next issue: read `AGENTS.md` and `sk
 - `encodings/` — join table (visual ids compile only through `ir-map.json`)
 - `harnesses/catalog.json` — executor / control-room ids
 - `language/` — living-night catalog (presentation)
+- `profiles/` — compiler profiles (not kinds, not a second IR)
 
 ## Related
 

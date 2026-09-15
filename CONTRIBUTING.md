@@ -9,6 +9,7 @@ AODL is the typed IR for agent graphs. It is not a scheduler, Dash, or Keel.
 ```bash
 python3 tests/validate.py
 python3 tests/compile.py
+python3 tests/mesh_registry.py
 python3 tests/validate.py examples/valid/pipeline.json
 ```
 
@@ -21,7 +22,7 @@ If you were told to autodevelop or pick the next issue: read `AGENTS.md` and `sk
 ## Proof
 
 1. Add or change a construct → one **valid** fixture and one **invalid** fixture.
-2. `python3 tests/validate.py` and `python3 tests/compile.py` must stay green.
+2. `python3 tests/validate.py`, `python3 tests/compile.py`, and `python3 tests/mesh_registry.py` must stay green.
 3. Unknown `specVersion`, implicit fan-in, unbounded spawn, payment grants, unknown harness ids, and inferred `swarm` stay fail-closed.
 4. Catalog UI: `python3 scripts/build-pages.py --current-only` must produce `site/index.html` (not committed).
 
@@ -37,6 +38,7 @@ If you were told to autodevelop or pick the next issue: read `AGENTS.md` and `sk
 ## Ownership
 
 - `schema/`, `spec/`, `examples/`, `tests/validate.py`, `compiler/hermes.py` — IR
+- `mesh/registry.json`, `schema/mesh-registry.schema.json`, `tests/mesh_registry.py` — domain-tool catalog (not HOTL)
 - `encodings/` — join table (visual ids compile only through `ir-map.json`)
 - `harnesses/catalog.json` — executor / control-room ids
 - `language/` — living-night catalog (presentation)

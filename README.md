@@ -54,7 +54,8 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 | Visual ⇀ IR | [`spec/translation.md`](spec/translation.md) · [`encodings/ir-map.json`](encodings/ir-map.json) |
 | Intent / participation (LLM) | [`profiles/intent-contract.md`](profiles/intent-contract.md) |
 | Hermes dry-run | [`profiles/hermes.md`](profiles/hermes.md) · [`compiler/hermes.py`](compiler/hermes.py) |
-| Proof | `python3 tests/validate.py` · `python3 tests/compile.py` |
+| Mesh registry (catalog only) | [`docs/mesh-registry.md`](docs/mesh-registry.md) · [`mesh/registry.json`](mesh/registry.json) |
+| Proof | `python3 tests/validate.py` · `python3 tests/compile.py` · `python3 tests/mesh_registry.py` |
 
 ## Packages
 
@@ -66,6 +67,7 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 | `language/` | Catalog: $\mathcal{O}_t$ + $\tau$ as KaTeX and React; cores are the decoder below that. |
 | `profiles/` | Compiler profiles (Hermes, intent-contract). Not node kinds. |
 | `compiler/hermes.py` | Read-only Kanban dry-run. Predicts task ids; does not execute. |
+| `mesh/registry.json` | Domain-tool catalog by stage. Not HOTL fields, not harness ids, not adapters. |
 
 ```
 docs/working-note.md        equations + stack (GitHub math)
@@ -82,11 +84,15 @@ harnesses/catalog.json      supported harness + network ids
 language/                   Vite catalog: calculus + translation + decoder (port 5178)
 profiles/                   compiler profiles (not kinds)
 compiler/hermes.py          Hermes dry-run → immutable `plan`
+mesh/registry.json          domain tools by stage (not HOTL)
+schema/mesh-registry.schema.json  fail-closed schema for that catalog
+docs/mesh-registry.md       Mesh Registry concept + shadcn/lint example
 examples/valid/             fixtures that must pass
 examples/invalid/           fail-closed cases
 examples/compile-stop/      valid IR that must not compile to Kanban
 tests/validate.py           zero-dependency validator + join-table + catalog check
 tests/compile.py            dry-run corpus (message/mesh/auction/payment ⊥)
+tests/mesh_registry.py      mesh catalog (duplicate id / unknown stage fail closed)
 ```
 
 ## Validate
@@ -94,6 +100,7 @@ tests/compile.py            dry-run corpus (message/mesh/auction/payment ⊥)
 ```bash
 python3 tests/validate.py
 python3 tests/compile.py
+python3 tests/mesh_registry.py
 python3 compiler/hermes.py examples/valid/hermes-dry-run.json
 python3 tests/validate.py examples/valid/pipeline.json
 cd language && bun install && bun run dev
@@ -162,4 +169,4 @@ See `spec/provenance.md`.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). MIT. CI: `python3 tests/validate.py` and `python3 tests/compile.py`. Workers never merge `main`.
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). MIT. CI: `python3 tests/validate.py`, `python3 tests/compile.py`, `python3 tests/mesh_registry.py`. Workers never merge `main`.

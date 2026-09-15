@@ -1,0 +1,1188 @@
+{
+  "schemaVersion": 1,
+  "hotlSpecVersion": "0.2",
+  "rule": "This file maps intent evidence needs to existing tools. Unknown stage, status, evidence, or duplicate id fail closed. A row is not an adapter, harness id, or HOTL field. Mesh keys never belong on orchestration documents.",
+  "stages": [
+    "specify",
+    "resolve",
+    "render",
+    "plan",
+    "execute",
+    "verify",
+    "evaluate",
+    "learn"
+  ],
+  "statuses": [
+    "reference",
+    "candidate",
+    "adapter",
+    "native"
+  ],
+  "evidence": [
+    "specification_validity",
+    "intent_resolution",
+    "retrieval",
+    "human_judgment",
+    "design_system_compliance",
+    "type_correctness",
+    "security_advisory",
+    "dependency_health",
+    "behavioral_correctness",
+    "accessibility",
+    "visual_similarity",
+    "geometric_validity",
+    "loudness",
+    "asr_transcript",
+    "codec_validity",
+    "temporal_consistency",
+    "collision",
+    "manufacturability",
+    "safety_constraint",
+    "observed_outcome",
+    "telemetry"
+  ],
+  "modalities": [
+    "web",
+    "code",
+    "documents",
+    "images",
+    "audio",
+    "video",
+    "3d",
+    "cad",
+    "games",
+    "robotics",
+    "smart-home",
+    "physical",
+    "rendered-ui",
+    "ui"
+  ],
+  "entries": [
+    {
+      "id": "aodl",
+      "stage": "specify",
+      "domain": "ir",
+      "modalities": [
+        "documents",
+        "code"
+      ],
+      "role": "intent-ir",
+      "status": "native",
+      "satisfies": [
+        "specification_validity"
+      ],
+      "inTree": "schema/hotl-0.2.schema.json",
+      "url": "https://github.com/kvnloo/aodl",
+      "note": "HOTL 0.2 is the native specify surface. Mesh fields are not document fields."
+    },
+    {
+      "id": "json-schema",
+      "stage": "specify",
+      "domain": "schema",
+      "modalities": [
+        "documents",
+        "code"
+      ],
+      "role": "schema-language",
+      "status": "reference",
+      "satisfies": [
+        "specification_validity"
+      ],
+      "url": "https://json-schema.org"
+    },
+    {
+      "id": "pydantic",
+      "stage": "specify",
+      "domain": "python-types",
+      "modalities": [
+        "code"
+      ],
+      "role": "runtime-schema",
+      "status": "reference",
+      "satisfies": [
+        "specification_validity"
+      ],
+      "url": "https://github.com/pydantic/pydantic"
+    },
+    {
+      "id": "zod",
+      "stage": "specify",
+      "domain": "ts-types",
+      "modalities": [
+        "code"
+      ],
+      "role": "runtime-schema",
+      "status": "reference",
+      "satisfies": [
+        "specification_validity"
+      ],
+      "url": "https://github.com/colinhacks/zod"
+    },
+    {
+      "id": "baml",
+      "stage": "specify",
+      "domain": "llm-schema",
+      "modalities": [
+        "code",
+        "documents"
+      ],
+      "role": "structured-output-schema",
+      "status": "reference",
+      "satisfies": [
+        "specification_validity"
+      ],
+      "url": "https://github.com/BoundaryML/baml"
+    },
+    {
+      "id": "instructor",
+      "stage": "specify",
+      "domain": "llm-schema",
+      "modalities": [
+        "code"
+      ],
+      "role": "structured-output-schema",
+      "status": "reference",
+      "satisfies": [
+        "specification_validity"
+      ],
+      "url": "https://github.com/instructor-ai/instructor"
+    },
+    {
+      "id": "ripple",
+      "stage": "resolve",
+      "domain": "hitl",
+      "modalities": [
+        "ui",
+        "web",
+        "images",
+        "audio",
+        "video",
+        "3d"
+      ],
+      "role": "ephemeral-intent-resolution",
+      "status": "candidate",
+      "satisfies": [
+        "intent_resolution",
+        "human_judgment"
+      ],
+      "url": "https://github.com/kvnloo/ripple",
+      "note": "Separate repo. Fallback when a deterministic verifier cannot resolve intent (taste, underspecification). Not this tree. Do not invent another UI protocol."
+    },
+    {
+      "id": "mcp-elicitation",
+      "stage": "resolve",
+      "domain": "mcp",
+      "modalities": [
+        "ui",
+        "documents"
+      ],
+      "role": "structured-elicitation",
+      "status": "reference",
+      "satisfies": [
+        "intent_resolution"
+      ],
+      "url": "https://modelcontextprotocol.io",
+      "note": "MCP elicitation. Ripple may project through it; AODL does not own the widget."
+    },
+    {
+      "id": "hermes-memory",
+      "stage": "resolve",
+      "domain": "memory",
+      "modalities": [
+        "documents",
+        "code"
+      ],
+      "role": "contextual-memory-research",
+      "status": "candidate",
+      "satisfies": [
+        "retrieval",
+        "intent_resolution"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent",
+      "note": "Hermes runtime memory/research. Not this tree. Profile: profiles/hermes.md."
+    },
+    {
+      "id": "multimodal-inspection",
+      "stage": "resolve",
+      "domain": "inspection",
+      "modalities": [
+        "images",
+        "audio",
+        "video",
+        "3d",
+        "documents"
+      ],
+      "role": "inspect-unresolved-variable",
+      "status": "candidate",
+      "satisfies": [
+        "retrieval",
+        "human_judgment"
+      ],
+      "note": "Class of tools, not a product. Modality follows the unresolved variable."
+    },
+    {
+      "id": "retrieval-search",
+      "stage": "resolve",
+      "domain": "search",
+      "modalities": [
+        "documents",
+        "code",
+        "web"
+      ],
+      "role": "retrieval",
+      "status": "candidate",
+      "satisfies": [
+        "retrieval"
+      ],
+      "note": "Class of search/RAG tools, not a product."
+    },
+    {
+      "id": "a2ui",
+      "stage": "render",
+      "domain": "hitl",
+      "modalities": [
+        "ui",
+        "web"
+      ],
+      "role": "declarative-ui",
+      "status": "reference",
+      "satisfies": [
+        "human_judgment",
+        "intent_resolution"
+      ],
+      "url": "https://github.com/google/A2UI",
+      "note": "Ripple may project through A2UI. Not an AODL widget."
+    },
+    {
+      "id": "ag-ui",
+      "stage": "render",
+      "domain": "hitl",
+      "modalities": [
+        "ui",
+        "web"
+      ],
+      "role": "agent-user-protocol",
+      "status": "reference",
+      "satisfies": [
+        "human_judgment",
+        "intent_resolution"
+      ],
+      "url": "https://github.com/ag-ui-protocol/ag-ui",
+      "note": "Protocol layer. Catalog Adapters already name AG-UI. No in-tree adapter."
+    },
+    {
+      "id": "mcp-apps",
+      "stage": "render",
+      "domain": "hitl",
+      "modalities": [
+        "ui",
+        "web"
+      ],
+      "role": "mcp-app-surface",
+      "status": "reference",
+      "satisfies": [
+        "human_judgment"
+      ],
+      "url": "https://modelcontextprotocol.io",
+      "note": "MCP Apps. Ripple may project through them."
+    },
+    {
+      "id": "assistant-ui",
+      "stage": "render",
+      "domain": "hitl",
+      "modalities": [
+        "ui",
+        "web"
+      ],
+      "role": "chat-ui-primitives",
+      "status": "reference",
+      "satisfies": [
+        "human_judgment"
+      ],
+      "url": "https://github.com/assistant-ui/assistant-ui"
+    },
+    {
+      "id": "copilotkit",
+      "stage": "render",
+      "domain": "hitl",
+      "modalities": [
+        "ui",
+        "web"
+      ],
+      "role": "assistant-chrome",
+      "status": "reference",
+      "satisfies": [
+        "human_judgment"
+      ],
+      "url": "https://github.com/CopilotKit/CopilotKit"
+    },
+    {
+      "id": "openui",
+      "stage": "render",
+      "domain": "hitl",
+      "modalities": [
+        "ui",
+        "web",
+        "rendered-ui"
+      ],
+      "role": "generative-ui-preview",
+      "status": "reference",
+      "satisfies": [
+        "human_judgment",
+        "visual_similarity"
+      ],
+      "url": "https://github.com/wandb/openui"
+    },
+    {
+      "id": "tldraw",
+      "stage": "render",
+      "domain": "hitl",
+      "modalities": [
+        "ui",
+        "images"
+      ],
+      "role": "canvas-annotation",
+      "status": "reference",
+      "satisfies": [
+        "human_judgment",
+        "intent_resolution"
+      ],
+      "url": "https://github.com/tldraw/tldraw",
+      "note": "Canvas/annotation surface. Ripple may project here when the unresolved variable is spatial."
+    },
+    {
+      "id": "hermes",
+      "stage": "plan",
+      "domain": "orchestration",
+      "modalities": [
+        "code",
+        "documents"
+      ],
+      "role": "kanban-dry-run",
+      "status": "adapter",
+      "satisfies": [
+        "behavioral_correctness"
+      ],
+      "harnessId": "hermes",
+      "inTree": "compiler/hermes.py",
+      "alsoStages": [
+        "execute"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent",
+      "note": "In-tree dry-run emits plan only; never overwrites intent; never fakes observed. Execute/runtime is Hermes, not this tree."
+    },
+    {
+      "id": "o8",
+      "stage": "plan",
+      "domain": "control-room",
+      "modalities": [
+        "code"
+      ],
+      "role": "control-room",
+      "status": "candidate",
+      "satisfies": [
+        "behavioral_correctness"
+      ],
+      "harnessId": "o8",
+      "inTree": "harnesses/catalog.json",
+      "alsoStages": [
+        "execute"
+      ],
+      "url": "https://github.com/hurttlocker/o8",
+      "note": "Catalog kind control-room, not an executor node. profiles/o8.md lives on nightly (PR #9), not preview."
+    },
+    {
+      "id": "langgraph",
+      "stage": "plan",
+      "domain": "graph-runtime",
+      "modalities": [
+        "code"
+      ],
+      "role": "graph-runtime-profile",
+      "status": "reference",
+      "satisfies": [
+        "behavioral_correctness"
+      ],
+      "alsoStages": [
+        "execute"
+      ],
+      "url": "https://github.com/langchain-ai/langgraph",
+      "note": "Compiler profile only (profiles/langchain.md on nightly / PR #9). Not a harness id. Never executor.harness=langchain."
+    },
+    {
+      "id": "temporal",
+      "stage": "plan",
+      "domain": "durable-workflow",
+      "modalities": [
+        "code"
+      ],
+      "role": "durable-execution",
+      "status": "reference",
+      "satisfies": [
+        "behavioral_correctness",
+        "observed_outcome"
+      ],
+      "alsoStages": [
+        "execute"
+      ],
+      "url": "https://github.com/temporalio/temporal"
+    },
+    {
+      "id": "dagster",
+      "stage": "plan",
+      "domain": "data-orchestration",
+      "modalities": [
+        "code"
+      ],
+      "role": "data-pipeline",
+      "status": "reference",
+      "satisfies": [
+        "behavioral_correctness",
+        "observed_outcome"
+      ],
+      "alsoStages": [
+        "execute"
+      ],
+      "url": "https://github.com/dagster-io/dagster"
+    },
+    {
+      "id": "codex",
+      "stage": "execute",
+      "domain": "coding-agent",
+      "modalities": [
+        "code"
+      ],
+      "role": "terminal-coding-agent",
+      "status": "candidate",
+      "satisfies": [
+        "behavioral_correctness"
+      ],
+      "harnessId": "codex",
+      "inTree": "harnesses/catalog.json",
+      "url": "https://github.com/openai/codex",
+      "note": "Harness catalog id. No AODL compiler in this tree."
+    },
+    {
+      "id": "kerdoios",
+      "stage": "execute",
+      "domain": "runtime",
+      "modalities": [
+        "code"
+      ],
+      "role": "speculative-execution-compiler",
+      "status": "candidate",
+      "satisfies": [
+        "behavioral_correctness"
+      ],
+      "note": "Named in profiles/hermes.md and profiles/intent-contract.md as 'where work runs'. No canonical public URL found at seed time; do not invent one."
+    },
+    {
+      "id": "shadcn-lint",
+      "stage": "verify",
+      "domain": "web-ui",
+      "modalities": [
+        "code",
+        "rendered-ui"
+      ],
+      "role": "design-system-compliance",
+      "status": "reference",
+      "satisfies": [
+        "design_system_compliance"
+      ],
+      "url": "https://ui.shadcn.com",
+      "note": "First worked example. Intent \u2192 deterministic verifier \u2192 auto-repair; genuine ambiguity \u2192 Ripple. Not a harness id. No repair loop in this PR."
+    },
+    {
+      "id": "eslint",
+      "stage": "verify",
+      "domain": "javascript",
+      "modalities": [
+        "code"
+      ],
+      "role": "static-lint",
+      "status": "reference",
+      "satisfies": [
+        "type_correctness",
+        "behavioral_correctness"
+      ],
+      "url": "https://github.com/eslint/eslint"
+    },
+    {
+      "id": "typescript",
+      "stage": "verify",
+      "domain": "javascript",
+      "modalities": [
+        "code"
+      ],
+      "role": "typecheck",
+      "status": "reference",
+      "satisfies": [
+        "type_correctness"
+      ],
+      "url": "https://github.com/microsoft/TypeScript"
+    },
+    {
+      "id": "npm-doctor",
+      "stage": "verify",
+      "domain": "javascript",
+      "modalities": [
+        "code"
+      ],
+      "role": "install-health",
+      "status": "reference",
+      "satisfies": [
+        "dependency_health"
+      ],
+      "url": "https://docs.npmjs.com/cli/commands/npm-doctor"
+    },
+    {
+      "id": "npm-audit",
+      "stage": "verify",
+      "domain": "javascript",
+      "modalities": [
+        "code"
+      ],
+      "role": "advisory-scan",
+      "status": "reference",
+      "satisfies": [
+        "security_advisory"
+      ],
+      "url": "https://docs.npmjs.com/cli/commands/npm-audit"
+    },
+    {
+      "id": "playwright",
+      "stage": "verify",
+      "domain": "web-ui",
+      "modalities": [
+        "code",
+        "web",
+        "rendered-ui"
+      ],
+      "role": "browser-behavior",
+      "status": "reference",
+      "satisfies": [
+        "behavioral_correctness"
+      ],
+      "url": "https://github.com/microsoft/playwright"
+    },
+    {
+      "id": "axe",
+      "stage": "verify",
+      "domain": "web-ui",
+      "modalities": [
+        "web",
+        "rendered-ui"
+      ],
+      "role": "accessibility",
+      "status": "reference",
+      "satisfies": [
+        "accessibility"
+      ],
+      "url": "https://github.com/dequelabs/axe-core"
+    },
+    {
+      "id": "lighthouse",
+      "stage": "evaluate",
+      "domain": "web-ui",
+      "modalities": [
+        "web",
+        "rendered-ui"
+      ],
+      "role": "page-quality",
+      "status": "reference",
+      "satisfies": [
+        "accessibility",
+        "behavioral_correctness"
+      ],
+      "url": "https://github.com/GoogleChrome/lighthouse"
+    },
+    {
+      "id": "storybook-vitest",
+      "stage": "verify",
+      "domain": "web-ui",
+      "modalities": [
+        "code",
+        "rendered-ui"
+      ],
+      "role": "component-test",
+      "status": "reference",
+      "satisfies": [
+        "behavioral_correctness",
+        "visual_similarity"
+      ],
+      "url": "https://github.com/storybookjs/storybook",
+      "note": "Storybook + Vitest interaction tests. One row; primary verify."
+    },
+    {
+      "id": "chromatic",
+      "stage": "verify",
+      "domain": "web-ui",
+      "modalities": [
+        "rendered-ui"
+      ],
+      "role": "visual-regression",
+      "status": "reference",
+      "satisfies": [
+        "visual_similarity"
+      ],
+      "url": "https://www.chromatic.com"
+    },
+    {
+      "id": "webpagetest",
+      "stage": "evaluate",
+      "domain": "web",
+      "modalities": [
+        "web"
+      ],
+      "role": "web-performance",
+      "status": "reference",
+      "satisfies": [
+        "behavioral_correctness"
+      ],
+      "url": "https://github.com/WPO-Foundation/webpagetest"
+    },
+    {
+      "id": "image-dimensions",
+      "stage": "verify",
+      "domain": "images",
+      "modalities": [
+        "images"
+      ],
+      "role": "metadata-bounds",
+      "status": "candidate",
+      "satisfies": [
+        "geometric_validity"
+      ],
+      "note": "Class of dimension/metadata checks, not a product."
+    },
+    {
+      "id": "perceptual-diff",
+      "stage": "verify",
+      "domain": "images",
+      "modalities": [
+        "images"
+      ],
+      "role": "pixel-delta",
+      "status": "candidate",
+      "satisfies": [
+        "visual_similarity"
+      ],
+      "note": "Class of perceptual image diffs (including SSIM/LPIPS family)."
+    },
+    {
+      "id": "ssim-lpips",
+      "stage": "evaluate",
+      "domain": "images",
+      "modalities": [
+        "images"
+      ],
+      "role": "perceptual-metric",
+      "status": "candidate",
+      "satisfies": [
+        "visual_similarity"
+      ],
+      "note": "Metrics, not a single binary. Pair with perceptual-diff at verify."
+    },
+    {
+      "id": "segmentation-detection",
+      "stage": "verify",
+      "domain": "images",
+      "modalities": [
+        "images"
+      ],
+      "role": "object-presence",
+      "status": "candidate",
+      "satisfies": [
+        "observed_outcome",
+        "geometric_validity"
+      ],
+      "note": "Class of segmentation/object-detection checks."
+    },
+    {
+      "id": "visual-judges",
+      "stage": "evaluate",
+      "domain": "images",
+      "modalities": [
+        "images"
+      ],
+      "role": "model-as-judge",
+      "status": "candidate",
+      "satisfies": [
+        "visual_similarity",
+        "human_judgment"
+      ],
+      "note": "Model judges are not receipts. Fail closed if treated as observed O_t."
+    },
+    {
+      "id": "human-aesthetic-review",
+      "stage": "evaluate",
+      "domain": "images",
+      "modalities": [
+        "images",
+        "ui"
+      ],
+      "role": "taste",
+      "status": "candidate",
+      "satisfies": [
+        "human_judgment"
+      ],
+      "note": "Taste is underspecification. Prefer Ripple at resolve over a fake verifier."
+    },
+    {
+      "id": "scene-graph-validation",
+      "stage": "verify",
+      "domain": "3d",
+      "modalities": [
+        "3d"
+      ],
+      "role": "scene-graph",
+      "status": "candidate",
+      "satisfies": [
+        "geometric_validity"
+      ],
+      "note": "Class of scene-graph validators."
+    },
+    {
+      "id": "geometry-manifold",
+      "stage": "verify",
+      "domain": "cad",
+      "modalities": [
+        "3d",
+        "cad"
+      ],
+      "role": "manifold-solid",
+      "status": "candidate",
+      "satisfies": [
+        "geometric_validity"
+      ],
+      "note": "Class of geometry/manifold checks."
+    },
+    {
+      "id": "collision-check",
+      "stage": "verify",
+      "domain": "3d",
+      "modalities": [
+        "3d",
+        "cad",
+        "games"
+      ],
+      "role": "collision",
+      "status": "candidate",
+      "satisfies": [
+        "collision"
+      ],
+      "note": "Class of collision queries."
+    },
+    {
+      "id": "bbox-constraints",
+      "stage": "verify",
+      "domain": "cad",
+      "modalities": [
+        "3d",
+        "cad"
+      ],
+      "role": "dimension-bounds",
+      "status": "candidate",
+      "satisfies": [
+        "geometric_validity"
+      ],
+      "note": "Class of bbox/dimension constraints."
+    },
+    {
+      "id": "blender-headless",
+      "stage": "verify",
+      "domain": "3d",
+      "modalities": [
+        "3d"
+      ],
+      "role": "headless-render-check",
+      "status": "candidate",
+      "satisfies": [
+        "visual_similarity",
+        "geometric_validity"
+      ],
+      "url": "https://www.blender.org",
+      "alsoStages": [
+        "evaluate"
+      ],
+      "note": "Headless Blender as a verifier/renderer, not an AODL node kind."
+    },
+    {
+      "id": "multiview-comparison",
+      "stage": "evaluate",
+      "domain": "3d",
+      "modalities": [
+        "3d",
+        "images"
+      ],
+      "role": "multiview",
+      "status": "candidate",
+      "satisfies": [
+        "visual_similarity"
+      ],
+      "note": "Class of multiview comparisons."
+    },
+    {
+      "id": "physics-sim",
+      "stage": "evaluate",
+      "domain": "3d",
+      "modalities": [
+        "3d",
+        "games",
+        "robotics"
+      ],
+      "role": "simulation",
+      "status": "candidate",
+      "satisfies": [
+        "behavioral_correctness",
+        "collision",
+        "observed_outcome"
+      ],
+      "note": "Class of physics/simulators."
+    },
+    {
+      "id": "slicer-manufacturability",
+      "stage": "verify",
+      "domain": "cad",
+      "modalities": [
+        "cad",
+        "physical"
+      ],
+      "role": "slicer",
+      "status": "candidate",
+      "satisfies": [
+        "manufacturability",
+        "geometric_validity"
+      ],
+      "note": "Class of slicer/manufacturability checks."
+    },
+    {
+      "id": "waveform-duration",
+      "stage": "verify",
+      "domain": "audio",
+      "modalities": [
+        "audio"
+      ],
+      "role": "duration-bounds",
+      "status": "candidate",
+      "satisfies": [
+        "codec_validity"
+      ],
+      "note": "Class of waveform/duration checks."
+    },
+    {
+      "id": "loudness",
+      "stage": "verify",
+      "domain": "audio",
+      "modalities": [
+        "audio"
+      ],
+      "role": "loudness",
+      "status": "candidate",
+      "satisfies": [
+        "loudness"
+      ],
+      "note": "Class of loudness meters (e.g. LUFS)."
+    },
+    {
+      "id": "clipping",
+      "stage": "verify",
+      "domain": "audio",
+      "modalities": [
+        "audio"
+      ],
+      "role": "clip-detect",
+      "status": "candidate",
+      "satisfies": [
+        "loudness"
+      ],
+      "note": "Class of clipping detectors."
+    },
+    {
+      "id": "asr",
+      "stage": "evaluate",
+      "domain": "audio",
+      "modalities": [
+        "audio",
+        "documents"
+      ],
+      "role": "speech-to-text",
+      "status": "candidate",
+      "satisfies": [
+        "asr_transcript"
+      ],
+      "note": "Class of ASR tools. Transcript is evidence, not intent."
+    },
+    {
+      "id": "spectral-comparison",
+      "stage": "evaluate",
+      "domain": "audio",
+      "modalities": [
+        "audio"
+      ],
+      "role": "spectral-diff",
+      "status": "candidate",
+      "satisfies": [
+        "visual_similarity"
+      ],
+      "note": "Class of spectral comparison metrics. Reuses visual_similarity as distance-on-signal."
+    },
+    {
+      "id": "ffmpeg",
+      "stage": "verify",
+      "domain": "video",
+      "modalities": [
+        "video",
+        "audio"
+      ],
+      "role": "container-transcode",
+      "status": "reference",
+      "satisfies": [
+        "codec_validity"
+      ],
+      "url": "https://ffmpeg.org",
+      "note": "Primary verify (probe/codec). Also used in evaluate pipelines."
+    },
+    {
+      "id": "frame-codec",
+      "stage": "verify",
+      "domain": "video",
+      "modalities": [
+        "video"
+      ],
+      "role": "frame-codec-probe",
+      "status": "candidate",
+      "satisfies": [
+        "codec_validity"
+      ],
+      "note": "Class of frame/codec probes, often ffmpeg-based."
+    },
+    {
+      "id": "scene-detection",
+      "stage": "verify",
+      "domain": "video",
+      "modalities": [
+        "video"
+      ],
+      "role": "shot-boundary",
+      "status": "candidate",
+      "satisfies": [
+        "temporal_consistency"
+      ],
+      "note": "Class of scene-detection tools."
+    },
+    {
+      "id": "temporal-consistency",
+      "stage": "evaluate",
+      "domain": "video",
+      "modalities": [
+        "video"
+      ],
+      "role": "frame-to-frame",
+      "status": "candidate",
+      "satisfies": [
+        "temporal_consistency",
+        "visual_similarity"
+      ],
+      "note": "Class of temporal-consistency metrics."
+    },
+    {
+      "id": "visual-quality-metrics",
+      "stage": "evaluate",
+      "domain": "video",
+      "modalities": [
+        "video"
+      ],
+      "role": "vqm",
+      "status": "candidate",
+      "satisfies": [
+        "visual_similarity"
+      ],
+      "note": "Class of VMAF/PSNR-style metrics."
+    },
+    {
+      "id": "robotics-simulation",
+      "stage": "verify",
+      "domain": "robotics",
+      "modalities": [
+        "robotics",
+        "physical"
+      ],
+      "role": "sim",
+      "status": "candidate",
+      "satisfies": [
+        "safety_constraint",
+        "collision",
+        "behavioral_correctness"
+      ],
+      "note": "Class of robotics simulators."
+    },
+    {
+      "id": "sensor-state",
+      "stage": "verify",
+      "domain": "robotics",
+      "modalities": [
+        "robotics",
+        "physical"
+      ],
+      "role": "sensor-integrity",
+      "status": "candidate",
+      "satisfies": [
+        "observed_outcome"
+      ],
+      "note": "Class of sensor-state checks."
+    },
+    {
+      "id": "safety-constraints",
+      "stage": "verify",
+      "domain": "robotics",
+      "modalities": [
+        "robotics",
+        "physical",
+        "smart-home"
+      ],
+      "role": "safety",
+      "status": "candidate",
+      "satisfies": [
+        "safety_constraint"
+      ],
+      "note": "Class of declared safety constraints. Fail closed when undeclared."
+    },
+    {
+      "id": "physical-collision",
+      "stage": "verify",
+      "domain": "robotics",
+      "modalities": [
+        "robotics",
+        "physical"
+      ],
+      "role": "workspace-collision",
+      "status": "candidate",
+      "satisfies": [
+        "collision",
+        "safety_constraint"
+      ],
+      "note": "Physical-workspace collision, distinct domain from 3D asset collision-check."
+    },
+    {
+      "id": "hil",
+      "stage": "evaluate",
+      "domain": "robotics",
+      "modalities": [
+        "robotics",
+        "physical"
+      ],
+      "role": "hardware-in-the-loop",
+      "status": "candidate",
+      "satisfies": [
+        "observed_outcome",
+        "safety_constraint"
+      ],
+      "note": "Hardware-in-the-loop. Observed, not inferred."
+    },
+    {
+      "id": "observed-physical-outcome",
+      "stage": "evaluate",
+      "domain": "physical",
+      "modalities": [
+        "physical",
+        "robotics",
+        "smart-home"
+      ],
+      "role": "real-world-receipt",
+      "status": "candidate",
+      "satisfies": [
+        "observed_outcome"
+      ],
+      "note": "D\u2192R is observation, never dependency. Physical outcome is observed O_t, not a new kind."
+    },
+    {
+      "id": "opentelemetry",
+      "stage": "learn",
+      "domain": "telemetry",
+      "modalities": [
+        "code"
+      ],
+      "role": "traces-metrics-logs",
+      "status": "reference",
+      "satisfies": [
+        "telemetry"
+      ],
+      "url": "https://opentelemetry.io"
+    },
+    {
+      "id": "langfuse",
+      "stage": "learn",
+      "domain": "telemetry",
+      "modalities": [
+        "code"
+      ],
+      "role": "llm-trace",
+      "status": "reference",
+      "satisfies": [
+        "telemetry"
+      ],
+      "url": "https://github.com/langfuse/langfuse"
+    },
+    {
+      "id": "evolution-lab",
+      "stage": "learn",
+      "domain": "search",
+      "modalities": [
+        "code"
+      ],
+      "role": "policy-search",
+      "status": "candidate",
+      "satisfies": [
+        "telemetry"
+      ],
+      "note": "Named in profiles/intent-contract.md as not this repo. No adapter, no SFT, no Evolution Lab runtime here."
+    },
+    {
+      "id": "gepa",
+      "stage": "learn",
+      "domain": "prompt-opt",
+      "modalities": [
+        "code",
+        "documents"
+      ],
+      "role": "reflective-prompt-evolution",
+      "status": "reference",
+      "satisfies": [
+        "telemetry"
+      ],
+      "note": "GEPA-style reflective prompt evolution. No in-tree optimizer."
+    },
+    {
+      "id": "dspy",
+      "stage": "learn",
+      "domain": "prompt-opt",
+      "modalities": [
+        "code"
+      ],
+      "role": "program-opt",
+      "status": "reference",
+      "satisfies": [
+        "telemetry"
+      ],
+      "url": "https://github.com/stanfordnlp/dspy"
+    },
+    {
+      "id": "hermes-skills",
+      "stage": "learn",
+      "domain": "memory",
+      "modalities": [
+        "documents",
+        "code"
+      ],
+      "role": "skills-memory",
+      "status": "candidate",
+      "satisfies": [
+        "telemetry",
+        "retrieval"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent",
+      "note": "Hermes skills/memory. Runtime is not this tree."
+    }
+  ]
+}

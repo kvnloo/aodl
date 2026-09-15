@@ -96,6 +96,8 @@ There is no HOTL kind named `mesh`. A mesh silhouette compiles only if every pee
 
 Hermes `keel-mesh` / `mesh.poll` is a **runtime service**. It is not this silhouette. Do not start `keel.service`.
 
+The **Mesh Registry** (`mesh/registry.json`) is a third use of the word: a catalog of existing domain tools by pipeline stage. It is not a silhouette, not a HOTL field, and not an adapter. See [`mesh-registry.md`](mesh-registry.md).
+
 ### Keel is $\Gamma_t$ and authority
 
 Keel Level 0: the Telegram-facing default router cannot execute project work. Proof is capability receipts + sealed nonce evidence, not model refusal. AODL `humanGate` and undeclared `payment` / `sudo` compile *to* that invariant. They do not grow a second auth system.
@@ -148,7 +150,8 @@ Autonomous product management is this graph over a backlog. That is Blueprint st
 | LangChain / LangGraph / LangSmith profile | [`profiles/langchain.md`](../profiles/langchain.md) |
 | Intent / participation profile | [`profiles/intent-contract.md`](../profiles/intent-contract.md) |
 | Hermes dry-run | [`profiles/hermes.md`](../profiles/hermes.md) · [`compiler/hermes.py`](../compiler/hermes.py) |
-| Proof | `python3 tests/validate.py` (11 valid, 18 invalid) · `python3 tests/compile.py` |
+| Mesh registry (catalog only) | [`mesh-registry.md`](mesh-registry.md) · [`mesh/registry.json`](../mesh/registry.json) |
+| Proof | `python3 tests/validate.py` (11 valid, 18 invalid) · `python3 tests/compile.py` · `python3 tests/mesh_registry.py` |
 
 There is **no** `.tex` source and **no** PDF in this repository. GitHub Flavored Markdown with `$` / `$$` is the typeset form. The dry-run compiler is in-tree; it does not execute.
 

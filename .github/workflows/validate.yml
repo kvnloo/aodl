@@ -17,3 +17,5 @@ jobs:
         run: python3 tests/validate.py
       - name: Hermes dry-run compiler
         run: python3 tests/compile.py
+      - name: Mesh registry (catalog only; not HOTL)
+        run: python3 tests/mesh_registry.py

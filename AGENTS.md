@@ -14,7 +14,8 @@ IR first. Pretty DSL later. Fail closed.
 - Intent/participation mapping belongs as `profiles/intent-contract.md`. Do not add `openQuestions`, sheaf JSON, or a `fail` event type. Failure is `lifecycle: failed` plus `observation` and a legal `eventLog` mutation (`retry` / `addNode` / `addEdge`).
 - `humanGate` is merge/deploy/approve. Review is a `verifier`. Optional `observedGraph` has the same shape as `intentGraph`. List-missions are many components, not one invented DAG.
 - HomeForge/zerOS consumes `encodings/visual.json`. Do not invent topology ids in solarpunk first.
-- Harness ids live in `harnesses/catalog.json`. The eight supported ids are `hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`. Firstmate is a distro, not a harness id.
+- Harness ids live in `harnesses/catalog.json`. The eight supported ids are `hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`. Firstmate is a distro, not a harness id. `langchain` / `shadcn` are not harness ids.
+- Domain tools live in `mesh/registry.json` (`schema/mesh-registry.schema.json`). Catalog only: not HOTL fields, not adapters, not a node kind. Proof: `python3 tests/mesh_registry.py`. Docs: `docs/mesh-registry.md`. Ripple (`kvnloo/ripple`) is the resolve fallback; not this tree.
 - Do not port Keel into this repo or into Firstmate as a second scheduler. Keel is Hermes L0. Firstmate is Keel L9 (subordinate executor) when we use it.
 - C(RAID) is a named hybrid program (`spec/craid.md`, `examples/valid/craid.json`). Unlabeled `hybrid` stays `not-inferred`. D→R feedback is `observation`, never `dependency`.
 - Network map: `docs/network.md`. Human contract: `docs/working-note.md`. No arXiv; no `.tex`.
@@ -30,6 +31,7 @@ Rollout is Arch-style `rolling` (`.verified-oss-loop/rollout.yml`). `python3 .ve
 |---|---|
 | Unit | `python3 tests/validate.py` |
 | Compile | `python3 tests/compile.py` |
+| Mesh registry | `python3 tests/mesh_registry.py` |
 | Catalog | `python3 scripts/build-pages.py --current-only` (if you touch `language/` or Pages) |
 | Mutation | `n/a` — fail-closed fixtures, not a mutator |
 | Runtime | `n/a` — static IR. Dry-run does not spawn Hermes. |

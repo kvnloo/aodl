@@ -43,8 +43,9 @@ const READINGS = [
 const ADAPTERS = [
   { name: 'MCP', maps: 'Tools. Ports, not O_t.' },
   { name: 'A2A', maps: 'Peers. message / delegation.' },
-  { name: 'AG-UI', maps: 'User surface. Visual τ / events.' },
+  { name: 'AG-UI', maps: 'User surface. Visual τ / events. Ripple may project through it.' },
   { name: 'LangGraph-class', maps: 'Compiler profile: existing HOTL 0.2 kinds. profiles/langchain.md. Not a harness id.' },
+  { name: 'Mesh Registry', maps: 'Domain tools by stage. mesh/registry.json. Not a node kind; not HOTL 0.3.' },
   { name: 'This network', maps: 'Hermes, Keel, Codex, Firstmate distro. Observed V, not competitors.' },
 ];
 
@@ -292,6 +293,9 @@ export function Language() {
         <p>
           Three protocol layers, never a fourth IR. Chain-of-thought trees are not orchestration graphs.
           Visual <Tex math={String.raw`\tau`} /> does not compile ToT into <code>fanout</code>.
+          Domain tools sit in the{' '}
+          <a className="aodl-path" href={`${REPO}/blob/main/docs/mesh-registry.md`}>Mesh Registry</a>
+          {' '}(<code>mesh/registry.json</code>) — catalog only, no adapters this PR.
         </p>
         <div className="aodl-table-wrap">
           <table className="aodl-table">
@@ -322,6 +326,7 @@ export function Language() {
 
       <footer className="aodl-language__foot">
         <a href={`${REPO}/blob/main/docs/working-note.md`}>working note</a>
+        <a href={`${REPO}/blob/main/docs/mesh-registry.md`}>mesh registry</a>
         <a href={`${REPO}/blob/main/profiles/intent-contract.md`}>intent contract</a>
         <a href={`${REPO}/blob/main/profiles/hermes.md`}>Hermes dry-run</a>
         <a href={`${REPO}/blob/main/spec/translation.md`}>translation</a>

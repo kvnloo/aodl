@@ -177,7 +177,8 @@ ChatGPT's Intent-Resolution Fabric, only the pieces this IR can express. Ripple 
 | 4 ephemeral UI | Ripple, not this tree |
 | 5 active clarification | already expressible: `humanGate` + `constraints.budgets.attention`. No widget |
 | 6 capability-aware routing | catalog bind only; no router. Unknown `executor.harness` fails closed |
-| 7–10 learning / modalities / physical / distillation | NO |
+| 7 learn (catalog only) | Mesh Registry `learn` rows + `jev` as a candidate scorer. No in-tree optimizer. Failure attribution stays `observation`, not HOTL 0.3 |
+| 8–10 modalities / physical / distillation as IR | NO |
 
 Until a measured claim exists, this note, the schema, the fixtures, and the dry-run *are* the language.
 

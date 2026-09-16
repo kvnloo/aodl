@@ -45,7 +45,7 @@ const ADAPTERS = [
   { name: 'A2A', maps: 'Peers. message / delegation.' },
   { name: 'AG-UI', maps: 'User surface. Visual τ / events. Ripple may project through it.' },
   { name: 'LangGraph-class', maps: 'Compiler profile: existing HOTL 0.2 kinds. profiles/langchain.md. Not a harness id.' },
-  { name: 'Mesh Registry', maps: 'Domain tools by stage. mesh/registry.json. Not a node kind; not HOTL 0.3.' },
+  { name: 'Mesh Registry', maps: 'Domain tools by stage. mesh/registry.json. Jev is a candidate scorer, not a harness id. Not HOTL 0.3.' },
   { name: 'This network', maps: 'Hermes, Keel, Codex, Firstmate distro. Observed V, not competitors.' },
 ];
 

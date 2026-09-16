@@ -21,6 +21,7 @@
   "evidence": [
     "specification_validity",
     "intent_resolution",
+    "calibrated_decision",
     "retrieval",
     "human_judgment",
     "design_system_compliance",

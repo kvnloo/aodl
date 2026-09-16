@@ -54,5 +54,6 @@ Capability-aware routing is **not** a router here. The compiler binds `executor.
 | Ripple | Dash-consumed ephemeral intent surface | widgets, orbs, S-Pen as a product |
 | Keel | `humanGate` receipts (L0) | a second auth system |
 | Kerdoios | where work runs | speculative execution compiler |
+| Jev | typed probabilistic decisions | TypeSafe System One; not a harness id |
 
-Reject: HOTL 0.3 fields (`fail` event, `openQuestions`, sheaf JSON), `langchain` / `llm` harness ids, spawning Hermes from this compiler.
+Reject: HOTL 0.3 fields (`fail` event, `openQuestions`, sheaf JSON), `langchain` / `llm` / `jev` harness ids, spawning Hermes from this compiler.

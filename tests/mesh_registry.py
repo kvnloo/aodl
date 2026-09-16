@@ -38,7 +38,7 @@ STAGES = (
     "learn",
 )
 STATUSES = ("reference", "candidate", "adapter", "native")
-FORBIDDEN_HARNESS_IDS = frozenset({"langchain", "llm", "shadcn", "shadcn-lint"})
+FORBIDDEN_HARNESS_IDS = frozenset({"langchain", "llm", "shadcn", "shadcn-lint", "jev"})
 # Mesh ids that would look like a new harness. shadcn-lint is a registry row, not a harness.
 FORBIDDEN_MESH_IDS = frozenset({"langchain", "llm", "shadcn"})
 ENTRY_REQUIRED = ("id", "stage", "domain", "modalities", "role", "status", "satisfies")
@@ -349,6 +349,25 @@ def _pin_seeds(doc: dict[str, object]) -> list[Issue]:
             issues.append(Issue("seed", "kerdoios must be execute/candidate"))
         if "url" in kerdoios:
             issues.append(Issue("seed", "kerdoios has no known public URL — do not invent one"))
+    jev = need("jev")
+    if jev is not None:
+        if jev.get("status") != "candidate" or jev.get("stage") != "resolve":
+            issues.append(Issue("seed", "jev must be resolve/candidate"))
+        if jev.get("role") != "probabilistic-decision-engine":
+            issues.append(Issue("seed", "jev role must be probabilistic-decision-engine"))
+        also = jev.get("alsoStages")
+        if not isinstance(also, list) or set(also) != {"plan", "verify"}:
+            issues.append(Issue("seed", "jev alsoStages must be plan and verify"))
+        sat = jev.get("satisfies") or []
+        if "calibrated_decision" not in sat:
+            issues.append(Issue("seed", "jev must satisfy calibrated_decision"))
+        if "harnessId" in jev:
+            issues.append(Issue("seed", "jev is not a harness id"))
+        if "inTree" in jev:
+            issues.append(Issue("seed", "jev is not this tree"))
+        url = jev.get("url")
+        if url != "https://typesafe.ai/blog/introducing-system-one-models-and-jev":
+            issues.append(Issue("seed", "jev url must be the TypeSafe System One announcement"))
     o8 = need("o8")
     if o8 is not None:
         if o8.get("harnessId") != "o8":

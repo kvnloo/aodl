@@ -63,6 +63,7 @@ AODL owns the vocabulary. Sibling planes own the rest:
 | Firstmate | attention governor (captain-hold) | Keel ported here |
 | Evolution Lab | experiments / policy learning | LandingPageGym, tiny-net armies |
 | Kerdoios | where work runs | speculative execution compiler |
+| Jev | typed probabilistic decisions | TypeSafe System One scorer; not a harness id |
 | Blueprint | desired reality | IR |
 
 Reject: HOTL 0.3 kinds, sheaf JSON fields, `langchain` / `llm` harness ids, hue/geometry/mode runes as IR, UI-first builds, training-first, physical-world-first.

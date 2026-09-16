@@ -13,7 +13,7 @@ IR first. Pretty DSL later. Fail closed.
 - Hermes adapter mapping belongs as a **compiler profile** (`profiles/hermes.md`) plus a read-only dry-run (`compiler/hermes.py`). It is not a second Kanban. Status leaves `dry-run-unclaimed`. Message, mesh, auction, and payment stop compilation.
 - Intent/participation mapping belongs as `profiles/intent-contract.md`. Do not add `openQuestions`, sheaf JSON, or a `fail` event type. Failure is `lifecycle: failed` plus `observation` and a legal `eventLog` mutation (`retry` / `addNode` / `addEdge`).
 - HomeForge/zerOS consumes `encodings/visual.json`. Do not invent topology ids in solarpunk first.
-- Harness ids live in `harnesses/catalog.json`. The eight supported ids are `hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`. Firstmate is a distro, not a harness id. `langchain` / `shadcn` are not harness ids.
+- Harness ids live in `harnesses/catalog.json`. The eight supported ids are `hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`. Firstmate is a distro, not a harness id. `langchain` / `shadcn` / `jev` are not harness ids.
 - Domain tools live in `mesh/registry.json` (`schema/mesh-registry.schema.json`). Catalog only: not HOTL fields, not adapters, not a node kind. Proof: `python3 tests/mesh_registry.py`. Docs: `docs/mesh-registry.md`. Ripple (`kvnloo/ripple`) is the resolve fallback; not this tree.
 - Do not port Keel into this repo or into Firstmate as a second scheduler. Keel is Hermes L0. Firstmate is Keel L9 (subordinate executor) when we use it.
 - C(RAID) is a named hybrid program (`spec/craid.md`, `examples/valid/craid.json`). Unlabeled `hybrid` stays `not-inferred`. D→R feedback is `observation`, never `dependency`.

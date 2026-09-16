@@ -21,6 +21,7 @@
   "evidence": [
     "specification_validity",
     "intent_resolution",
+    "calibrated_decision",
     "retrieval",
     "human_judgment",
     "design_system_compliance",
@@ -167,6 +168,28 @@
       ],
       "url": "https://github.com/kvnloo/ripple",
       "note": "Separate repo. Fallback when a deterministic verifier cannot resolve intent (taste, underspecification). Not this tree. Do not invent another UI protocol."
+    },
+    {
+      "id": "jev",
+      "stage": "resolve",
+      "domain": "decision",
+      "modalities": [
+        "code",
+        "documents",
+        "web"
+      ],
+      "role": "probabilistic-decision-engine",
+      "status": "candidate",
+      "satisfies": [
+        "calibrated_decision",
+        "intent_resolution"
+      ],
+      "alsoStages": [
+        "plan",
+        "verify"
+      ],
+      "url": "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+      "note": "TypeSafe AI System One model (Jev). Typed choices + calibrated probabilities, not prose. Not a harness id, not this tree. Deterministic verifiers first; Jev is a cheap scorer before Ripple/Astra. Kerdoios still decides where work runs."
     },
     {
       "id": "mcp-elicitation",

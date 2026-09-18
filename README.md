@@ -163,3 +163,13 @@ See `spec/provenance.md`.
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). MIT. CI: `python3 tests/validate.py` and `python3 tests/compile.py`. Workers never merge `main`.
+
+## Importable validator
+
+```python
+from aodl_contract import validate, validate_or_raise, spec_revision, WIRE_SPEC
+issues = validate(doc)  # [] = ok
+```
+
+Wire spec: `hotl-0.2`. Semantic revision: `spec_revision()`.
+CLI corpus remains `python3 tests/validate.py` (same implementation).

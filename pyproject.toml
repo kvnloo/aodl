@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aodl-contract"
+version = "0.2.0"
+description = "Importable HOTL/AODL document validator (fail-closed)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "kvnloo" }]
+
+[project.urls]
+Homepage = "https://github.com/kvnloo/aodl"
+Repository = "https://github.com/kvnloo/aodl"
+
+[project.scripts]
+aodl-validate = "aodl_contract.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["aodl_contract*"]

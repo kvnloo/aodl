@@ -23,8 +23,10 @@ FIXTURE_DIR = ROOT / "tests" / "fixtures" / "mesh"
 HARNESS_PATH = ROOT / "harnesses" / "catalog.json"
 HOTL_FIXTURE = ROOT / "examples" / "valid" / "pipeline.json"
 
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tests"))
-from validate import Issue, load_json, validate  # noqa: E402
+from aodl_contract import Issue, validate  # noqa: E402
+from validate import load_json  # noqa: E402
 
 ID_RE = re.compile(r"^[a-z][a-z0-9-]{0,63}$")
 STAGES = (

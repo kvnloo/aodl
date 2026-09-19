@@ -20,9 +20,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "tests"))
+sys.path.insert(0, str(ROOT))
 
-from validate import Issue, validate  # noqa: E402
+from aodl_contract import Issue, validate  # noqa: E402
 
 PEER_KINDS = frozenset({"executor", "task", "model", "service"})
 REVIEW_RELATIONS = frozenset({"verification", "critique"})

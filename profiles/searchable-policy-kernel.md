@@ -8,9 +8,9 @@ The core separation is:
 
 In the formal object
 
-[
+$
 \mathcal{O}_t = (V_t, E_t, S_t, \Pi_t, \Gamma_t)
-]
+$
 
 the search surface is primarily `\Pi_t`: routing, allocation, scheduling, retry, cache, batching, or other bounded decision policy. `\Gamma_t` remains the authority boundary: hard constraints, budgets, acceptance, human gates, privacy, and non-regression requirements.
 
@@ -70,9 +70,9 @@ Keep these separate.
 
 Goal: reproduce the existing policy while reducing runtime or implementation cost.
 
-[
+$
 f_{candidate}(x) \equiv f_{reference}(x)
-]
+$
 
 for the declared verification envelope.
 
@@ -82,11 +82,11 @@ Approximate students are not promoted merely because average accuracy is high. I
 
 Goal: allow different decisions when they improve declared objectives.
 
-[
+$
 \Pi_{t+1} = \operatorname{Promote}\left(
 \operatorname{Pareto}\{c \in C : \Gamma(c)=\text{pass}\}
 \right)
-]
+$
 
 where the candidate objective vector may include verified success, latency percentiles, throughput, cost, energy, memory, or human-attention spend.
 
@@ -155,9 +155,9 @@ This is where Tokenomics receipts and Evolution Lab archives become useful witho
 
 Good targets usually have the shape:
 
-[
+$
 \text{large or noisy state} \rightarrow \text{small bounded decision}
-]
+$
 
 Examples:
 
@@ -218,9 +218,9 @@ The tradeoff itself belongs in intent / `\Gamma_t`. For example, “sacrifice at
 
 A later loop can train a small policy
 
-[
+$
 \pi(s) \rightarrow a
-]
+$
 
 and compare it against rules, trees, tables, and generated BPF. If a neural policy discovers a useful boundary, distilling it back into a faster deterministic implementation is preferable when it preserves the verified behavior.
 
@@ -232,9 +232,9 @@ Jev is a bounded scorer, not authority.
 
 A Jev-style model may score legal options
 
-[
+$
 P(a_i \mid s)
-]
+$
 
 or act as a teacher for a smaller policy, but:
 

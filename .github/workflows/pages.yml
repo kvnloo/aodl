@@ -62,7 +62,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
   kick-main:
     if: github.repository == 'kvnloo/aodl' && github.ref != 'refs/heads/main' && github.event_name != 'workflow_dispatch'

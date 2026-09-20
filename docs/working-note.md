@@ -2,7 +2,7 @@
 
 Status: **working note**. Not a preprint. Not on arXiv. Claims that need measurement stay unlabeled.
 
-This is the place that holds the stack together: IR, Keel, visual language, mesh, C(RAID). The machine contract is still `schema/` + `tests/validate.py`. This file is the human contract.
+This is the place that holds the stack together: IR, Keel, visual language, mesh, C(RAID). The machine contract is still `schema/` + `tests/validate.py` + `compiler/hermes.py`. This file is the human contract.
 
 ## 1. What this is
 
@@ -11,6 +11,14 @@ Harnesses already exist (Hermes, OMP, Codex, Claude Code, Grok, Pi, fx). They na
 AODL is that description. Wire id: `hotl-0.2`. Public name: AODL.
 
 It is **not** a scheduler, a Kanban, a payment system, or a glowing core.
+
+The north star is an **intent-and-participation contract**: a person can direct increasingly capable systems without losing authorship or continuity of thought. The scarce resource is continuity of thought.
+
+**Automate unwanted friction. Preserve chosen challenge.**
+
+Outcome can be correct while stripping the part of the work the human wanted to experience. $\Gamma_t$ therefore carries both termination/acceptance **and** a participation policy: interrupt only when expected information gain is worth the interruption. Recoverable gaps go to tools and memory. Review is a `verifier`. `humanGate` is merge / deploy / approve.
+
+The orchestration graph is the **strategy** chosen to satisfy intent. It is the compiled plan, not the contract. Compiler profiles: [`profiles/intent-contract.md`](../profiles/intent-contract.md) (vocabulary) and [`profiles/hermes.md`](../profiles/hermes.md) (Kanban dry-run). Fixtures: `examples/valid/intent-loop.json`, `examples/valid/hermes-dry-run.json`.
 
 ## 2. Formal object
 
@@ -38,11 +46,15 @@ Readable DSL is sugar. JSON is the IR. EBNF in [`spec/hotl-0.2.ebnf`](../spec/ho
 |---|---|---|
 | Intent | declared graph + policies + constraints + provenance | AODL document |
 | Compiled plan | what *this* runtime can safely support | compiler profile (Hermes Kanban, Firstmate ship, …) |
-| Observed $\mathcal{O}_t$ | what is actually running | events + receipts |
+| Observed $\mathcal{O}_t$ | what is actually running | `eventLog` + `observedGraph` + receipts |
 
 A Dash `/roster` is observed $V$, not $\mathcal{O}_t$. A glowing core is not a plan. A Kanban board is not intent unless the policy was recorded.
 
+An LLM prompt is not intent until it is this document. A live `openQuestions` widget is not $\Gamma_t$. A `fail` event is not in the 0.2 enum; failure is `lifecycle: failed` plus `observation` and a legal mutation (`retry` / `addNode` / `addEdge`). ChatGPT names (intent contract, participation contract, ephemeral intent surface, resolution episode) compile **through** this table. They do not become fields. **Ripple** (`kvnloo/ripple`) is the brand for the Dash-consumed ephemeral intent surface; AODL does not own it. S-Pen is an input, not a product.
+
 Unsupported semantics **fail closed**. The validator does not infer swarm, consensus, intelligence, payment, or health from a drawing.
+
+`humanGate` is the irreversible action (merge, deploy, approve). Review is a `verifier` and may be an orchestrator. See [`profiles/o8.md`](../profiles/o8.md). The catalog timebound graph is a decoder of declared cores plus `eventLog` / `observedGraph`; it is not a scheduler and it is not an artifact viewer. Clicking a node is the same inspect surface those two will share.
 
 ## 4. Stack
 
@@ -68,6 +80,7 @@ AODL                      IR: intent / plan / observed
 | Distro | [kunchenguid/firstmate](https://github.com/kunchenguid/firstmate) | captain-hold on D. Do not port Keel here. |
 | Twin | `kvnloo/solarpunk` | `encodings/visual.json` only |
 | Phone | [kvnloo/dash](https://github.com/kvnloo/dash) | spawn of catalog ids |
+| Ephemeral surface | [kvnloo/ripple](https://github.com/kvnloo/ripple) | Dash-consumed intent surface. Not AODL. Kind/gloss, not a HOTL field. |
 | Notes | [kvnloo/frontier-kb](https://github.com/kvnloo/frontier-kb) | literature, not runtime |
 | Goal | [kvnloo/blueprint](https://github.com/kvnloo/blueprint) | product; PM is step 1 |
 
@@ -82,6 +95,8 @@ These words keep collapsing. They must not.
 There is no HOTL kind named `mesh`. A mesh silhouette compiles only if every peer `message` / `data` edge is declared (`encodings/ir-map.json`). Density of a drawing is not connectivity. `swarm` stays `not-inferred` until finite `maxChildren`, `maxDepth`, and a reserved budget exist.
 
 Hermes `keel-mesh` / `mesh.poll` is a **runtime service**. It is not this silhouette. Do not start `keel.service`.
+
+The **Mesh Registry** (`mesh/registry.json`) is a third use of the word: a catalog of existing domain tools by pipeline stage. It is not a silhouette, not a HOTL field, and not an adapter. See [`mesh-registry.md`](mesh-registry.md).
 
 ### Keel is $\Gamma_t$ and authority
 
@@ -129,10 +144,16 @@ Autonomous product management is this graph over a backlog. That is Blueprint st
 | Research dump (ASCII, long) | [`spec/hotl-0.2.md`](../spec/hotl-0.2.md) |
 | Pipeline of intent → plan → observed | [`spec/architecture.mermaid`](../spec/architecture.mermaid) |
 | Named hybrid | [`spec/craid.md`](../spec/craid.md) |
+| C(RAID) R-phase capture (2026-09-11) | [`research-craid-20260911.md`](research-craid-20260911.md) |
 | Branch previews | [kvnloo.github.io/aodl/preview/](https://kvnloo.github.io/aodl/preview/) |
-| Proof | `python3 tests/validate.py` (6 valid, 11 invalid) |
+| o8 compiler profile | [`profiles/o8.md`](../profiles/o8.md) |
+| LangChain / LangGraph / LangSmith profile | [`profiles/langchain.md`](../profiles/langchain.md) |
+| Intent / participation profile | [`profiles/intent-contract.md`](../profiles/intent-contract.md) |
+| Hermes dry-run | [`profiles/hermes.md`](../profiles/hermes.md) · [`compiler/hermes.py`](../compiler/hermes.py) |
+| Mesh registry (catalog only) | [`mesh-registry.md`](mesh-registry.md) · [`mesh/registry.json`](../mesh/registry.json) |
+| Proof | `python3 tests/validate.py` (11 valid, 18 invalid) · `python3 tests/compile.py` · `python3 tests/mesh_registry.py` |
 
-There is **no** `.tex` source and **no** PDF in this repository. GitHub Flavored Markdown with `$` / `$$` is the typeset form until a compiler dry-run exists.
+There is **no** `.tex` source and **no** PDF in this repository. GitHub Flavored Markdown with `$` / `$$` is the typeset form. The dry-run compiler is in-tree; it does not execute.
 
 ## 8. What would make a paper later
 
@@ -140,8 +161,29 @@ Prior art already covers graphs, workflows, actors, auctions, provenance, and po
 
 A paper is premature until at least:
 
-1. Hermes dry-run compiler (intent → Kanban ids + deps; message/mesh/auction stop compilation)
+1. Hermes dry-run compiler (intent → Kanban ids + deps; message/mesh/auction stop compilation) — **landed** as read-only [`compiler/hermes.py`](../compiler/hermes.py). Status leaves `dry-run-unclaimed`. Does not execute.
 2. Keel profile (`humanGate` → L0 receipts; router cannot be an `execute` node)
 3. One measured claim (token-slice break-even, or transfer of a controller policy) that can fail
 
-Until then this note, the schema, and the fixtures *are* the language.
+### 8.1 Language basics (AODL-owned Fabric slice)
+
+ChatGPT's Intent-Resolution Fabric, only the pieces this IR can express. Ripple is not this tree.
+
+| Fabric step | This tree |
+|---|---|
+| 1 shared vocabulary | landed — [`profiles/intent-contract.md`](../profiles/intent-contract.md) (PR #10) |
+| 2 passive observation as dry-run / read-only compile | **landed** — predict Kanban, do not execute |
+| 3 contextual resolver | Hermes runtime, not this tree |
+| 4 ephemeral UI | Ripple, not this tree |
+| 5 active clarification | already expressible: `humanGate` + `constraints.budgets.attention`. No widget |
+| 6 capability-aware routing | catalog bind only; no router. Unknown `executor.harness` fails closed |
+| 7 learn (catalog only) | Mesh Registry `learn` rows + `jev` as a candidate scorer. No in-tree optimizer. Failure attribution stays `observation`, not HOTL 0.3 |
+| 8–10 modalities / physical / distillation as IR | NO |
+
+Until a measured claim exists, this note, the schema, the fixtures, and the dry-run *are* the language.
+
+## 9. Research capture (not a paper)
+
+A 2026-09-11 C(RAID) R-phase pass is [`research-craid-20260911.md`](research-craid-20260911.md). It does not change the schema. Closest academic cousins: $\lambda_A$ (intra-node calculus), Pact/MPST (message choreography), sheaf readings of the three objects, RLM/rate-distortion for slices, Evo-Bench for search over programs. Protocol layers MCP / A2A / AG-UI stay adapters. Frontier-kb holds the literature notes. A paper is still premature until §8.
+
+Catalog **Readings** and **Adapters** sections are on the language page (no schema change). The 100-wide competitor join stays in Dash `docs/research/competitors-100-20260911.md` and frontier-kb `inbox/cursor/`. Same conclusion: cousins and ports, not HOTL 0.3 kinds. Keyword search bleeds astrophysics and municipal-water papers; the join table is the filter.

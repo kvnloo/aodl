@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "hotlSpecVersion": "0.2",
+  "rule": "This file maps intent evidence needs to existing tools. Unknown stage, status, evidence, or duplicate id fail closed. A row is not an adapter, harness id, or HOTL field. Mesh keys never belong on orchestration documents.",
+  "stages": [
+    "specify",
+    "resolve",
+    "render",
+    "plan",
+    "execute",
+    "verify",
+    "evaluate",
+    "learn"
+  ],
+  "statuses": [
+    "reference",
+    "candidate",
+    "adapter",
+    "native"
+  ],
+  "evidence": [
+    "specification_validity",
+    "intent_resolution",
+    "calibrated_decision",
+    "retrieval",
+    "human_judgment",
+    "design_system_compliance",
+    "type_correctness",
+    "security_advisory",
+    "dependency_health",
+    "behavioral_correctness",
+    "accessibility",
+    "visual_similarity",
+    "geometric_validity",
+    "loudness",
+    "asr_transcript",
+    "codec_validity",
+    "temporal_consistency",
+    "collision",
+    "manufacturability",
+    "safety_constraint",
+    "observed_outcome",
+    "telemetry"
+  ],
+  "modalities": [
+    "web",
+    "code",
+    "documents",
+    "images",
+    "audio",
+    "video",
+    "3d",
+    "cad",
+    "games",
+    "robotics",
+    "smart-home",
+    "physical",
+    "rendered-ui",
+    "ui"
+  ],
+  "entries": [
+    {
+      "id": "aodl",
+      "stage": "specify",
+      "domain": "ir",
+      "modalities": [
+        "documents",
+        "code"
+      ],
+      "role": "intent-ir",
+      "status": "experimental",
+      "satisfies": [
+        "specification_validity"
+      ],
+      "inTree": "schema/hotl-0.2.schema.json",
+      "url": "https://github.com/kvnloo/aodl",
+      "note": "HOTL 0.2 is the native specify surface. Mesh fields are not document fields."
+    }
+  ]
+}

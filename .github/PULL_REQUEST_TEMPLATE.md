@@ -18,6 +18,8 @@
 
 ```bash
 python3 tests/validate.py
+python3 tests/compile.py
+python3 tests/mesh_registry.py
 ```
 
 If you touched `language/` or Pages:

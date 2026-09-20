@@ -4,7 +4,7 @@
 
 Public name: **AODL**. Wire identifier: **`hotl-0.2`** (Hermes Orchestration Topology Language, kept for continuity with [NousResearch/hermes-agent#88589](https://github.com/NousResearch/hermes-agent/issues/88589)).
 
-This repository is a **specification** (schema + fail-closed validator) plus a **design-language join table**. It is not a scheduler, runtime, payment system, or paper.
+This repository is a **specification** (schema + fail-closed validator + Hermes dry-run compiler) plus a **design-language join table**. It is not a scheduler, runtime, payment system, or paper.
 
 Live catalog: [kvnloo.github.io/aodl](https://kvnloo.github.io/aodl/). Other git branches land at `/preview/<branch>/`.
 
@@ -38,20 +38,24 @@ Keep three objects distinct:
 
 A marketplace is an **allocation policy** $\Pi_t$ (announce → bid → award → execute → verify → settle), not a separate product. Autonomous payment is unsupported.
 
-Readable DSL is sugar. First proof of generality: the **same primitives** express ReAct and bounded recursion. Architecture search is search over programs in this IR. Mesh is declared peer edges, not a kind. Keel is $\Gamma_t$, not a silhouette. Cores are a decoder, not the IR. C(RAID) is a named hybrid ([`spec/craid.md`](spec/craid.md)).
+Readable DSL is sugar. First proof of generality: the **same primitives** express ReAct and bounded recursion. Architecture search is search over programs in this IR. Mesh is declared peer edges, not a kind. Keel is $\Gamma_t$, not a silhouette. Cores are a decoder, not the IR. C(RAID) is a named hybrid ([`spec/craid.md`](spec/craid.md)). The intent/participation contract is a compiler profile ([`profiles/intent-contract.md`](profiles/intent-contract.md)), not HOTL 0.3.
 
 ## Formal language
 
 | Want | Open |
 |---|---|
 | Equations + stack | [`docs/working-note.md`](docs/working-note.md) |
+| C(RAID) R-phase capture | [`docs/research-craid-20260911.md`](docs/research-craid-20260911.md) (not a preprint) |
 | Grammar | [`spec/hotl-0.2.ebnf`](spec/hotl-0.2.ebnf) |
 | Checkable IR | [`schema/hotl-0.2.schema.json`](schema/hotl-0.2.schema.json) |
 | Long research spec | [`spec/hotl-0.2.md`](spec/hotl-0.2.md) (ASCII; GitHub will not render `O_t` there) |
 | Intent → plan → observed | [`spec/architecture.mermaid`](spec/architecture.mermaid) |
 | Live UI (KaTeX + React) | [kvnloo.github.io/aodl](https://kvnloo.github.io/aodl/) (branch previews: [`/preview/`](https://kvnloo.github.io/aodl/preview/)) |
 | Visual ⇀ IR | [`spec/translation.md`](spec/translation.md) · [`encodings/ir-map.json`](encodings/ir-map.json) |
-| Proof | `python3 tests/validate.py` |
+| Intent / participation (LLM) | [`profiles/intent-contract.md`](profiles/intent-contract.md) |
+| Hermes dry-run | [`profiles/hermes.md`](profiles/hermes.md) · [`compiler/hermes.py`](compiler/hermes.py) |
+| Mesh registry (catalog only) | [`docs/mesh-registry.md`](docs/mesh-registry.md) · [`mesh/registry.json`](mesh/registry.json) |
+| Proof | `python3 tests/validate.py` · `python3 tests/compile.py` · `python3 tests/mesh_registry.py` |
 
 ## Packages
 
@@ -61,6 +65,9 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 | `encodings/` | Join table. Visual topology ids compile **only** through `ir-map.json`. |
 | `harnesses/catalog.json` | Formal supported harness ids (`hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`). |
 | `language/` | Catalog: $\mathcal{O}_t$ + $\tau$ as KaTeX and React; cores are the decoder below that. |
+| `profiles/` | Compiler profiles (Hermes, intent-contract). Not node kinds. |
+| `compiler/hermes.py` | Read-only Kanban dry-run. Predicts task ids; does not execute. |
+| `mesh/registry.json` | Domain-tool catalog by stage. Not HOTL fields, not harness ids, not adapters. |
 
 ```
 docs/working-note.md        equations + stack (GitHub math)
@@ -75,15 +82,26 @@ encodings/ir-map.json       τ: visual topology → HOTL 0.2
 spec/translation.md        human form of τ (LaTeX)
 harnesses/catalog.json      supported harness + network ids
 language/                   Vite catalog: calculus + translation + decoder (port 5178)
+profiles/                   compiler profiles (not kinds)
+compiler/hermes.py          Hermes dry-run → immutable `plan`
+mesh/registry.json          domain tools by stage (not HOTL)
+schema/mesh-registry.schema.json  fail-closed schema for that catalog
+docs/mesh-registry.md       Mesh Registry concept + shadcn/lint example
 examples/valid/             fixtures that must pass
 examples/invalid/           fail-closed cases
+examples/compile-stop/      valid IR that must not compile to Kanban
 tests/validate.py           zero-dependency validator + join-table + catalog check
+tests/compile.py            dry-run corpus (message/mesh/auction/payment ⊥)
+tests/mesh_registry.py      mesh catalog (duplicate id / unknown stage fail closed)
 ```
 
 ## Validate
 
 ```bash
 python3 tests/validate.py
+python3 tests/compile.py
+python3 tests/mesh_registry.py
+python3 compiler/hermes.py examples/valid/hermes-dry-run.json
 python3 tests/validate.py examples/valid/pipeline.json
 cd language && bun install && bun run dev
 # http://127.0.0.1:5178/
@@ -140,8 +158,8 @@ See [docs/network.md](docs/network.md).
 - Shipping the private ChatGPT voice thread that motivated the IR
 - Mixing this into `kvnloo/dash`
 - Treating Firstmate or o8 as AODL graphs
-- A second GitHub repo for the same ids (`kvnloo/aodl-ui` is not the contract)
-- An arXiv preprint before a compiler dry-run exists
+- A second GitHub repo for the same ids (`kvnloo/ripple` is the ephemeral surface, not the IR contract)
+- An arXiv preprint before a measured claim exists (dry-run is in-tree; it does not execute)
 
 ## Provenance
 
@@ -151,4 +169,14 @@ See `spec/provenance.md`.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). MIT. CI: `python3 tests/validate.py`. Workers never merge `main`.
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). MIT. CI: `python3 tests/validate.py`, `python3 tests/compile.py`, `python3 tests/mesh_registry.py`. Workers never merge `main`.
+
+## Importable validator
+
+```python
+from aodl_contract import validate, validate_or_raise, spec_revision, WIRE_SPEC
+issues = validate(doc)  # [] = ok
+```
+
+Wire spec: `hotl-0.2`. Semantic revision: `spec_revision()`.
+CLI corpus remains `python3 tests/validate.py` (same implementation).

@@ -3,9 +3,12 @@ import { expect, test } from '@playwright/test';
 const SECTIONS = [
   'Formal object',
   'Three objects, never substituted',
+  'Intent and participation',
+  'Readings',
   'Translation',
   'Silhouettes',
   'Named hybrid — C(RAID)',
+  'Adapters',
   'Visual decoder',
 ];
 
@@ -54,13 +57,29 @@ test('translation spec link stays on one line', async ({ page }) => {
   expect(box.height).toBeLessThan(fontSize * 1.8);
 });
 
+test('intent contract stays HOTL 0.2', async ({ page }) => {
+  const section = page.locator('section[aria-labelledby="aodl-contract-title"]');
+  await expect(section).toContainText('Preserve chosen challenge');
+  await expect(section).toContainText('No fail event type');
+  await expect(page.locator('h2', { hasText: 'Timebound' })).toHaveCount(0);
+});
+
 test('no duplicate encoding expand or HomeForge design.html', async ({ page }) => {
   await expect(page.locator('.agent-encoding-reference')).toHaveCount(0);
   await expect(page.locator('.agent-topology-provider-picker')).toHaveCount(0);
   await expect(page.locator('details')).toHaveCount(0);
   await expect(page.locator('a[href*="design.html"]')).toHaveCount(0);
   await expect(page.locator('.agent-core-language')).toHaveCount(1);
-  await expect(page.locator('.agent-capability-core')).toHaveCount(3);
+  await expect(page.locator('.agent-core-language__levels .agent-capability-core')).toHaveCount(3);
+  await expect(page.locator('.aodl-map .aodl-topology-block__core .agent-capability-core')).toHaveCount(16);
+});
+
+test('silhouettes stay the connected-node surface; no extra Timebound section', async ({ page }) => {
+  await expect(page.getByRole('heading', { name: 'Timebound graph' })).toHaveCount(0);
+  await expect(page.locator('.aodl-orchestration')).toHaveCount(0);
+  await expect(page.locator('.aodl-map .aodl-map__card')).toHaveCount(16);
+  await expect(page.locator('[data-mode="play"]')).toHaveCount(0);
+  await expect(page.locator('[data-combo]')).toHaveCount(0);
 });
 
 test('no horizontal overflow at phone and desktop', async ({ page }) => {

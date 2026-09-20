@@ -49,9 +49,15 @@ Reuse is sound for a shared temporal coordinate, scrubber, replay affordance, de
 ## Formal object and state separation
 `O_t=(V_t,E_t,S_t,Pi_t,Gamma_t)` is the observed graph at logical time t. A document contains `intentGraph`, `policies`, `constraints`, `provenance`; a compiler emits a separate immutable `plan`; a runtime emits an append-only `eventLog` and `observedGraph`. Never substitute plan or observation for intent.
 
-Events have `{eventId,type,candidateId,sourceHash,revision,causalParents,actor,logicalTime,payload}`. Idempotency is `(type,candidateId,sourceHash,revision)`; same key/different content is conflict. Snapshots record event offset and state hash. Replay applies events in causal order and rejects unknown revisions, duplicate conflicting IDs, unauthorized mutations, and nonce reuse.
+Events have `{eventId,type,candidateId,sourceHash,revision,causalParents,actor,logicalTime,payload}`. Closed `type` values: `spawn`, `bind`, `route`, `retry`, `cancel`, `addNode`, `removeNode`, `addEdge`, `removeEdge`, `stateUpdate`, `snapshot`. There is no `fail` type; a failed attempt is node lifecycle `failed` plus `observation` (and a legal mutation). Idempotency is `(type,candidateId,sourceHash,revision)`; same key/different content is conflict. Snapshots record event offset and state hash. Replay applies events in causal order and rejects unknown revisions, duplicate conflicting IDs, unauthorized mutations, and nonce reuse.
 
 Nodes minimally distinguish task, executor, model, tool/service, memory/stateStore, humanGate, environment/sandbox, artifact, verifier. Each has lifecycle `declared→ready→running→succeeded|failed|cancelled`, ports, capability declarations and authority ceiling. A model is not automatically an executor; an edge never grants authority implicitly.
+
+`humanGate` is the irreversible action (merge, deploy, approve). Review is a `verifier` and may be an orchestrator. Delegating review is a `verification` or `critique` edge; it does not transfer gate identity. A verifier with a merge grant is invalid. A `delegation` of `humanGate` identity onto an executor is invalid.
+
+An executor node may name a supported id from `harnesses/catalog.json` with `harness`. The catalog row must have kind `executor`; control rooms compile graphs and are not nodes in them.
+
+A document may include optional top-level `observedGraph` with the same shape as `intentGraph`. Runtimes emit `eventLog` and `observedGraph`. Never substitute plan or observation for intent. A mission that is a list of packets is many components with no invented `dependency`. Isolation is a degree-0 orphan, not a requirement that the document be one DAG.
 
 Edges require relation, source/target port, cardinality, data schema/classification, authority grant/delegation depth, guard, delivery/order/idempotency, timeout/retry/backpressure, resource limits, evidence requirement, provenance and validity interval. Data and control are separate relations.
 
@@ -95,7 +101,7 @@ Token efficiency hypothesis: graph slices and trace references reduce context wh
 | MCP/A2A | protocol adapter | tool/agent exchange, not full graph semantics |
 | LangGraph/AutoGen/etc. | adapter profiles | framework-specific execution, explicit unsupported fields |
 
-Hermes compiler sequence: normalize and hash source; static validate; dry-run plan; map nodes to canonical task IDs/dependencies/review children; require authorized bounded mutation operations; emit receipt; project runtime events back. No second scheduler or ledger. Unsupported message/data/market semantics stop compilation.
+Hermes compiler sequence: normalize and hash source; static validate; dry-run plan; map nodes to canonical task IDs/dependencies/review children; require authorized bounded mutation operations; emit receipt; project runtime events back. Implemented as read-only `compiler/hermes.py` (`profiles/hermes.md`). No second scheduler or ledger. Unsupported message/mesh/auction/payment stop compilation. Status leaves `dry-run-unclaimed`.
 
 ## DSL
 Readable syntax is sugar only; every authority, data, budget and policy field remains explicit in IR. Example:
@@ -111,7 +117,7 @@ Names resolve in lexical scopes; unknown names, ambiguous ports, undeclared capa
 ## Badge decoder and roadmap
 Topology glyph derives from normalized class only; explicit marks may show dynamic, recursive, market, shared-memory and independently-verified policies. Runtime state is separate. Small badges show coarse class + text/ARIA decoder; never infer swarm, intelligence, consensus, provider or health.
 
-Roadmap: literature/RFC → IR/schema/validator → read-only Kanban reverse projector → dry-run compiler → bounded authorized mutations → optional adapters → benchmarks. Upstream #88589 already has a privacy-safe parent comment; do not post duplicate or private transcript.
+Roadmap: literature/RFC → IR/schema/validator → read-only Kanban reverse projector → dry-run compiler → bounded authorized mutations → optional adapters → benchmarks. Validator + dry-run are in-tree; bounded mutations are not. Upstream #88589 already has a privacy-safe parent comment; do not post duplicate or private transcript.
 
 ## Direct answer
 Prior art: nearly all graph/workflow/event/policy/telemetry machinery. Genuinely new candidate: a conservative cross-runtime ontology tying ports, authority, dynamic mutation, evidence and human gates to one replayable IR. Build validator/projection/compiler first; validate dynamic control, transfer and token claims experimentally before branding them as theory.

@@ -2,7 +2,7 @@
 
 IR first. Pretty DSL later. Fail closed.
 
-- Schema + `tests/validate.py` are the IR contract. Every new construct needs a valid fixture and a negative fixture.
+- Schema + `tests/validate.py` are the IR contract. Hermes dry-run is `compiler/hermes.py`. Every new construct needs a valid fixture and a negative fixture.
 - Visual topology ids live in `encodings/visual.json` and compile only through `encodings/ir-map.json`. Add both, plus a silhouette in `topology-graphs.json`, in one change.
 - Do not infer `swarm` from graph shape. `swarm` is `not-inferred` until finite dynamic bounds are declared.
 - Marketplace is `policies.kinds: ["auction"]`, payment unsupported.
@@ -10,27 +10,34 @@ IR first. Pretty DSL later. Fail closed.
 - Do not add a runtime, scheduler, or payment executor here.
 - Do not commit ChatGPT/Hermes transcripts or secrets.
 - Unknown `specVersion` is an error, not a warning.
-- Hermes adapter mapping belongs as a **compiler profile**, not as a second Kanban.
+- Hermes adapter mapping belongs as a **compiler profile** (`profiles/hermes.md`) plus a read-only dry-run (`compiler/hermes.py`). It is not a second Kanban. Status leaves `dry-run-unclaimed`. Message, mesh, auction, and payment stop compilation. o8's profile is `profiles/o8.md`; LangChain/LangGraph/LangSmith is `profiles/langchain.md`. Neither is a harness id. The compiler still lives next to the runtime.
+- Intent/participation mapping belongs as `profiles/intent-contract.md`. Do not add `openQuestions`, sheaf JSON, or a `fail` event type. Failure is `lifecycle: failed` plus `observation` and a legal `eventLog` mutation (`retry` / `addNode` / `addEdge`).
+- `humanGate` is merge/deploy/approve. Review is a `verifier`. Optional `observedGraph` has the same shape as `intentGraph`. List-missions are many components, not one invented DAG.
 - HomeForge/zerOS consumes `encodings/visual.json`. Do not invent topology ids in solarpunk first.
-- Harness ids live in `harnesses/catalog.json`. The eight supported ids are `hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`. Firstmate is a distro, not a harness id.
+- Harness ids live in `harnesses/catalog.json`. The eight supported ids are `hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`. Firstmate is a distro, not a harness id. `langchain` / `shadcn` / `jev` are not harness ids.
+- Domain tools live in `mesh/registry.json` (`schema/mesh-registry.schema.json`). Catalog only: not HOTL fields, not adapters, not a node kind. Proof: `python3 tests/mesh_registry.py`. Docs: `docs/mesh-registry.md`. Ripple (`kvnloo/ripple`) is the resolve fallback; not this tree.
 - Do not port Keel into this repo or into Firstmate as a second scheduler. Keel is Hermes L0. Firstmate is Keel L9 (subordinate executor) when we use it.
 - C(RAID) is a named hybrid program (`spec/craid.md`, `examples/valid/craid.json`). Unlabeled `hybrid` stays `not-inferred`. D→R feedback is `observation`, never `dependency`.
 - Network map: `docs/network.md`. Human contract: `docs/working-note.md`. No arXiv; no `.tex`.
-- Live catalog is GitHub Pages (`scripts/build-pages.py`, `.github/workflows/pages.yml`). Main → https://kvnloo.github.io/aodl/. Other branches → `/preview/<slug>/`. Workers never merge `main`.
+- Live catalog is GitHub Pages (`scripts/build-pages.py`, `.github/workflows/pages.yml`). Main → https://kvnloo.github.io/aodl/. Other git branches → `/preview/<slug>/`. Workers never merge `main` or `dev`.
 
 ## Proof
 
 This repo follows the [Verified OSS Loop](https://github.com/kvnloo/verified-oss-loop). Issues are not claims. AI work is untrusted until proven.
 
+Rollout is Arch-style `rolling` (`.verified-oss-loop/rollout.yml`). `python3 .verified-oss-loop/rollout.py show`. Branch from `origin/nightly`. Day-pass PRs target `preview`. Overnight PRs target `nightly`. Automerge may land on those channels. **Never merge `main` or `dev`.** Do not merge preview/nightly yourself.
+
 | Layer | Command |
 |---|---|
 | Unit | `python3 tests/validate.py` |
+| Compile | `python3 tests/compile.py` |
+| Mesh registry | `python3 tests/mesh_registry.py` |
 | Catalog | `python3 scripts/build-pages.py --current-only` (if you touch `language/` or Pages) |
 | Mutation | `n/a` — fail-closed fixtures, not a mutator |
-| Runtime | `n/a` — static IR |
+| Runtime | `n/a` — static IR. Dry-run does not spawn Hermes. |
 
 1. Search open issues and PRs. Do not duplicate.
 2. Claim **one** `claimable` issue (24h lease). If nothing is claimable, stop.
 3. New construct → one valid fixture and one invalid fixture.
 4. Fail, then pass (`skills/tdd/SKILL.md`).
-5. Open a PR with `.github/PULL_REQUEST_TEMPLATE.md`. **Never merge.**
+5. Open a PR at `preview` (day) or `nightly` (overnight) with `.github/PULL_REQUEST_TEMPLATE.md`. **Never merge `main` or `dev`.**

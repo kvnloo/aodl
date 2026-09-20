@@ -56,14 +56,19 @@
 .agent-core-language__states button.is-active { border-color: color-mix(in srgb, var(--gold) 45%, transparent); background: color-mix(in srgb, var(--gold) 10%, transparent); color: var(--gold); }
 .agent-core-language__levels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .agent-core-level { min-width: 0; display: grid; grid-template-rows: 202px minmax(160px, auto); padding: 0; overflow: hidden; border: 1px solid var(--hair); border-radius: 7px; background: transparent; color: inherit; text-align: left; }
+.agent-core-level.is-expanded { overflow: visible; grid-template-rows: auto minmax(160px, auto); }
 .agent-core-level:hover,
-.agent-core-level:focus-visible { border-color: var(--hair-2); outline: none; }
+.agent-core-level:focus-within { border-color: var(--hair-2); outline: none; }
 .agent-core-level.is-selected { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 2.5%, transparent); }
 .agent-core-level__stage { display: grid; place-items: center; overflow: hidden; background: radial-gradient(circle at 50% 50%, #111410 0 18%, #060706 66%); }
+.agent-core-level[data-zoom="pattern"] .agent-core-level__stage {
+  overflow: visible;
+  min-height: 202px;
+}
 .agent-core-level:nth-child(1) { --level-accent: #7ee3a0; }
 .agent-core-level:nth-child(2) { --level-accent: #b86bec; }
 .agent-core-level:nth-child(3) { --level-accent: #ff3926; }
-.agent-core-level__copy { min-width: 0; display: grid; align-content: start; padding: 14px; border-top: 1px solid var(--hair); }
+.agent-core-level__copy { min-width: 0; display: grid; align-content: start; width: 100%; padding: 14px; border: 0; border-top: 1px solid var(--hair); border-radius: 0; background: transparent; color: inherit; font: inherit; text-align: left; }
 .agent-core-level__copy > small { color: var(--gold); font-size: 8px; font-weight: 700; text-transform: uppercase; }
 .agent-core-level__copy > strong { margin-top: 5px; color: var(--ink); font-size: 13px; }
 .agent-core-level__copy > p { margin: 7px 0 12px; color: var(--ink-3); font-size: 10px; line-height: 1.5; }
@@ -73,10 +78,14 @@
 .agent-core-level__specs b { color: var(--ink-3); font-size: 7px; text-transform: uppercase; }
 
 .agent-capability-core { --core-size: 108px; --core-provider: #9ca39a; --core-model: #9ca39a; --core-effort: #9ca39a; --core-topology: #9ca39a; --core-primary: var(--core-provider); --core-secondary: var(--core-model); --core-thermal: color-mix(in srgb, var(--core-model) 18%, #060706); --core-duration: 9.5s; position: relative; width: var(--core-size); height: var(--core-size); display: inline-grid; place-items: center; isolation: isolate; }
+.agent-capability-core.is-compact { --core-size: 64px; }
 .agent-capability-core__aura { position: absolute; inset: 12%; z-index: -2; border-radius: 50%; background: color-mix(in srgb, var(--core-provider) calc(10% + var(--core-energy) * 12%), transparent); box-shadow: 0 0 calc(var(--core-size) * .34) calc(var(--core-size) * .03) color-mix(in srgb, var(--core-provider) calc(14% + var(--core-energy) * 14%), transparent); animation: agent-capability-breathe 4.8s ease-in-out infinite; }
 .agent-capability-core__topology-envelope { position: absolute; inset: 3%; z-index: 0; border: 1px solid color-mix(in srgb, var(--core-topology) 64%, transparent); border-radius: 50%; }
 .agent-capability-core[data-topology="solo"] .agent-capability-core__topology-envelope { inset: 9%; border-right-color: transparent; transform: rotate(-32deg); }
 .agent-capability-core[data-topology="paired"] .agent-capability-core__topology-envelope { inset: 5%; }
+.agent-capability-core[data-topology="marketplace"] .agent-capability-core__topology-envelope {
+  border-style: dashed;
+}
 .agent-capability-core[data-topology="council"] .agent-capability-core__topology-envelope,
 .agent-capability-core[data-topology="swarm"] .agent-capability-core__topology-envelope { inset: 0; border-color: color-mix(in srgb, var(--core-topology) 82%, transparent); }
 .agent-capability-core[data-topology="swarm"] .agent-capability-core__topology-envelope::before { content: ''; position: absolute; inset: -3px; border-radius: 50%; background: conic-gradient(from 22deg, var(--core-topology), transparent 18%, var(--core-effort) 30%, transparent 44%, var(--core-provider) 57%, transparent 70%, var(--core-topology) 85%, transparent); -webkit-mask: radial-gradient(circle, transparent 0 78%, #000 81% 87%, transparent 90%); mask: radial-gradient(circle, transparent 0 78%, #000 81% 87%, transparent 90%); opacity: calc(.35 + var(--core-power) * .4); }

@@ -184,6 +184,7 @@
   border: 1px solid var(--hair);
   border-radius: 8px;
   min-width: 0;
+  overflow: visible;
 }
 
 .aodl-map__card header {
@@ -194,6 +195,42 @@
 }
 
 .aodl-map__card header b { font-size: 13px; }
+
+.aodl-map__unit {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.aodl-topology-block {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}
+
+.aodl-topology-block.is-exploded {
+  place-items: start;
+}
+
+.aodl-topology-block__core {
+  display: grid;
+  place-items: center;
+  max-width: 100%;
+  padding: 8px;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.aodl-map__card[data-zoom="pattern"] .aodl-silhouette-flow {
+  margin-inline: 0;
+}
 
 .aodl-map__status {
   font-size: 9px;

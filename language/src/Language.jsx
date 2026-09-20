@@ -1,5 +1,6 @@
-import React from 'react';
-import { AgentCoreLanguage, TopologyBadge } from './AgentCoreLanguage.jsx';
+import React, { useState } from 'react';
+import { AgentCoreLanguage } from './AgentCoreLanguage.jsx';
+import { TopologyBlock } from './TopologyBlock.jsx';
 import { Tex } from './Equation.jsx';
 import { CHANNEL_ORDER, compileLabel } from './translation.js';
 import visual from '../../encodings/visual.json';
@@ -8,18 +9,72 @@ import irMap from '../../encodings/ir-map.json';
 const OBJECTS = [
   { name: 'Intent', meaning: 'Declared graph + policies + constraints + provenance.', owner: 'AODL document' },
   { name: 'Compiled plan', meaning: 'What this runtime can safely support.', owner: 'compiler profile (Hermes, Firstmate, …)' },
-  { name: 'Observed', meaning: 'What is actually running.', owner: 'events + receipts' },
+  { name: 'Observed', meaning: 'What is actually running.', owner: 'eventLog + observedGraph + receipts' },
+];
+
+const CONTRACT = [
+  { piece: 'Normalized intent, outcome, invariants, acceptance, evidence', hotl: 'this document — not a top-level intentContract or openQuestions field' },
+  { piece: 'Orchestration strategy', hotl: 'compiled plan. Never substitute for intent.' },
+  { piece: 'Unresolved question', hotl: 'humanGate only when interrupting beats a later error; else tool, memory, or observation' },
+  { piece: 'Failure', hotl: 'lifecycle failed + observation + retry/addNode/addEdge. No fail event type.' },
+  { piece: 'Ephemeral UI', hotl: 'live τ of unresolved Γ_t. Not a fourth object.' },
 ];
 
 const SYMBOLS = [
   { symbol: String.raw`V_t`, meaning: 'agents, models, tools, humans, memories, tasks, artifacts', json: 'intentGraph.nodes' },
   { symbol: String.raw`E_t`, meaning: 'typed relations: depend, data, message, delegate, verify, observe, …', json: 'intentGraph.edges' },
-  { symbol: String.raw`S_t`, meaning: 'runtime state (lifecycle, events)', json: 'observed — not the document' },
+  { symbol: String.raw`S_t`, meaning: 'runtime state (lifecycle, events)', json: 'observedGraph + eventLog' },
   { symbol: String.raw`\Pi_t`, meaning: 'routing / execution / allocation policy', json: 'policies' },
   { symbol: String.raw`\Gamma_t`, meaning: 'goals, budgets, verification, human gates', json: 'constraints + humanGate' },
 ];
 
 const REPO = 'https://github.com/kvnloo/aodl';
+
+const READINGS = [
+  { name: 'λ_A', maps: 'Intra-node calculus (oracle, bounded fix). Graph stays AODL.' },
+  { name: 'Pact / Scribble / MPST', maps: '`message` is a session. Duality failure is ⊥.' },
+  { name: 'AgentFlow ADG', maps: 'Recovers a graph from framework source. Audit, not authority.' },
+  { name: 'STP sheaves', maps: 'Intent, plan, observed do not glue by assertion.' },
+  { name: 'RLM', maps: 'Query slices of O_t. Do not dump the window.' },
+  { name: 'AdaptOrch / Evo-Bench', maps: 'Search over compiled Π, not over schema versions.' },
+  { name: 'Oversight inverted-U', maps: 'Human attention is a budget already legal under constraints.budgets.' },
+];
+
+const ADAPTERS = [
+  { name: 'MCP', maps: 'Tools. Ports, not O_t.' },
+  { name: 'A2A', maps: 'Peers. message / delegation.' },
+  { name: 'AG-UI', maps: 'User surface. Visual τ / events. Ripple may project through it.' },
+  { name: 'LangGraph-class', maps: 'Compiler profile: existing HOTL 0.2 kinds. profiles/langchain.md. Not a harness id.' },
+  { name: 'Mesh Registry', maps: 'Domain tools by stage. mesh/registry.json. Jev is a candidate scorer, not a harness id. Not HOTL 0.3.' },
+  { name: 'This network', maps: 'Hermes, Keel, Codex, Firstmate distro. Observed V, not competitors.' },
+];
+
+function SilhouetteCard({ id, topology, rec }) {
+  const [exploded, setExploded] = useState(false);
+  const kinds = rec.policies?.kinds;
+  const toggle = () => setExploded((open) => !open);
+  return (
+    <article className="aodl-map__card" data-zoom={exploded ? 'pattern' : 'core'} data-topology={id}>
+      <header>
+        <button type="button" className="aodl-map__unit" aria-expanded={exploded} onClick={toggle}>
+          <b>{topology.label}</b>
+        </button>
+        <span className="aodl-map__status" data-status={rec.status}>{rec.status}</span>
+      </header>
+      <TopologyBlock
+        topologyId={id}
+        providerId="multi"
+        exploded={exploded}
+        onToggle={toggle}
+        label={`${topology.label} mapped ${rec.status}`}
+      />
+      <p>{rec.note || topology.description}</p>
+      {kinds ? <code>policies.kinds: {kinds.join(', ')}</code> : null}
+      {rec.requires ? <code>requires: {rec.requires.join(', ')}</code> : null}
+      {rec.example ? <code>{rec.example}</code> : null}
+    </article>
+  );
+}
 
 export function Language() {
   const topologies = Object.entries(visual.topologies);
@@ -86,6 +141,57 @@ export function Language() {
         <p className="aodl-note">
           Unsupported semantics fail closed. The validator does not infer swarm, consensus, intelligence, payment, or health from a drawing.
         </p>
+      </section>
+
+      <section className="aodl-formal" aria-labelledby="aodl-contract-title">
+        <h2 id="aodl-contract-title">Intent and participation</h2>
+        <p>
+          Automate unwanted friction. Preserve chosen challenge. AODL is the contract, not the army.
+          Interrupt only when expected information gain is worth the human&apos;s attention.
+        </p>
+        <div className="aodl-table-wrap">
+          <table className="aodl-table">
+            <thead>
+              <tr><th>Contract piece</th><th>HOTL 0.2</th></tr>
+            </thead>
+            <tbody>
+              {CONTRACT.map((row) => (
+                <tr key={row.piece}>
+                  <td>{row.piece}</td>
+                  <td>{row.hotl}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="aodl-note">
+          Profile <a className="aodl-path" href={`${REPO}/blob/main/profiles/intent-contract.md`}>intent-contract.md</a>.
+          Fixture <code>examples/valid/intent-loop.json</code>.
+        </p>
+      </section>
+
+      <section className="aodl-formal" aria-labelledby="aodl-readings-title">
+        <h2 id="aodl-readings-title">Readings</h2>
+        <p>
+          Intent, plan, and observed are three sheaves over the same graph — not three names for one thing.
+          Compatible observations may glue; obstruction fails closed or a verifier may abduct.
+          Never an invented edge, and never a fourth object standing in for missing receipts.
+        </p>
+        <div className="aodl-table-wrap">
+          <table className="aodl-table">
+            <thead>
+              <tr><th>Cousin</th><th>Maps onto</th></tr>
+            </thead>
+            <tbody>
+              {READINGS.map((row) => (
+                <tr key={row.name}>
+                  <td>{row.name}</td>
+                  <td>{row.maps}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section className="aodl-formal" aria-labelledby="aodl-tau-title">
@@ -156,27 +262,16 @@ export function Language() {
       <section className="aodl-map" aria-labelledby="aodl-map-title">
         <h2 id="aodl-map-title">Silhouettes</h2>
         <p>
-          Each drawing has an explicit HOTL 0.2 status. <code>not-inferred</code> means the drawing exists and still
-          fails closed until the listed policy is declared. Marketplace is allocation policy <Tex math={String.raw`\Pi_t`} />, not a product.
+          Each unit is a living core of a declared coordination class. Click the core to break it
+          into the silhouette — dots and wires, not more cores. Click a node to edit that
+          participant; it stays a node. Status{' '}
+          <code>not-inferred</code> means the drawing exists and still fails closed until the listed
+          policy is declared. Marketplace is allocation policy <Tex math={String.raw`\Pi_t`} />, not a product.
         </p>
         <div className="aodl-map__grid">
-          {topologies.map(([id, topology]) => {
-            const rec = irMap.topologies[id];
-            const kinds = rec.policies?.kinds;
-            return (
-              <article className="aodl-map__card" key={id}>
-                <header>
-                  <b>{topology.label}</b>
-                  <span className="aodl-map__status" data-status={rec.status}>{rec.status}</span>
-                </header>
-                <TopologyBadge topologyId={id} providerId="multi" label={`${topology.label} mapped ${rec.status}`} />
-                <p>{rec.note || topology.description}</p>
-                {kinds ? <code>policies.kinds: {kinds.join(', ')}</code> : null}
-                {rec.requires ? <code>requires: {rec.requires.join(', ')}</code> : null}
-                {rec.example ? <code>{rec.example}</code> : null}
-              </article>
-            );
-          })}
+          {topologies.map(([id, topology]) => (
+            <SilhouetteCard key={id} id={id} topology={topology} rec={irMap.topologies[id]} />
+          ))}
         </div>
       </section>
 
@@ -193,18 +288,50 @@ export function Language() {
         </p>
       </section>
 
+      <section className="aodl-formal" aria-labelledby="aodl-adapters-title">
+        <h2 id="aodl-adapters-title">Adapters</h2>
+        <p>
+          Three protocol layers, never a fourth IR. Chain-of-thought trees are not orchestration graphs.
+          Visual <Tex math={String.raw`\tau`} /> does not compile ToT into <code>fanout</code>.
+          Domain tools sit in the{' '}
+          <a className="aodl-path" href={`${REPO}/blob/main/docs/mesh-registry.md`}>Mesh Registry</a>
+          {' '}(<code>mesh/registry.json</code>) — catalog only, no adapters this PR.
+        </p>
+        <div className="aodl-table-wrap">
+          <table className="aodl-table">
+            <thead>
+              <tr><th>Layer</th><th>Job</th></tr>
+            </thead>
+            <tbody>
+              {ADAPTERS.map((row) => (
+                <tr key={row.name}>
+                  <td>{row.name}</td>
+                  <td>{row.maps}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section className="aodl-decoder" aria-labelledby="aodl-decoder-title">
         <h2 id="aodl-decoder-title">Visual decoder</h2>
         <p>
           Living-night cores compress declared metadata: provider hue, model geometry, effort orbits, topology envelope, mode rune, runtime cadence.
-          They are <strong>not</strong> <Tex math={String.raw`\mathcal{O}_t`} />. HomeForge / Solarpunk consumes this catalog; it does not own ids.
+          They are <strong>not</strong> <Tex math={String.raw`\mathcal{O}_t`} />. Click a core to disclose the silhouette of its declared topology, then a node to edit that participant. The node stays a node.
+          HomeForge / Solarpunk consumes this catalog; it does not own ids.
         </p>
         <AgentCoreLanguage />
       </section>
 
       <footer className="aodl-language__foot">
         <a href={`${REPO}/blob/main/docs/working-note.md`}>working note</a>
+        <a href={`${REPO}/blob/main/docs/mesh-registry.md`}>mesh registry</a>
+        <a href={`${REPO}/blob/main/profiles/intent-contract.md`}>intent contract</a>
+        <a href={`${REPO}/blob/main/profiles/hermes.md`}>Hermes dry-run</a>
         <a href={`${REPO}/blob/main/spec/translation.md`}>translation</a>
+        <a href={`${REPO}/blob/main/profiles/o8.md`}>o8 profile</a>
+        <a href={`${REPO}/blob/main/profiles/langchain.md`}>langchain profile</a>
         <a href={`${REPO}/blob/main/spec/hotl-0.2.ebnf`}>EBNF</a>
         <a href={`${REPO}/blob/main/schema/hotl-0.2.schema.json`}>schema</a>
         <a href={REPO}>kvnloo/aodl</a>

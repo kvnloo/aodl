@@ -1,7 +1,8 @@
 Document ::= Header Graph Policies Constraints Provenance
 Header ::= "hotl" "0.2" Identifier Revision
 Graph ::= "graph" "{" Node* Edge* "}"
-Node ::= "node" Identifier ":" Kind Ports CapabilityBlock [Lifecycle]
+Node ::= "node" Identifier ":" Kind [Harness] Ports CapabilityBlock [Lifecycle]
+Harness ::= "harness" Identifier
 Edge ::= "edge" Identifier Relation Endpoint "->" Endpoint Delivery Authority Evidence
 Kind ::= task|executor|model|tool|service|memory|stateStore|humanGate|environment|artifact|verifier
 Relation ::= dependency|data|message|delegation|critique|verification|allocation|control|observation|artifact

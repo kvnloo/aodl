@@ -188,13 +188,13 @@ AODL can describe the **contract around an evolvable policy** without becoming t
 
 The mechanism/policy boundary is:
 
-$
+$$
 \text{deterministic mechanism}
 \; + \;
 \Pi_t\text{ (searchable policy)}
 \; \text{subject to} \;
 \Gamma_t
-$
+$$
 
 The legal action space, hard constraints, privacy, budgets, human gates, and independent verification remain fixed by the contract. Sibling planes may search implementations of $\Pi_t$: rules, trees, lookup tables, compiler-generated code, BPF, or tiny learned policies.
 

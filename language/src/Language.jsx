@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AgentCoreLanguage } from './AgentCoreLanguage.jsx';
-import { TopologyBlock } from './TopologyBlock.jsx';
+import { TopologyBadge } from './TopologyBadge.jsx';
 import { Tex } from './Equation.jsx';
 import { CHANNEL_ORDER, compileLabel } from './translation.js';
 import visual from '../../encodings/visual.json';
@@ -29,6 +29,17 @@ const SYMBOLS = [
 ];
 
 const REPO = 'https://github.com/kvnloo/aodl';
+const AGENT_OS_NOTE = `${REPO}/issues/22`;
+const BEND_RFC = `${REPO}/issues/19`;
+
+const COMPILER_STEPS = [
+  { name: 'Human / Ripple', detail: 'Declare intent; resolve ambiguity outside the IR.' },
+  { name: 'AODL intent', detail: 'intentGraph + policies + constraints + provenance.' },
+  { name: 'Validate + normalize', detail: 'Fail closed before target-specific lowering.' },
+  { name: 'Target lowering', detail: 'Compile only semantics the selected runtime supports.' },
+  { name: 'Runtime', detail: 'Harness executes. AODL does not schedule or run the work.' },
+  { name: 'Observed', detail: 'observedGraph + eventLog + evidence describe what happened.' },
+];
 
 const READINGS = [
   { name: 'λ_A', maps: 'Intra-node calculus (oracle, bounded fix). Graph stays AODL.' },
@@ -50,23 +61,17 @@ const ADAPTERS = [
 ];
 
 function SilhouetteCard({ id, topology, rec }) {
-  const [exploded, setExploded] = useState(false);
   const kinds = rec.policies?.kinds;
-  const toggle = () => setExploded((open) => !open);
   return (
-    <article className="aodl-map__card" data-zoom={exploded ? 'pattern' : 'core'} data-topology={id}>
+    <article className="aodl-map__card" data-topology={id}>
       <header>
-        <button type="button" className="aodl-map__unit" aria-expanded={exploded} onClick={toggle}>
-          <b>{topology.label}</b>
-        </button>
+        <b>{topology.label}</b>
         <span className="aodl-map__status" data-status={rec.status}>{rec.status}</span>
       </header>
-      <TopologyBlock
+      <TopologyBadge
         topologyId={id}
         providerId="multi"
-        exploded={exploded}
-        onToggle={toggle}
-        label={`${topology.label} mapped ${rec.status}`}
+        label={`${topology.label} silhouette, mapping status ${rec.status}`}
       />
       <p>{rec.note || topology.description}</p>
       {kinds ? <code>policies.kinds: {kinds.join(', ')}</code> : null}
@@ -99,10 +104,32 @@ export function Language() {
           </p>
         ) : null}
         <p>
-          A typed IR for agent graphs. Not a scheduler, not a payment system, and not a glowing core.
-          The same language is below as mathematics and as React bound to <code>encodings/ir-map.json</code>.
+          A typed, fail-closed contract for agent orchestration. LLMs should perform semantic computation,
+          not operating-system bookkeeping. AODL carries intent, authority, budgets, and provenance into
+          runtimes without becoming the runtime. <a href={AGENT_OS_NOTE}>Agent OS working note</a>.
         </p>
       </header>
+
+      <section className="aodl-formal aodl-compile-story" aria-labelledby="aodl-compile-title">
+        <h2 id="aodl-compile-title">From intent to execution</h2>
+        <p>
+          AODL owns the portable contract and fail-closed boundary. Compiler profiles lower a validated
+          document into a plan a specific runtime can support; the runtime owns execution and scheduling.
+        </p>
+        <ol className="aodl-compile-pipeline" aria-label="AODL compilation pipeline">
+          {COMPILER_STEPS.map((step) => (
+            <li key={step.name}>
+              <strong>{step.name}</strong>
+              <span>{step.detail}</span>
+            </li>
+          ))}
+        </ol>
+        <p className="aodl-note">
+          Concrete reference: <a className="aodl-path" href={`${REPO}/blob/main/compiler/hermes.py`}>Hermes dry-run</a>.
+          {' '}<a href={BEND_RFC}>Bend</a> is an experimental proof/compute substrate, not the AODL compiler
+          and not a runtime dependency.
+        </p>
+      </section>
 
       <section className="aodl-formal" aria-labelledby="aodl-object-title">
         <h2 id="aodl-object-title">Formal object</h2>

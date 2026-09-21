@@ -1,6 +1,8 @@
 import React, { useId } from 'react';
 import agentEncodings from '../../encodings/visual.json';
-import { MULTI_PROVIDER_NODE_IDS, TOPOLOGY_GRAPHS } from './aodl-flow.js';
+import topologyGraphs from '../../encodings/topology-graphs.json';
+
+const MULTI_PROVIDER_NODE_IDS = ['openai', 'anthropic', 'moonshot', 'xai', 'cursor', 'fable'];
 
 export function TopologyBadge({
   topologyId = 'unknown',
@@ -12,7 +14,7 @@ export function TopologyBadge({
 }) {
   const markerId = useId().replace(/:/g, '');
   const topology = agentEncodings.topologies[topologyId] || agentEncodings.topologies.unknown;
-  const graph = TOPOLOGY_GRAPHS[topology.pattern] || TOPOLOGY_GRAPHS.unknown;
+  const graph = topologyGraphs[topology.pattern] || topologyGraphs.unknown;
   const provider = agentEncodings.providers[providerId] || agentEncodings.providers.unknown;
   const nodeColor = (index) => {
     if (providerId !== 'multi') return provider.hue;

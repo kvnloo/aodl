@@ -22,7 +22,7 @@ test('silhouettes use deterministic presentation geometry, not XYFlow', async ({
   await expect(pipeline.locator('.agent-topology-badge__nodes circle')).toHaveCount(5);
 
   const marketplace = card(page, 'Marketplace');
-  await expect(marketplace.locator('.agent-topology-badge__nodes circle')).toHaveCount(7);
+  await expect(marketplace.locator('.agent-topology-badge__nodes circle')).toHaveCount(6);
 });
 
 test('not-inferred swarm remains a glyph and cannot expose an invented editor', async ({ page }) => {

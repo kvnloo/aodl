@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 const SECTIONS = [
+  'From intent to execution',
   'Formal object',
   'Three objects, never substituted',
   'Intent and participation',
@@ -22,6 +23,19 @@ test('introduces the IR, not a cores dump', async ({ page }) => {
   await expect(page.locator('h2')).toHaveText(SECTIONS);
   await expect(page.locator('.katex').first()).toBeVisible();
   await expect(page.locator('.aodl-tex--display').first()).toContainText('O');
+});
+
+test('leads with the bounded Agent OS thesis and compiler boundary', async ({ page }) => {
+  const hero = page.locator('.aodl-language__hero');
+  await expect(hero).toContainText('semantic computation');
+  await expect(hero).toContainText('operating-system bookkeeping');
+  await expect(hero.getByRole('link', { name: 'Agent OS working note' })).toHaveAttribute('href', /issues\/22$/);
+
+  const compiler = page.locator('section[aria-labelledby="aodl-compile-title"]');
+  await expect(compiler).toContainText('AODL intent');
+  await expect(compiler).toContainText('Hermes dry-run');
+  await expect(compiler).toContainText('experimental');
+  await expect(compiler.getByRole('link', { name: /Bend/i })).toHaveAttribute('href', /issues\/19$/);
 });
 
 test('object cards do not leak MathML into headings', async ({ page }) => {
@@ -64,22 +78,33 @@ test('intent contract stays HOTL 0.2', async ({ page }) => {
   await expect(page.locator('h2', { hasText: 'Timebound' })).toHaveCount(0);
 });
 
-test('no duplicate encoding expand or HomeForge design.html', async ({ page }) => {
+test('visual catalog stays bounded: cores and silhouettes are separate glyphs', async ({ page }) => {
   await expect(page.locator('.agent-encoding-reference')).toHaveCount(0);
   await expect(page.locator('.agent-topology-provider-picker')).toHaveCount(0);
   await expect(page.locator('details')).toHaveCount(0);
   await expect(page.locator('a[href*="design.html"]')).toHaveCount(0);
   await expect(page.locator('.agent-core-language')).toHaveCount(1);
   await expect(page.locator('.agent-core-language__levels .agent-capability-core')).toHaveCount(3);
-  await expect(page.locator('.aodl-map .aodl-topology-block__core .agent-capability-core')).toHaveCount(16);
+  await expect(page.locator('.aodl-map .agent-topology-badge')).toHaveCount(16);
+  await expect(page.locator('.aodl-map .agent-capability-core')).toHaveCount(0);
 });
 
-test('silhouettes stay the connected-node surface; no extra Timebound section', async ({ page }) => {
+test('silhouettes never synthesize a semantic graph', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Timebound graph' })).toHaveCount(0);
   await expect(page.locator('.aodl-orchestration')).toHaveCount(0);
   await expect(page.locator('.aodl-map .aodl-map__card')).toHaveCount(16);
+  await expect(page.locator('.aodl-map .aodl-silhouette-flow')).toHaveCount(0);
+  await expect(page.locator('.aodl-map .react-flow')).toHaveCount(0);
+  await expect(page.locator('.aodl-map .aodl-flow-node')).toHaveCount(0);
   await expect(page.locator('[data-mode="play"]')).toHaveCount(0);
   await expect(page.locator('[data-combo]')).toHaveCount(0);
+
+  const swarm = page.locator('.aodl-map__card').filter({
+    has: page.locator('header b', { hasText: /^Swarm$/ }),
+  });
+  await expect(swarm.locator('.aodl-map__status')).toHaveText('not-inferred');
+  await expect(swarm.locator('.agent-topology-badge')).toHaveCount(1);
+  await expect(swarm.locator('select')).toHaveCount(0);
 });
 
 test('no horizontal overflow at phone and desktop', async ({ page }) => {

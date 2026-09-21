@@ -161,6 +161,63 @@
 .aodl-compile[data-compile="declared-only"] { color: var(--gold); }
 .aodl-compile[data-compile="ir-map"] { color: var(--green); }
 
+.aodl-compile-pipeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+  max-width: 72rem;
+  margin: 18px 0 14px;
+  padding: 0;
+  list-style: none;
+}
+
+.aodl-compile-pipeline li {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 92px;
+  padding: 12px;
+  border: 1px solid var(--hair);
+  border-radius: 8px;
+}
+
+.aodl-compile-pipeline li:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  top: 50%;
+  right: -8px;
+  z-index: 2;
+  transform: translate(50%, -50%);
+  color: var(--ink-3);
+  font-size: 14px;
+}
+
+.aodl-compile-pipeline strong {
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.aodl-compile-pipeline span {
+  color: var(--ink-3);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+@media (max-width: 700px) {
+  .aodl-compile-pipeline {
+    grid-template-columns: 1fr;
+  }
+
+  .aodl-compile-pipeline li:not(:last-child)::after {
+    content: '↓';
+    top: auto;
+    right: 50%;
+    bottom: -9px;
+    transform: translate(50%, 50%);
+  }
+}
+
 .aodl-kinds {
   margin: 12px 0;
   padding: 12px 14px;
@@ -195,6 +252,12 @@
 }
 
 .aodl-map__card header b { font-size: 13px; }
+
+.aodl-map__card > .agent-topology-badge {
+  width: 144px;
+  height: 88px;
+  margin: 8px auto;
+}
 
 .aodl-map__unit {
   margin: 0;

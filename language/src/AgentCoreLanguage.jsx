@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { TopologyBlock } from './TopologyBlock.jsx';
 import { TopologyBadge } from './TopologyBadge.jsx';
 import { CapabilityCore } from './CapabilityCore.jsx';
 import './agent-core-language.css';
@@ -63,22 +62,14 @@ const CORE_STATES = [
   ['blocked', 'Blocked'],
 ];
 
-function DecoderLevel({ level, state, selected, exploded, onSelect, onToggle }) {
+function DecoderLevel({ level, state, selected, onSelect }) {
   return (
     <article
-      className={`agent-core-level${selected ? ' is-selected' : ''}${exploded ? ' is-expanded' : ''}`}
-      data-zoom={exploded ? 'pattern' : 'core'}
+      className={`agent-core-level${selected ? ' is-selected' : ''}`}
+      data-zoom="core"
     >
       <div className="agent-core-level__stage">
-        <TopologyBlock
-          topologyId={level.topologyId}
-          providerId={level.providerId}
-          level={level}
-          exploded={exploded}
-          runtimeState={state}
-          label={`${level.name} ${level.topology} silhouette`}
-          onToggle={onToggle}
-        />
+        <CapabilityCore level={level} state={state} />
       </div>
       <button
         type="button"
@@ -104,7 +95,6 @@ function DecoderLevel({ level, state, selected, exploded, onSelect, onToggle }) 
 function AgentCoreLanguage() {
   const [selectedId, setSelectedId] = useState('council');
   const [state, setState] = useState('running');
-  const [expanded, setExpanded] = useState(() => new Set());
 
   return (
     <div className="agent-core-language">
@@ -126,24 +116,7 @@ function AgentCoreLanguage() {
             level={level}
             state={state}
             selected={selectedId === level.id}
-            exploded={expanded.has(level.id)}
             onSelect={() => setSelectedId(level.id)}
-            onToggle={(shift) => {
-              setSelectedId(level.id);
-              setExpanded((current) => {
-                const next = new Set(shift ? current : current);
-                if (shift) {
-                  next.add(level.id);
-                  return next;
-                }
-                if (next.has(level.id)) next.delete(level.id);
-                else {
-                  next.clear();
-                  next.add(level.id);
-                }
-                return next;
-              });
-            }}
           />
         ))}
       </div>

@@ -13,7 +13,7 @@
     "constraints",
     "provenance"
   ],
-    "properties": {
+  "properties": {
     "specVersion": {
       "const": "0.2"
     },
@@ -180,7 +180,29 @@
             "cancelled"
           ]
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "executor"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "harness"
+              ]
+            }
+          },
+          "description": "`harness` is only meaningful on an executor. The Python validator has always enforced this and the schema did not, so a document putting a harness on a task node passed the published schema and failed the validator -- the schema being MORE PERMISSIVE, which is the direction that misleads an external consumer. Expressing it here is possible; the catalog-dependent half of the rule (is the harness id known, is its kind control-room) is not, and stays in Python."
+        }
+      ]
     },
     "edge": {
       "type": "object",

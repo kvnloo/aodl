@@ -41,6 +41,7 @@ INVALID_EXPECT = {
     "langchain-as-harness": "unknown harness",
     "fail-event": "unknown event",
     "open-questions-field": "unknown fields",
+    "harness-on-task": "only allowed on executor",
 }
 
 
@@ -83,42 +84,60 @@ def schema_cross_check() -> int:
               "zero-dependency by design)")
         return 0
 
-    schema_path = ROOT / "schema" / "hotl-0.2.schema.json"
-    if not schema_path.is_file():
-        print(f"schema cross-check FAIL: {schema_path.relative_to(ROOT)} is missing")
-        return 1
-    validator = jsonschema.Draft202012Validator(load_json(schema_path))
+    # Both wire versions have a schema, and `validate()` handles both, so both
+    # are checked. `hotl-0.1.schema.json` had never been compared to `validate_01`
+    # at all -- it agreed, but on a corpus of ONE document, which is not evidence
+    # of much. Now it is checked by the same mechanism rather than by assertion.
+    schema_for = {
+        "0.2": ROOT / "schema" / "hotl-0.2.schema.json",
+        "0.1": ROOT / "schema" / "hotl-0.1.schema.json",
+    }
+    for version, path in schema_for.items():
+        if not path.is_file():
+            print(f"schema cross-check FAIL: {path.relative_to(ROOT)} is missing")
+            return 1
+    validators = {v: jsonschema.Draft202012Validator(load_json(p))
+                  for v, p in schema_for.items()}
 
     false_rejections = 0
-    checked = 0
+    checked: dict[str, int] = {}
     for path in sorted(VALID_DIR.glob("*.json")):
         doc = load_json(path)
-        if doc.get("specVersion") != "0.2":
+        version = str(doc.get("specVersion"))
+        validator = validators.get(version)
+        if validator is None:
             continue
-        checked += 1
+        checked[version] = checked.get(version, 0) + 1
         errors = sorted(validator.iter_errors(doc), key=lambda e: list(e.path))
         if errors:
             false_rejections += 1
-            print(f"schema/valid/{path.name} FALSE REJECTION")
+            print(f"schema/valid/{path.name} FALSE REJECTION ({version})")
             for e in errors[:3]:
                 print(f"  {list(e.path)}: {e.message}")
 
-    caught = 0
-    total02 = 0
+    caught: dict[str, int] = {}
+    total: dict[str, int] = {}
     for path in sorted(INVALID_DIR.glob("*.json")):
         doc = load_json(path)
-        if doc.get("specVersion") != "0.2":
+        version = str(doc.get("specVersion"))
+        validator = validators.get(version)
+        if validator is None:
             continue
-        total02 += 1
+        total[version] = total.get(version, 0) + 1
         if any(True for _ in validator.iter_errors(doc)):
-            caught += 1
+            caught[version] = caught.get(version, 0) + 1
 
     if false_rejections:
         print(f"schema cross-check FAIL ({false_rejections} false rejections)")
         return 1
-    print(f"schema cross-check OK ({checked} valid 0.2 docs accepted; "
-          f"structurally catches {caught}/{total02} of the invalid corpus -- "
-          f"the rest are semantic and live only in the Python validator)")
+    parts = ", ".join(
+        f"{n} valid {v} accepted; structurally catches {caught.get(v, 0)}/{total.get(v, 0)} invalid"
+        for v, n in sorted(checked.items()))
+    print(f"schema cross-check OK ({parts}). The rules the schemas miss are graph "
+          f"properties (cycles, reachability, fan-in, bounds), policy (privilege, "
+          f"payment, gates) and the harness CATALOG (unknown id, control-room kind) "
+          f"-- none expressible in draft 2020-12 without duplicating the catalog. "
+          f"They live only in the Python validator.")
     return 0
 
 

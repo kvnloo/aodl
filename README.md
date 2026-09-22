@@ -112,11 +112,19 @@ Two validators exist and they are **not** equivalent. Measured against
 | validator | documents it rejects |
 |---|---|
 | `aodl_contract/validator.py` (pure Python, zero dependencies) | **all 18** in `examples/invalid/` |
-| `schema/hotl-0.2.schema.json` (draft 2020-12) | **2 of 17** 0.2 documents — structural faults only |
+| `schema/hotl-0.2.schema.json` (draft 2020-12) | **3 of 18** 0.2 documents — structural faults only |
 
-The other 15 are semantic: dependency cycles, privilege escalation, implicit
-fan-in, isolated nodes, payment execution. A structural schema cannot express
-them, so the JSON Schema is a **subset**, not a second implementation. Nothing
+The other 15 are graph properties (cycles, reachability, fan-in, bounds), policy
+(privilege, payment, human gates) or the harness **catalog** (unknown id,
+control-room kind). None is expressible in draft 2020-12 without duplicating
+`harnesses/catalog.json` into the schema, so they stay in Python. The JSON Schema
+is a **subset**, not a second implementation.
+
+One rule it *can* express was missing until 2026-09-22: `harness` is only
+meaningful on an executor node. A document putting a harness on a task node
+passed the published schema and failed the validator — the schema being MORE
+permissive, the direction that misleads an external consumer.
+`examples/invalid/harness-on-task.json` covers it now. Nothing
 loaded it until `tests/validate.py` began cross-checking it, one-directionally:
 a 0.2 document the validator accepts must not be rejected by the schema, or an
 external consumer implementing the published schema would refuse documents this

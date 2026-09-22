@@ -48,6 +48,80 @@ def load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def schema_cross_check() -> int:
+    """The JSON Schema must never reject a document this validator accepts.
+
+    `README.md` and `docs/working-note.md` call `schema/hotl-0.2.schema.json`
+    "the checkable form" of the IR, and NOTHING loaded it. Measured against this
+    corpus it is a partial restatement:
+
+      * it catches 3 of the 18 documents in `examples/invalid/`
+        (fail-event, open-questions-field, unknown-version) -- all structural;
+      * the other 15 are rejected for SEMANTIC reasons (dependency cycles,
+        privilege escalation, implicit fan-in, isolated nodes, payment
+        execution) that a structural schema cannot express;
+      * the hand-written validator catches all 18.
+
+    So the schema is a subset, not a second implementation, and the one property
+    that must hold is one-directional: a 0.2 document the validator accepts must
+    NOT be rejected by the schema, or an external consumer implementing the
+    published schema would refuse documents we call valid.
+
+    `hotl-0.1-fanin.json` is skipped by design -- it is a 0.1 document, and this
+    is the 0.2 schema. `validate()` dispatches on `specVersion` and handles both.
+
+    Returns 0 on success, including when `jsonschema` is absent: this repo is
+    zero-dependency BY DESIGN (`aodl_contract/validator.py` reimplements the
+    checks in pure Python), so the schema cannot be enforced by AODL's own CI.
+    That is exactly why the subset relationship is recorded here rather than
+    assumed.
+    """
+    try:
+        import jsonschema
+    except ImportError:
+        print("schema cross-check SKIP (jsonschema not installed; this repo is "
+              "zero-dependency by design)")
+        return 0
+
+    schema_path = ROOT / "schema" / "hotl-0.2.schema.json"
+    if not schema_path.is_file():
+        print(f"schema cross-check FAIL: {schema_path.relative_to(ROOT)} is missing")
+        return 1
+    validator = jsonschema.Draft202012Validator(load_json(schema_path))
+
+    false_rejections = 0
+    checked = 0
+    for path in sorted(VALID_DIR.glob("*.json")):
+        doc = load_json(path)
+        if doc.get("specVersion") != "0.2":
+            continue
+        checked += 1
+        errors = sorted(validator.iter_errors(doc), key=lambda e: list(e.path))
+        if errors:
+            false_rejections += 1
+            print(f"schema/valid/{path.name} FALSE REJECTION")
+            for e in errors[:3]:
+                print(f"  {list(e.path)}: {e.message}")
+
+    caught = 0
+    total02 = 0
+    for path in sorted(INVALID_DIR.glob("*.json")):
+        doc = load_json(path)
+        if doc.get("specVersion") != "0.2":
+            continue
+        total02 += 1
+        if any(True for _ in validator.iter_errors(doc)):
+            caught += 1
+
+    if false_rejections:
+        print(f"schema cross-check FAIL ({false_rejections} false rejections)")
+        return 1
+    print(f"schema cross-check OK ({checked} valid 0.2 docs accepted; "
+          f"structurally catches {caught}/{total02} of the invalid corpus -- "
+          f"the rest are semantic and live only in the Python validator)")
+    return 0
+
+
 def run_corpus() -> int:
     failures = 0
     try:
@@ -87,6 +161,8 @@ def run_corpus() -> int:
             failures += 1
         else:
             print(f"invalid/{path.name} OK")
+
+    failures += schema_cross_check()
     return 1 if failures else 0
 
 

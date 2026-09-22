@@ -10,7 +10,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from aodl_contract import validate  # noqa: E402
+from aodl_contract import Issue, validate  # noqa: E402,F401
+# `Issue` and `validate` are re-exported deliberately: this module is the shared
+# validation facade for the test corpus. `tests/compile.py` already imports
+# `validate` from here, and `compiler/hermes.py` imports both `Issue` and
+# `validate` from here. Re-exporting only `validate` made that second import fail
+# with `ImportError: cannot import name 'Issue' from 'validate'`, which broke the
+# declared CI step `python3 tests/compile.py` (validate.yml:19) while the
+# preceding step `python3 tests/validate.py` passed.
 
 VALID_DIR = ROOT / "examples" / "valid"
 INVALID_DIR = ROOT / "examples" / "invalid"

@@ -38,7 +38,7 @@ $$
 
 The system evolves $\mathcal{O}_0 \rightarrow \cdots \rightarrow \mathcal{O}_T$. Spawning a debugger after a coder fails is a **graph mutation**, not a new English topology name.
 
-Readable DSL is sugar. JSON is the IR. EBNF in [`spec/hotl-0.2.ebnf`](../spec/hotl-0.2.ebnf) is the grammar sketch; [`schema/hotl-0.2.schema.json`](../schema/hotl-0.2.schema.json) is the checkable form.
+Readable DSL is sugar. JSON is the IR. EBNF in [`spec/hotl-0.2.ebnf`](../spec/hotl-0.2.ebnf) is the grammar sketch; [`schema/hotl-0.2.schema.json`](../schema/hotl-0.2.schema.json) is the STRUCTURAL form of that IR -- and a strict subset of the validator, which is the checkable one.
 
 ## 3. Three objects, never substituted
 
@@ -138,7 +138,7 @@ Autonomous product management is this graph over a backlog. That is Blueprint st
 | Live (LaTeX + React) | [kvnloo.github.io/aodl](https://kvnloo.github.io/aodl/) |
 | Visual ⇀ IR | [`spec/translation.md`](../spec/translation.md) · [`encodings/ir-map.json`](../encodings/ir-map.json) |
 | Grammar | [`spec/hotl-0.2.ebnf`](../spec/hotl-0.2.ebnf) |
-| Checkable IR | [`schema/hotl-0.2.schema.json`](../schema/hotl-0.2.schema.json) |
+| Structural IR shape | [`schema/hotl-0.2.schema.json`](../schema/hotl-0.2.schema.json) (subset of the validator) |
 | Research dump (ASCII, long) | [`spec/hotl-0.2.md`](../spec/hotl-0.2.md) |
 | Pipeline of intent → plan → observed | [`spec/architecture.mermaid`](../spec/architecture.mermaid) |
 | Named hybrid | [`spec/craid.md`](../spec/craid.md) |

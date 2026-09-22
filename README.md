@@ -47,7 +47,7 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 | Equations + stack | [`docs/working-note.md`](docs/working-note.md) |
 | C(RAID) R-phase capture | [`docs/research-craid-20260911.md`](docs/research-craid-20260911.md) (not a preprint) |
 | Grammar | [`spec/hotl-0.2.ebnf`](spec/hotl-0.2.ebnf) |
-| Checkable IR | [`schema/hotl-0.2.schema.json`](schema/hotl-0.2.schema.json) |
+| Structural IR shape | [`schema/hotl-0.2.schema.json`](schema/hotl-0.2.schema.json) — NOT the validator; see below |
 | Long research spec | [`spec/hotl-0.2.md`](spec/hotl-0.2.md) (ASCII; GitHub will not render `O_t` there) |
 | Intent → plan → observed | [`spec/architecture.mermaid`](spec/architecture.mermaid) |
 | Live UI (KaTeX + React) | [kvnloo.github.io/aodl](https://kvnloo.github.io/aodl/) (branch previews: [`/preview/`](https://kvnloo.github.io/aodl/preview/)) |
@@ -70,7 +70,8 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 ```
 docs/working-note.md        equations + stack (GitHub math)
 docs/network.md             sibling repos + harness ids
-schema/hotl-0.2.schema.json   checkable IR (draft 2020-12)
+schema/hotl-0.2.schema.json   structural IR shape (draft 2020-12); a
+                              SUBSET of the validator, see Validation
 schema/hotl-0.1.schema.json   archived 0.1
 spec/hotl-0.2.md            research spec (ASCII)
 spec/hotl-0.2.ebnf          grammar sketch
@@ -104,6 +105,23 @@ python3 scripts/build-pages.py --current-only   # site/ for GitHub Pages
 ```
 
 Unknown `specVersion`, implicit fan-in, unbounded spawn, missing ports, dependency cycles, undeclared privileged capability, and payment-execution grants fail closed. A visual `swarm` silhouette does **not** compile unless `ir-map.json` lists the required bounds.
+
+Two validators exist and they are **not** equivalent. Measured against
+`examples/`:
+
+| validator | documents it rejects |
+|---|---|
+| `aodl_contract/validator.py` (pure Python, zero dependencies) | **all 18** in `examples/invalid/` |
+| `schema/hotl-0.2.schema.json` (draft 2020-12) | **2 of 17** 0.2 documents — structural faults only |
+
+The other 15 are semantic: dependency cycles, privilege escalation, implicit
+fan-in, isolated nodes, payment execution. A structural schema cannot express
+them, so the JSON Schema is a **subset**, not a second implementation. Nothing
+loaded it until `tests/validate.py` began cross-checking it, one-directionally:
+a 0.2 document the validator accepts must not be rejected by the schema, or an
+external consumer implementing the published schema would refuse documents this
+repo calls valid. The cross-check SKIPs when `jsonschema` is absent, because this
+repo is zero-dependency by design.
 
 
 ## Supported harnesses

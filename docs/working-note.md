@@ -182,6 +182,45 @@ ChatGPT's Intent-Resolution Fabric, only the pieces this IR can express. Ripple 
 
 Until a measured claim exists, this note, the schema, the fixtures, and the dry-run *are* the language.
 
+### 8.2 Searchable policy kernels
+
+AODL can describe the **contract around an evolvable policy** without becoming the optimizer.
+
+The mechanism/policy boundary is:
+
+$$
+\text{deterministic mechanism}
+\; + \;
+\Pi_t\text{ (searchable policy)}
+\; \text{subject to} \;
+\Gamma_t
+$$
+
+The legal action space, hard constraints, privacy, budgets, human gates, and independent verification remain fixed by the contract. Sibling planes may search implementations of $\Pi_t$: rules, trees, lookup tables, compiler-generated code, BPF, or tiny learned policies.
+
+Current ownership is deliberately split:
+
+| Plane | Owns |
+|---|---|
+| AODL | portable intent, legal envelope, evidence relationships |
+| [z0intelligence](https://github.com/kvnloo/z0intelligence) / Jev | bounded learned decisions / specialist scoring |
+| [Kerdoios](https://github.com/kvnloo/kerdoios) | execution placement / resource portfolio |
+| [Tokenomics](https://github.com/kvnloo/tokenomics) | measured cost, latency, usage, experiment identity, verified outcomes |
+| [Evolution Lab](https://github.com/kvnloo/evolution-lab) | candidate generation, training, Pareto / MAP-Elites search |
+| Hermes / OMP | execution |
+| Ripple | human ambiguity / participation surface |
+
+Two research modes must stay distinct:
+
+1. **compiler/distiller** — search for a cheaper implementation that preserves the reference policy over the declared verification envelope;
+2. **self-evolving policy** — allow different decisions when they improve measured objectives while still satisfying $\Gamma_t$.
+
+A learned decision is never evidence of its own correctness. Execution completion is not verified success. Unknown measurements stay unknown. Promotion requires replayable evaluator evidence and a deterministic fallback.
+
+This also gives a clean OS interpretation. A Linux/CachyOS experiment can keep kernel correctness mechanisms fixed while searching scheduler or resource-allocation policy. `sched_ext`/BPF is an example policy boundary; CachyOS is **not** a harness id. The utility tradeoff — for example, sacrificing at most 5% background throughput to reduce interactive p99.9 latency — belongs in intent / $\Gamma_t$, not in a hidden optimizer preference.
+
+Profile: [`profiles/searchable-policy-kernel.md`](../profiles/searchable-policy-kernel.md).
+
 ## 9. Research capture (not a paper)
 
 A 2026-09-11 C(RAID) R-phase pass is [`research-craid-20260911.md`](research-craid-20260911.md). It does not change the schema. Closest academic cousins: $\lambda_A$ (intra-node calculus), Pact/MPST (message choreography), sheaf readings of the three objects, RLM/rate-distortion for slices, Evo-Bench for search over programs. Protocol layers MCP / A2A / AG-UI stay adapters. Frontier-kb holds the literature notes. A paper is still premature until §8.

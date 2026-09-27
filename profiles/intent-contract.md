@@ -61,9 +61,12 @@ AODL owns the vocabulary. Sibling planes own the rest:
 | Dash | mobile / voice HITL | Dash UI in this tree |
 | Ripple | Dash-consumed ephemeral intent surface (brand; AODL does not own it) | widgets, orbs, a third gallery, S-Pen as a product |
 | Firstmate | attention governor (captain-hold) | Keel ported here |
-| Evolution Lab | experiments / policy learning | LandingPageGym, tiny-net armies |
-| Kerdoios | where work runs | speculative execution compiler |
-| Jev | typed probabilistic decisions | TypeSafe System One scorer; not a harness id |
+| z0intelligence | live cognition; bounded learned specialists / OpenJev runtime | personal data, weights, or decision runtime |
+| Tokenomics | measured cost / latency / experiments / verified outcomes | measurement semantics reimplemented here |
+| Evolution Lab | experiments / policy learning / Pareto search | training runtime, experiment archives, candidate populations |
+| Kerdoios | execution portfolio / heterogeneous resource placement | execution runtime or orchestration truth |
+| Jev | bounded probabilistic scorer contract | not authority, not a harness id |
+| Searchable policy kernel | interpretation profile over existing HOTL 0.2 | optimizer, scheduler, model weights; see `searchable-policy-kernel.md` |
 | Blueprint | desired reality | IR |
 
 Reject: HOTL 0.3 kinds, sheaf JSON fields, `langchain` / `llm` harness ids, hue/geometry/mode runes as IR, UI-first builds, training-first, physical-world-first.

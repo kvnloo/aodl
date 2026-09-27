@@ -53,6 +53,7 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 | Live UI (KaTeX + React) | [kvnloo.github.io/aodl](https://kvnloo.github.io/aodl/) (branch previews: [`/preview/`](https://kvnloo.github.io/aodl/preview/)) |
 | Visual ⇀ IR | [`spec/translation.md`](spec/translation.md) · [`encodings/ir-map.json`](encodings/ir-map.json) |
 | Intent / participation (LLM) | [`profiles/intent-contract.md`](profiles/intent-contract.md) |
+| Searchable policy kernel | [`profiles/searchable-policy-kernel.md`](profiles/searchable-policy-kernel.md) — policy search/distillation contract; no runtime |
 | Hermes dry-run | [`profiles/hermes.md`](profiles/hermes.md) · [`compiler/hermes.py`](compiler/hermes.py) |
 | Mesh registry (catalog only) | [`docs/mesh-registry.md`](docs/mesh-registry.md) · [`mesh/registry.json`](mesh/registry.json) |
 | Proof | `python3 tests/validate.py` · `python3 tests/compile.py` · `python3 tests/mesh_registry.py` |
@@ -65,7 +66,7 @@ Readable DSL is sugar. First proof of generality: the **same primitives** expres
 | `encodings/` | Join table. Visual topology ids compile **only** through `ir-map.json`. |
 | `harnesses/catalog.json` | Formal supported harness ids (`hermes`, `omp`, `o8`, `grok`, `codex`, `claude`, `pi`, `fx`). |
 | `language/` | Catalog: $\mathcal{O}_t$ + $\tau$ as KaTeX and React; cores are the decoder below that. |
-| `profiles/` | Compiler profiles (Hermes, intent-contract). Not node kinds. |
+| `profiles/` | Compiler / interpretation profiles (Hermes, intent-contract, searchable policy kernel). Not node kinds or runtimes. |
 | `compiler/hermes.py` | Read-only Kanban dry-run. Predicts task ids; does not execute. |
 | `mesh/registry.json` | Domain-tool catalog by stage. Not HOTL fields, not harness ids, not adapters. |
 

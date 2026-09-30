@@ -1,0 +1,111 @@
+version: 1
+repo: kvnloo/aodl
+id: aodl
+component: aodl
+kind: protocol
+summary: Typed orchestration IR separating intent, runtime-safe compilation, observed topology, policy, and authority constraints.
+
+architecture:
+  subsystems:
+    - id: hotl-ir
+      name: HOTL 0.2 typed IR
+      kind: contract
+      summary: Defines the structural orchestration vocabulary, grammar, fail-closed graph invariants, and portable intent representation.
+      paths:
+        - schema/hotl-0.2.schema.json
+        - spec/hotl-0.2.md
+        - spec/hotl-0.2.ebnf
+        - aodl_contract/
+        - tests/validate.py
+
+    - id: intent-plan-compiler
+      name: Intent to plan compiler
+      kind: compiler
+      summary: Compiles portable intent into bounded runtime-specific dry-run plans while refusing unsupported or unsafe topology.
+      paths:
+        - compiler/hermes.py
+        - profiles/hermes.md
+        - tests/compile.py
+      depends_on: [hotl-ir]
+
+    - id: policy-kernel
+      name: Searchable policy kernel
+      kind: policy
+      summary: Defines the contract around bounded searchable policy while keeping legality, budgets, verification, and human gates outside the optimizer.
+      paths:
+        - profiles/searchable-policy-kernel.md
+        - profiles/intent-contract.md
+      depends_on: [hotl-ir]
+
+    - id: harness-catalog
+      name: Harness catalog
+      kind: registry
+      summary: Defines supported execution/control-room harness identifiers without treating distributions or products as new harness kinds.
+      paths:
+        - harnesses/catalog.json
+        - harnesses/README.md
+      depends_on: [hotl-ir]
+
+    - id: mesh-registry
+      name: Mesh registry
+      kind: registry
+      summary: Catalogs domain tools by stage under a fail-closed schema without adding them to the HOTL ontology.
+      paths:
+        - mesh/registry.json
+        - schema/mesh-registry.schema.json
+        - docs/mesh-registry.md
+        - tests/mesh_registry.py
+      depends_on: [hotl-ir]
+
+    - id: visual-encoding
+      name: Visual to IR encoding
+      kind: representation
+      summary: Maps visual topology language into canonical HOTL structure through an explicit join table rather than inferred semantics.
+      paths:
+        - encodings/visual.json
+        - encodings/ir-map.json
+        - encodings/ir-map.schema.json
+        - spec/translation.md
+      depends_on: [hotl-ir]
+
+  implements_mechanisms:
+    - aodl-intent-plan-observed
+
+  provides_interfaces:
+    - aodl.intent.v1
+
+  consumes_interfaces: []
+
+  produces_representations:
+    - aodl-intent
+    - compiled-plan
+
+  consumes_representations: []
+
+  boundaries:
+    owns:
+      - typed orchestration intent and policy contract
+      - authority and budget representation
+      - fail-closed structural validation
+      - runtime-specific dry-run compilation profiles
+      - harness and visual-encoding catalogs
+    not_here:
+      - scheduler or execution runtime
+      - provider placement
+      - learned policy training
+      - token measurement
+      - model weights or private personal history
+
+  evidence:
+    docs:
+      - README.md
+      - docs/working-note.md
+      - profiles/searchable-policy-kernel.md
+    tests:
+      - tests/validate.py
+      - tests/compile.py
+      - tests/mesh_registry.py
+    schemas:
+      - schema/hotl-0.2.schema.json
+      - schema/mesh-registry.schema.json
+      - encodings/ir-map.schema.json

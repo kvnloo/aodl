@@ -42,6 +42,8 @@ INVALID_EXPECT = {
     "fail-event": "unknown event",
     "open-questions-field": "unknown fields",
     "harness-on-task": "only allowed on executor",
+    "scope-widens-ceiling": "widens authorityCeiling",
+    "scope-wildcard-target": "scopes are exact",
 }
 
 

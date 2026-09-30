@@ -179,6 +179,18 @@
             "failed",
             "cancelled"
           ]
+        },
+        "authorityScopes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/authorityScope"
+          }
+        },
+        "prohibitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/prohibition"
+          }
         }
       },
       "allOf": [
@@ -201,6 +213,26 @@
             }
           },
           "description": "`harness` is only meaningful on an executor. The Python validator has always enforced this and the schema did not, so a document putting a harness on a task node passed the published schema and failed the validator -- the schema being MORE PERMISSIVE, which is the direction that misleads an external consumer. Expressing it here is possible; the catalog-dependent half of the rule (is the harness id known, is its kind control-room) is not, and stays in Python."
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "executor"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "authorityScopes"
+              ]
+            }
+          },
+          "description": "authorityScopes are only meaningful on an executor (the principal that acts)."
         }
       ]
     },
@@ -353,6 +385,235 @@
           "type": "object"
         }
       }
+    },
+    "scopeTargets": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "repos": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "enum": [
+                "*",
+                "**",
+                "any",
+                "all",
+                "every",
+                "everything",
+                "anything",
+                "non_default"
+              ]
+            },
+            "pattern": "^[^*?]+$"
+          }
+        },
+        "branches": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "enum": [
+                "*",
+                "**",
+                "any",
+                "all",
+                "every",
+                "everything",
+                "anything",
+                "non_default"
+              ]
+            },
+            "pattern": "^[^*?]+$"
+          }
+        },
+        "paths": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "enum": [
+                "*",
+                "**",
+                "any",
+                "all",
+                "every",
+                "everything",
+                "anything",
+                "non_default"
+              ]
+            },
+            "pattern": "^[^*?]+$"
+          }
+        },
+        "hosts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "enum": [
+                "*",
+                "**",
+                "any",
+                "all",
+                "every",
+                "everything",
+                "anything",
+                "non_default"
+              ]
+            },
+            "pattern": "^[^*?]+$"
+          }
+        },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "enum": [
+                "*",
+                "**",
+                "any",
+                "all",
+                "every",
+                "everything",
+                "anything",
+                "non_default"
+              ]
+            },
+            "pattern": "^[^*?]+$"
+          }
+        },
+        "packages": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "enum": [
+                "*",
+                "**",
+                "any",
+                "all",
+                "every",
+                "everything",
+                "anything",
+                "non_default"
+              ]
+            },
+            "pattern": "^[^*?]+$"
+          }
+        },
+        "envs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "enum": [
+                "*",
+                "**",
+                "any",
+                "all",
+                "every",
+                "everything",
+                "anything",
+                "non_default"
+              ]
+            },
+            "pattern": "^[^*?]+$"
+          }
+        },
+        "prs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "enum": [
+                "*",
+                "**",
+                "any",
+                "all",
+                "every",
+                "everything",
+                "anything",
+                "non_default"
+              ]
+            },
+            "pattern": "^[^*?]+$"
+          }
+        }
+      },
+      "description": "Exact targets (spec/authority-scopes.md). Wildcards are rejected; the validator also rejects them case-insensitively."
+    },
+    "authorityScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "effect",
+        "targets"
+      ],
+      "properties": {
+        "effect": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "not": {
+            "enum": [
+              "payment",
+              "finance",
+              "pay",
+              "transfer",
+              "wallet"
+            ]
+          }
+        },
+        "targets": {
+          "$ref": "#/$defs/scopeTargets"
+        }
+      },
+      "description": "Narrows one authorityCeiling entry of an executor to exact targets. The effect must be on the node's authorityCeiling (validator-only rule)."
+    },
+    "prohibition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "effect"
+      ],
+      "properties": {
+        "effect": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "not": {
+            "enum": [
+              "payment",
+              "finance",
+              "pay",
+              "transfer",
+              "wallet"
+            ]
+          }
+        },
+        "targets": {
+          "$ref": "#/$defs/scopeTargets"
+        }
+      },
+      "description": "Removes authority for an effect (optionally only for the named targets). Binds every executor in the contract."
     }
   }
 }

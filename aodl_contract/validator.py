@@ -721,7 +721,7 @@ def validate_encodings() -> list[Issue]:
         issues.append(Issue("encodings", "unlabeled hybrid must be not-inferred"))
     return issues
 
-REQUIRED_HARNESS_IDS = ("hermes", "omp", "o8", "grok", "codex", "claude", "pi", "fx")
+REQUIRED_HARNESS_IDS = ("hermes", "omp", "o8", "grok", "codex", "claude", "pi", "fx", "agentweb")
 HARNESS_KINDS = {"executor", "control-room"}
 DASH_STATUS = {"wired", "none"}
 FIRSTMATE_STATUS = {"primary", "crew", "none"}
@@ -771,9 +771,15 @@ def validate_catalog() -> list[Issue]:
         if not isinstance(row, dict):
             issues.append(Issue("catalog", f"{hid} must be an object"))
             continue
-        for key in ("name", "kind", "bin", "repo", "dash", "role"):
+        for key in ("name", "kind", "repo", "dash", "role"):
             if key not in row:
                 issues.append(Issue("catalog", f"{hid} missing {key}"))
+        binary = row.get("bin")
+        endpoint = row.get("endpoint")
+        if not isinstance(binary, str) and not isinstance(endpoint, str):
+            issues.append(Issue("catalog", f"{hid} must declare bin or endpoint"))
+        if isinstance(endpoint, str) and not endpoint.startswith("https://"):
+            issues.append(Issue("catalog", f"{hid} endpoint must be https"))
         if not _member(row.get("kind"), HARNESS_KINDS):
             issues.append(Issue("catalog", f"{hid} kind {row.get('kind')!r} is unknown"))
         if not _member(row.get("dash"), DASH_STATUS):

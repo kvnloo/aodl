@@ -4,11 +4,20 @@ Status: experimental profile. It does not add a new HOTL event type or scheduler
 
 ## Hypothesis
 
-A mutation may be retried automatically only when the runtime can prove that the previous attempt did **not** create a durable or externally visible effect.
+A mutation with an ambiguous outcome must never be retried under a **new logical identity**.
 
-If execution was attempted and the effect is unknown, the only safe automatic transition is **observe/reconcile**. Blind replay is invalid.
+After dispatch with an unknown effect, a runtime has two safe automatic paths:
 
-This is a cross-runtime hypothesis, not an AODL branding claim. It is falsified if a target runtime needs materially different state to make the retry decision, or if the normalized receipt loses a correctness-relevant distinction.
+1. **observe/reconcile** before deciding what to do next; or
+2. **resend the identical mutation** only when a durable receiver-side idempotency contract binds the same mutation key to the same content.
+
+A fresh mutation identity after an ambiguous attempt is invalid.
+
+### Revision from the first hypothesis
+
+The initial study hypothesis allowed automatic retry only after proving that the prior attempt had no effect. Super Productivity falsified that stronger claim: its server can safely receive the same operation again after a lost acknowledgement because `Operation.id` is durably unique and same-ID/different-content is rejected. The retry is safe even when the first effect may already exist.
+
+This is the intended research loop: preserve the counterexample and refine the invariant rather than forcing every runtime into CUA's weaker stop-and-observe model.
 
 ## Why this study exists
 
@@ -34,7 +43,9 @@ A Mutation Outcome Receipt is carried in an ordinary HOTL `stateUpdate` event pa
   "attempted": true,
   "effect": "none | unknown | observed",
   "verification": "unverified | verified",
-  "retryDisposition": "retry | observe | stop",
+  "retryDisposition": "retry | observe | resend | stop",
+  "idempotency": "none | receiver-durable",
+  "mutationHash": "optional sha256 binding the mutation content",
   "evidenceRef": "content-free reference to the proof",
   "effectHash": "optional sha256 of the observed effect"
 }
@@ -44,23 +55,34 @@ The receipt is intentionally content-free. Raw prompts, commands, credentials, s
 
 ### Required safety rules
 
-1. `effect=unknown` => `retryDisposition=observe`.
-2. `effect=observed` => `retryDisposition=stop` and `effectHash` is required.
-3. `verification=verified` => `retryDisposition=stop` and `evidenceRef` is required.
-4. `retryDisposition=retry` is legal only when `effect=none`; if an attempt occurred, `evidenceRef` must prove the pre-effect boundary.
-5. `attempted=false` cannot claim `effect=unknown|observed`.
-6. The same `mutationKey` may progress from unknown to observed/verified, but two observed receipts for that key with different `effectHash` values are a conflict.
-7. The receipt never grants authority. Existing AODL authority rules still govern the mutation.
+1. `effect=unknown` => `retryDisposition=observe|resend`; never ordinary `retry`.
+2. `retryDisposition=resend` is legal only when:
+   - `effect=unknown`;
+   - `idempotency=receiver-durable`;
+   - `mutationHash` is present;
+   - `evidenceRef` identifies the durable dedupe contract.
+3. Every receipt for the same `mutationKey` that carries `mutationHash` must carry the same hash. Same identity/different content is a conflict.
+4. `effect=observed` => `retryDisposition=stop` and `effectHash` is required.
+5. `verification=verified` => `retryDisposition=stop` and `evidenceRef` is required.
+6. Ordinary `retryDisposition=retry` is legal only when `effect=none`; if an attempt occurred, `evidenceRef` must prove the pre-effect boundary.
+7. `attempted=false` cannot claim `effect=unknown|observed`.
+8. The same `mutationKey` may progress from unknown to observed/verified, but two observed receipts for that key with different `effectHash` values are a conflict.
+9. The receipt never grants authority. Existing AODL authority rules still govern the mutation.
+
+The important distinction is **retry vs resend**. `retry` authorizes another logical mutation because the prior effect is proven absent. `resend` retransmits the same logical mutation key/content so a durable receiver can return or reconstruct the prior result without duplicating the effect.
 
 ## Adversarial corpus
 
 The executable corpus includes:
 
 - safe pre-effect failure -> retry;
-- acknowledgement lost after dispatch -> observe, not retry;
+- acknowledgement lost after dispatch without durable idempotency -> observe, not retry;
+- acknowledgement lost with durable receiver idempotency -> resend same key/content;
 - observed effect -> stop;
 - verified effect -> stop;
-- unknown + retry -> invalid;
+- unknown + ordinary retry -> invalid;
+- unknown + resend without durable idempotency proof -> invalid;
+- same mutation key + conflicting mutation hashes -> invalid;
 - observed + retry -> invalid;
 - same mutation key + conflicting observed hashes -> invalid.
 
@@ -87,7 +109,7 @@ Use `Operation.id` as the mutation key. Candidate mapping:
 - local op before upload: attempted locally, remote effect unresolved;
 - server acknowledgement (`syncedAt`) or later download of the same op id: observed/verified remote durability;
 - explicit rejection (`rejectedAt`) before server acceptance: no remote effect, eligible for the resolver/rebase path;
-- network ambiguity with no acknowledgement: observe/query by operation id before generating a semantically duplicate mutation.
+- network ambiguity with no acknowledgement: safely resend the exact same `Operation.id` and immutable operation content. Durable duplicate detection is the observation/reconciliation mechanism: the server either accepts once or reports the existing duplicate; it rejects same-ID/different-content.
 
 The vector clock remains causal evidence; this profile does not replace it.
 

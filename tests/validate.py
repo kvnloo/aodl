@@ -42,6 +42,9 @@ INVALID_EXPECT = {
     "fail-event": "unknown event",
     "open-questions-field": "unknown fields",
     "harness-on-task": "only allowed on executor",
+    "mutation-retry-after-unknown": "ambiguous mutation outcome must observe",
+    "mutation-retry-after-observed": "observed mutation outcome cannot retry",
+    "mutation-conflicting-effect-hash": "conflicting observed effect hashes",
 }
 
 

@@ -31,3 +31,17 @@ This lets routers reason about retries without importing runtime-specific implem
 ## Training use
 
 Every Frontier Lab transfer should classify the operation, inject at least one acknowledgement-loss or race fault, and try to falsify the class. If evidence contradicts the registry, change the registry rather than forcing the runtime to fit it.
+
+
+## Cross-domain resend evidence
+
+`receiver-durable` is not synonymous with "database unique constraint."
+
+- SuperSync binds a logical operation to durable `Operation.id`.
+- Hermes Relay binds a sealing draft frame to a sealed-key tombstone; an ambiguous acknowledgement can replay the same frame once and the connector returns the original stream identity rather than opening another stream.
+
+The shared property is receiver-held identity + same-identity replay semantics.
+
+## HTTP-method caution
+
+Do not infer a mutation class from `POST`, `PATCH`, `PUT`, or `DELETE` alone. Some deletes are state-idempotent, but repeated calls may still emit duplicate external events; some POSTs are strongly idempotent under a request/operation key. Classify the concrete receiver contract, not the verb.

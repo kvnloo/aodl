@@ -155,6 +155,8 @@ INVALID_EXPECT = {
     "mutation-retry-after-unknown": "ambiguous mutation outcome must observe",
     "mutation-retry-after-observed": "observed mutation outcome cannot retry",
     "mutation-conflicting-effect-hash": "conflicting observed effect hashes",
+    "mutation-resend-without-idempotency": "requires receiver-durable idempotency",
+    "mutation-conflicting-mutation-hash": "conflicting mutation hashes",
 }
 
 _CATALOG_UNSET = object()

@@ -32,6 +32,30 @@ Three current systems already implement pieces of the same safety boundary:
 
 The experiment asks whether one conservative receipt can describe the shared decision boundary without erasing those differences.
 
+## Results to date
+
+| Runtime | Injected / observed boundary | Safe disposition | Evidence |
+|---|---|---|---|
+| CUA guarded completion | target applies the guarded click, then caller loses the acknowledgement | `observe` | Python + TypeScript fault tests assert one click only, target state changed, caller records `effect=unknown` |
+| Super Productivity / SuperSync | server commits an operation, success response is discarded, client sends again | `resend` | identical `Operation.id` + content returns `DUPLICATE_OPERATION`; same id + changed content returns `INVALID_OP_ID`; next fresh op receives the next sequence exactly once |
+| Hermes gateway delivery | a complete final message may have reached the platform, but delivery is explicitly ambiguous and no reliable read-back exists | `escalate` | existing ambiguous-timeout path refuses blind re-send; failed turns with tool activity tell the caller to verify effects before resending |
+| Hermes terminal | arbitrary shell process has spawned, then the trustworthy completion channel fails | `escalate` / verify | downstream fault test fences the automatic retry loop after one possible mutation while preserving pre-spawn retries |
+
+### First falsification
+
+The original hypothesis said every unknown effect must be observed before retry. SuperSync disproved it. Receiver-durable idempotency allows a safer and faster operation: resend the **same** immutable mutation identity and let the receiver reconcile it.
+
+### Second refinement
+
+Hermes shows the opposite limit: some effects are neither queryable nor safely idempotent. For those, automation needs a first-class unresolved state. Treating that state as ordinary failure encourages duplicate effects; treating it as success lies. `escalate` preserves the uncertainty.
+
+### Emerging invariant
+
+The portable invariant is therefore not "never retry after ambiguity." It is:
+
+> **Never create a fresh logical mutation identity after an ambiguous attempt.** Observe the world, resend the exact content under a proven durable receiver-side idempotency key, or preserve the ambiguity for a higher-level reconciler.
+
+
 ## Normalized receipt
 
 A Mutation Outcome Receipt is carried in an ordinary HOTL `stateUpdate` event payload:

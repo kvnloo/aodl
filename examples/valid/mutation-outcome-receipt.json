@@ -165,6 +165,53 @@
         "verification": "unverified",
         "retryDisposition": "retry"
       }
+    },
+    {
+      "eventId": "e5",
+      "type": "stateUpdate",
+      "candidateId": "m_durable_resend",
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "revision": 1,
+      "causalParents": [],
+      "actor": "executor",
+      "logicalTime": "e5",
+      "payload": {
+        "receiptKind": "mutation-outcome/v0",
+        "mutationKey": "m_durable_resend",
+        "authorityScope": "device:sync-client",
+        "attempted": true,
+        "effect": "unknown",
+        "verification": "unverified",
+        "retryDisposition": "resend",
+        "idempotency": "receiver-durable",
+        "mutationHash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "evidenceRef": "supersync:operation-id-unique"
+      }
+    },
+    {
+      "eventId": "e6",
+      "type": "stateUpdate",
+      "candidateId": "m_durable_resend",
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "revision": 1,
+      "causalParents": [
+        "e5"
+      ],
+      "actor": "executor",
+      "logicalTime": "e6",
+      "payload": {
+        "receiptKind": "mutation-outcome/v0",
+        "mutationKey": "m_durable_resend",
+        "authorityScope": "device:sync-client",
+        "attempted": true,
+        "effect": "observed",
+        "verification": "verified",
+        "retryDisposition": "stop",
+        "idempotency": "receiver-durable",
+        "mutationHash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "evidenceRef": "supersync:duplicate-operation",
+        "effectHash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      }
     }
   ]
 }

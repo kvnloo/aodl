@@ -1,6 +1,6 @@
 """Importable AODL/HOTL contract validation."""
 
-from .validator import (
+from .core import CORE_FORMAT, canonical_json, semantic_fingerprint, to_core\nfrom .validator import (
     Issue,
     WIRE_SPEC,
     validate,

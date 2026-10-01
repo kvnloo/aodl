@@ -21,12 +21,16 @@ Required payload fields:
 - `attempted`: boolean;
 - `effect`: `none | unknown | observed`;
 - `verification`: `unverified | verified`;
-- `retryDisposition`: `retry | observe | stop`.
+- `retryDisposition`: `retry | observe | resend | stop`.
 
 Optional:
 
+- `idempotency`: `none | receiver-durable`;
+- `mutationHash`: lowercase SHA-256 binding the logical mutation content;
 - `evidenceRef`: content-free proof reference;
 - `effectHash`: lowercase SHA-256 hex of the observed effect.
+
+`resend` means retransmit the identical `mutationKey` + `mutationHash` under a proven durable receiver-side dedupe contract. It is not permission to mint a replacement mutation.
 
 Normative retry rules are defined in `docs/frontier-lab/mutation-outcome-receipt-v0.md` and enforced by the Python validator.
 

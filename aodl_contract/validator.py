@@ -137,6 +137,8 @@ INVALID_EXPECT = {
     "craid-feedback-cycle": "dependency cycle",
     "payment-execution": "payment execution",
     "hidden-privilege": "privileged capability",
+    "scope-widens-ceiling": "widens authorityCeiling",
+    "scope-wildcard-target": "scopes are exact",
     "missing-endpoint": "unknown node",
     "isolated-node": "isolated node",
     "control-room-as-executor": "control-room",
@@ -263,6 +265,78 @@ def _irreversible(values: object) -> list[str]:
     if not isinstance(values, list):
         return []
     return [str(v) for v in values if str(v).lower() in IRREVERSIBLE]
+
+
+# Optional node authority scopes (spec/authority-scopes.md). A scope narrows one authorityCeiling
+# entry to exact targets; a prohibition removes authority. Target vocabulary is closed and exact.
+SCOPE_TARGET_KEYS = frozenset({"repos", "branches", "paths", "hosts", "units", "packages", "envs", "prs"})
+SCOPE_WILDCARDS = frozenset({"*", "**", "any", "all", "every", "everything", "anything", "non_default"})
+EFFECT_RE = re.compile(r"^[a-z][a-z0-9_]{0,63}$")
+PAYMENT_WORDS = frozenset({"payment", "finance", "pay", "transfer", "wallet"})
+
+
+def _scope_targets(targets: object, where: str, issues: list[Issue], *, required: bool) -> None:
+    if targets is None and not required:
+        return
+    if not isinstance(targets, dict):
+        issues.append(Issue("scope", f"{where}.targets must be an object"))
+        return
+    if not targets:
+        issues.append(Issue("scope", f"{where}.targets must name at least one target (exact scope)"))
+        return
+    for key, values in targets.items():
+        if key not in SCOPE_TARGET_KEYS:
+            issues.append(Issue("scope", f"{where}.targets unknown target key {key!r}"))
+            continue
+        if not isinstance(values, list) or not values:
+            issues.append(Issue("scope", f"{where}.targets.{key} must be a non-empty array"))
+            continue
+        for v in values:
+            if not isinstance(v, str) or not v.strip():
+                issues.append(Issue("scope", f"{where}.targets.{key} entries must be non-empty strings"))
+            elif v.strip().lower() in SCOPE_WILDCARDS or "*" in v or "?" in v:
+                issues.append(Issue("scope", f"{where}.targets.{key} wildcard {v!r}: scopes are exact"))
+
+
+def _scope_entries(node: dict[str, object], field: str, ident: str, issues: list[Issue]) -> list[dict[str, object]]:
+    if field not in node:
+        return []
+    raw = node.get(field)
+    if not isinstance(raw, list):
+        issues.append(Issue("scope", f"node {ident}.{field} must be an array"))
+        return []
+    out = []
+    for i, entry in enumerate(raw):
+        where = f"node {ident}.{field}[{i}]"
+        if not isinstance(entry, dict):
+            issues.append(Issue("scope", f"{where} must be an object"))
+            continue
+        extra = set(entry) - {"effect", "targets"}
+        if extra:
+            issues.append(Issue("scope", f"{where} unknown fields {sorted(str(x) for x in extra)}"))
+        effect = entry.get("effect")
+        if not isinstance(effect, str) or not EFFECT_RE.match(effect):
+            issues.append(Issue("scope", f"{where}.effect must be a lower-case effect id"))
+            continue
+        if effect in PAYMENT_WORDS:
+            issues.append(Issue("payment", f"{where} payment execution is unsupported"))
+            continue
+        out.append(entry)
+    return out
+
+
+def _validate_authority_scopes(ident: str, node: dict[str, object], ceiling: set[str], issues: list[Issue]) -> None:
+    scopes = _scope_entries(node, "authorityScopes", ident, issues)
+    if "authorityScopes" in node and node.get("kind") != "executor":
+        issues.append(Issue("scope", f"node {ident} authorityScopes are only allowed on executor nodes"))
+    for i, entry in enumerate(scopes):
+        where = f"node {ident}.authorityScopes[{i}]"
+        effect = str(entry["effect"])
+        if effect not in ceiling:
+            issues.append(Issue("scope", f"{where} effect {effect!r} widens authorityCeiling; a scope only narrows"))
+        _scope_targets(entry.get("targets"), where, issues, required=True)
+    for i, entry in enumerate(_scope_entries(node, "prohibitions", ident, issues)):
+        _scope_targets(entry.get("targets"), f"node {ident}.prohibitions[{i}]", issues, required=False)
 
 
 def _validate_observed_graph(graph: dict[str, object], issues: list[Issue]) -> None:
@@ -550,6 +624,7 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
                 issues.append(
                     Issue("gate", f"verifier {ident} cannot hold merge grant {held}; review is not the gate")
                 )
+        _validate_authority_scopes(ident, node, ceiling_set, issues)
 
     if "observedGraph" in doc:
         observed = _as_dict(doc.get("observedGraph"), "observedGraph", issues)

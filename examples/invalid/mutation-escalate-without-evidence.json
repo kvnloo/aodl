@@ -1,0 +1,108 @@
+{
+  "specVersion": "0.2",
+  "graphId": "mutationEscalateWithoutEvidence",
+  "revision": 1,
+  "intentGraph": {
+    "nodes": [
+      {
+        "id": "executor",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "receipt",
+            "direction": "out",
+            "schema": "mutation-outcome/v0"
+          }
+        ],
+        "capabilities": [
+          "mutate"
+        ],
+        "authorityCeiling": [
+          "mutate"
+        ]
+      },
+      {
+        "id": "verify",
+        "kind": "verifier",
+        "ports": [
+          {
+            "id": "receipt",
+            "direction": "in",
+            "schema": "mutation-outcome/v0"
+          }
+        ],
+        "capabilities": []
+      }
+    ],
+    "edges": [
+      {
+        "id": "receipt_observation",
+        "relation": "observation",
+        "from": "executor",
+        "to": "verify",
+        "fromPort": "receipt",
+        "toPort": "receipt",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [],
+          "delegationDepth": 0
+        },
+        "evidence": {
+          "required": true
+        },
+        "provenance": {
+          "sourceHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        }
+      }
+    ]
+  },
+  "policies": {
+    "protocol": "mutation-outcome-receipt/v0",
+    "kinds": [
+      "retry"
+    ],
+    "fanIn": "all",
+    "dynamic": {
+      "allowed": false,
+      "maxChildren": 0,
+      "maxDepth": 0
+    }
+  },
+  "constraints": {
+    "budgets": {
+      "attention": 1
+    },
+    "termination": {
+      "on": "verified-or-escalated"
+    }
+  },
+  "provenance": {
+    "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "source": "frontier-lab mutation outcome receipt v0"
+  },
+  "eventLog": [
+    {
+      "eventId": "e1",
+      "type": "stateUpdate",
+      "candidateId": "m1",
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "revision": 1,
+      "causalParents": [],
+      "actor": "executor",
+      "logicalTime": "e1",
+      "payload": {
+        "receiptKind": "mutation-outcome/v0",
+        "mutationKey": "m1",
+        "authorityScope": "gateway:delivery",
+        "attempted": true,
+        "effect": "unknown",
+        "verification": "unverified",
+        "retryDisposition": "escalate"
+      }
+    }
+  ]
+}

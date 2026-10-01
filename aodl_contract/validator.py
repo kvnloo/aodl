@@ -57,6 +57,12 @@ EVENT_TYPES_02 = {
     "stateUpdate",
     "snapshot",
 }
+MUTATION_RECEIPT_PROTOCOL = "mutation-outcome-receipt/v0"
+MUTATION_RECEIPT_KIND = "mutation-outcome/v0"
+MUTATION_EFFECTS = {"none", "unknown", "observed"}
+MUTATION_VERIFICATION = {"unverified", "verified"}
+MUTATION_RETRY_DISPOSITIONS = {"retry", "observe", "resend", "escalate", "stop"}
+MUTATION_IDEMPOTENCY = {"none", "receiver-durable"}
 NODE_ROLES_01 = {
     "orchestrator",
     "worker",
@@ -146,6 +152,12 @@ INVALID_EXPECT = {
     "langchain-as-harness": "unknown harness",
     "fail-event": "unknown event",
     "open-questions-field": "unknown fields",
+    "mutation-retry-after-unknown": "ambiguous mutation outcome must observe",
+    "mutation-retry-after-observed": "observed mutation outcome cannot retry",
+    "mutation-conflicting-effect-hash": "conflicting observed effect hashes",
+    "mutation-resend-without-idempotency": "requires receiver-durable idempotency",
+    "mutation-conflicting-mutation-hash": "conflicting mutation hashes",
+    "mutation-escalate-without-evidence": "requires unresolved-boundary evidence",
 }
 
 _CATALOG_UNSET = object()
@@ -249,6 +261,208 @@ def _irreversible(values: object) -> list[str]:
     if not isinstance(values, list):
         return []
     return [str(v) for v in values if str(v).lower() in IRREVERSIBLE]
+
+
+def _validate_mutation_outcome_receipts(
+    raw_events: list[object],
+    issues: list[Issue],
+) -> None:
+    """Validate the experimental mutation-outcome receipt profile.
+
+    The profile makes one conservative identity claim: an ambiguous mutation
+    may be observed, resent under proven receiver-durable idempotency, or
+    escalated unresolved, but it must never be replayed as a fresh logical
+    mutation. Runtime-specific causality/receipts remain authoritative; this
+    only normalizes the decision boundary for cross-runtime experiments.
+    """
+    observed_hashes: dict[str, str] = {}
+    mutation_hashes: dict[str, str] = {}
+    receipt_count = 0
+
+    for i, item in enumerate(raw_events):
+        if not isinstance(item, dict) or item.get("type") != "stateUpdate":
+            continue
+        payload = item.get("payload")
+        if not isinstance(payload, dict) or payload.get("receiptKind") != MUTATION_RECEIPT_KIND:
+            continue
+
+        receipt_count += 1
+        path = f"eventLog[{i}].payload"
+        required = (
+            "mutationKey",
+            "authorityScope",
+            "attempted",
+            "effect",
+            "verification",
+            "retryDisposition",
+        )
+        _require(payload, required, path, issues)
+
+        mutation_key = payload.get("mutationKey")
+        authority_scope = payload.get("authorityScope")
+        attempted = payload.get("attempted")
+        effect = payload.get("effect")
+        verification = payload.get("verification")
+        retry = payload.get("retryDisposition")
+        evidence_ref = payload.get("evidenceRef")
+        effect_hash = payload.get("effectHash")
+        idempotency = payload.get("idempotency", "none")
+        mutation_hash = payload.get("mutationHash")
+
+        if not isinstance(mutation_key, str) or not mutation_key:
+            issues.append(Issue("receipt", f"{path}.mutationKey must be a non-empty string"))
+        if not isinstance(authority_scope, str) or not authority_scope:
+            issues.append(Issue("receipt", f"{path}.authorityScope must be a non-empty string"))
+        if not isinstance(attempted, bool):
+            issues.append(Issue("receipt", f"{path}.attempted must be boolean"))
+        if effect not in MUTATION_EFFECTS:
+            issues.append(Issue("receipt", f"{path}.effect must be none|unknown|observed"))
+        if verification not in MUTATION_VERIFICATION:
+            issues.append(Issue("receipt", f"{path}.verification must be unverified|verified"))
+        if retry not in MUTATION_RETRY_DISPOSITIONS:
+            issues.append(
+                Issue(
+                    "receipt",
+                    f"{path}.retryDisposition must be retry|observe|resend|escalate|stop",
+                )
+            )
+        if idempotency not in MUTATION_IDEMPOTENCY:
+            issues.append(
+                Issue("receipt", f"{path}.idempotency must be none|receiver-durable")
+            )
+        if mutation_hash is not None:
+            if not isinstance(mutation_hash, str) or not HASH_RE.match(mutation_hash):
+                issues.append(
+                    Issue("receipt", f"{path}.mutationHash must be sha256 hex when present")
+                )
+            elif isinstance(mutation_key, str) and mutation_key:
+                prior_mutation_hash = mutation_hashes.get(mutation_key)
+                if prior_mutation_hash is not None and prior_mutation_hash != mutation_hash:
+                    issues.append(
+                        Issue(
+                            "conflict",
+                            f"mutationKey {mutation_key!r} has conflicting mutation hashes",
+                        )
+                    )
+                mutation_hashes[mutation_key] = mutation_hash
+
+        if attempted is False and effect in {"unknown", "observed"}:
+            issues.append(
+                Issue("receipt", f"{path} cannot claim effect={effect} when attempted=false")
+            )
+
+        if effect == "unknown" and retry not in {"observe", "resend", "escalate"}:
+            issues.append(
+                Issue(
+                    "retry",
+                    "ambiguous mutation outcome must observe, resend the same durable identity, or escalate unresolved",
+                )
+            )
+
+        if effect == "observed":
+            if retry != "stop":
+                issues.append(
+                    Issue("retry", "observed mutation outcome cannot retry; disposition must stop")
+                )
+            if not isinstance(effect_hash, str) or not HASH_RE.match(effect_hash):
+                issues.append(
+                    Issue("receipt", f"{path}.effectHash must be sha256 hex for observed effects")
+                )
+            elif isinstance(mutation_key, str) and mutation_key:
+                prior = observed_hashes.get(mutation_key)
+                if prior is not None and prior != effect_hash:
+                    issues.append(
+                        Issue(
+                            "conflict",
+                            f"mutationKey {mutation_key!r} has conflicting observed effect hashes",
+                        )
+                    )
+                observed_hashes[mutation_key] = effect_hash
+
+        if verification == "verified":
+            if retry != "stop":
+                issues.append(
+                    Issue("retry", "verified mutation outcome cannot retry; disposition must stop")
+                )
+            if not isinstance(evidence_ref, str) or not evidence_ref:
+                issues.append(
+                    Issue("receipt", f"{path}.evidenceRef is required when verification=verified")
+                )
+
+        if retry == "retry":
+            if effect != "none":
+                issues.append(
+                    Issue("retry", "retry is allowed only when the prior effect is proven none")
+                )
+            if attempted is True and (not isinstance(evidence_ref, str) or not evidence_ref):
+                issues.append(
+                    Issue(
+                        "retry",
+                        "retry after an attempted mutation requires pre-effect evidence",
+                    )
+                )
+
+        if retry == "resend":
+            if not (attempted is True and effect == "unknown"):
+                issues.append(
+                    Issue(
+                        "retry",
+                        "resend is reserved for attempted mutations with unknown effect",
+                    )
+                )
+            if idempotency != "receiver-durable":
+                issues.append(
+                    Issue(
+                        "retry",
+                        "resend after ambiguous outcome requires receiver-durable idempotency",
+                    )
+                )
+            if not isinstance(mutation_hash, str) or not HASH_RE.match(mutation_hash):
+                issues.append(
+                    Issue(
+                        "retry",
+                        "resend after ambiguous outcome requires a stable mutationHash",
+                    )
+                )
+            if not isinstance(evidence_ref, str) or not evidence_ref:
+                issues.append(
+                    Issue(
+                        "retry",
+                        "resend after ambiguous outcome requires idempotency evidence",
+                    )
+                )
+
+        if retry == "observe" and not (attempted is True and effect == "unknown"):
+            issues.append(
+                Issue(
+                    "retry",
+                    "observe disposition is reserved for attempted mutations with unknown effect",
+                )
+            )
+
+        if retry == "escalate":
+            if not (attempted is True and effect == "unknown"):
+                issues.append(
+                    Issue(
+                        "retry",
+                        "escalate is reserved for attempted mutations with unknown effect",
+                    )
+                )
+            if not isinstance(evidence_ref, str) or not evidence_ref:
+                issues.append(
+                    Issue(
+                        "retry",
+                        "escalate after ambiguous outcome requires unresolved-boundary evidence",
+                    )
+                )
+
+    if receipt_count == 0:
+        issues.append(
+            Issue(
+                "receipt",
+                f"policies.protocol={MUTATION_RECEIPT_PROTOCOL!r} requires at least one mutation-outcome receipt",
+            )
+        )
 
 
 def _validate_observed_graph(graph: dict[str, object], issues: list[Issue]) -> None:
@@ -562,6 +776,15 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
                     issues.append(Issue("event", f"eventLog[{i}].causalParents must be an array"))
                 if not isinstance(event.get("payload"), dict):
                     issues.append(Issue("event", f"eventLog[{i}].payload must be an object"))
+            if policies.get("protocol") == MUTATION_RECEIPT_PROTOCOL:
+                _validate_mutation_outcome_receipts(raw_events, issues)
+    elif policies.get("protocol") == MUTATION_RECEIPT_PROTOCOL:
+        issues.append(
+            Issue(
+                "receipt",
+                f"policies.protocol={MUTATION_RECEIPT_PROTOCOL!r} requires eventLog",
+            )
+        )
 
     return issues
 

@@ -6,12 +6,13 @@ Status: experimental profile. It does not add a new HOTL event type or scheduler
 
 A mutation with an ambiguous outcome must never be retried under a **new logical identity**.
 
-After dispatch with an unknown effect, a runtime has two safe automatic paths:
+After dispatch with an unknown effect, a runtime has three safe paths:
 
-1. **observe/reconcile** before deciding what to do next; or
-2. **resend the identical mutation** only when a durable receiver-side idempotency contract binds the same mutation key to the same content.
+1. **observe/reconcile** before deciding what to do next;
+2. **resend the identical mutation** only when a durable receiver-side idempotency contract binds the same mutation key to the same content; or
+3. **escalate unresolved** when neither a reliable observation nor a safe same-ID resend exists.
 
-A fresh mutation identity after an ambiguous attempt is invalid.
+A fresh mutation identity after an ambiguous attempt is invalid. An unresolved ambiguity must never be relabeled as successful completion.
 
 ### Revision from the first hypothesis
 
@@ -43,7 +44,7 @@ A Mutation Outcome Receipt is carried in an ordinary HOTL `stateUpdate` event pa
   "attempted": true,
   "effect": "none | unknown | observed",
   "verification": "unverified | verified",
-  "retryDisposition": "retry | observe | resend | stop",
+  "retryDisposition": "retry | observe | resend | escalate | stop",
   "idempotency": "none | receiver-durable",
   "mutationHash": "optional sha256 binding the mutation content",
   "evidenceRef": "content-free reference to the proof",
@@ -55,21 +56,22 @@ The receipt is intentionally content-free. Raw prompts, commands, credentials, s
 
 ### Required safety rules
 
-1. `effect=unknown` => `retryDisposition=observe|resend`; never ordinary `retry`.
+1. `effect=unknown` => `retryDisposition=observe|resend|escalate`; never ordinary `retry` or success-like `stop`.
 2. `retryDisposition=resend` is legal only when:
    - `effect=unknown`;
    - `idempotency=receiver-durable`;
    - `mutationHash` is present;
    - `evidenceRef` identifies the durable dedupe contract.
 3. Every receipt for the same `mutationKey` that carries `mutationHash` must carry the same hash. Same identity/different content is a conflict.
-4. `effect=observed` => `retryDisposition=stop` and `effectHash` is required.
-5. `verification=verified` => `retryDisposition=stop` and `evidenceRef` is required.
-6. Ordinary `retryDisposition=retry` is legal only when `effect=none`; if an attempt occurred, `evidenceRef` must prove the pre-effect boundary.
-7. `attempted=false` cannot claim `effect=unknown|observed`.
-8. The same `mutationKey` may progress from unknown to observed/verified, but two observed receipts for that key with different `effectHash` values are a conflict.
-9. The receipt never grants authority. Existing AODL authority rules still govern the mutation.
+4. `retryDisposition=escalate` is legal only for an attempted mutation with `effect=unknown`; `evidenceRef` must name the unresolved boundary handed to a human/higher-level reconciler.
+5. `effect=observed` => `retryDisposition=stop` and `effectHash` is required.
+6. `verification=verified` => `retryDisposition=stop` and `evidenceRef` is required.
+7. Ordinary `retryDisposition=retry` is legal only when `effect=none`; if an attempt occurred, `evidenceRef` must prove the pre-effect boundary.
+8. `attempted=false` cannot claim `effect=unknown|observed`.
+9. The same `mutationKey` may progress from unknown to observed/verified, but two observed receipts for that key with different `effectHash` values are a conflict.
+10. The receipt never grants authority. Existing AODL authority rules still govern the mutation.
 
-The important distinction is **retry vs resend**. `retry` authorizes another logical mutation because the prior effect is proven absent. `resend` retransmits the same logical mutation key/content so a durable receiver can return or reconstruct the prior result without duplicating the effect.
+The important distinction is **retry vs resend vs escalate**. `retry` authorizes another logical mutation because the prior effect is proven absent. `resend` retransmits the same logical mutation key/content so a durable receiver can return or reconstruct the prior result without duplicating the effect. `escalate` preserves the ambiguity as ambiguity when automation has no safe next move.
 
 ## Adversarial corpus
 
@@ -78,6 +80,7 @@ The executable corpus includes:
 - safe pre-effect failure -> retry;
 - acknowledgement lost after dispatch without durable idempotency -> observe, not retry;
 - acknowledgement lost with durable receiver idempotency -> resend same key/content;
+- acknowledgement/delivery ambiguous with no observable state and no durable dedupe -> escalate unresolved;
 - observed effect -> stop;
 - verified effect -> stop;
 - unknown + ordinary retry -> invalid;
@@ -117,7 +120,14 @@ The vector clock remains causal evidence; this profile does not replace it.
 
 Keep the explicit distinction already documented in `MessageEvent._gateway_accepted`: admission is not execution acknowledgement.
 
+Hermes already has two directly relevant fail-closed behaviors:
+
+- failed turns containing tool activity use `PARTIAL_FAILED_TURN_NOTICE`: "Some actions may already have run; verify their effects before resending." This maps to `effect=unknown, retryDisposition=escalate`;
+- an explicitly ambiguous full-final delivery timeout does not blindly send the message again because a duplicate user-visible delivery is possible.
+
 For terminal processes, an atomic retained process-result file can provide execution-completion evidence. If persistence fails, Hermes already logs the failure and does not claim durability. For commands with external side effects, a process exit alone remains insufficient; the adapter needs a domain observation before `verification=verified`.
+
+The Frontier Lab transfer also found a lower-level gap: the foreground terminal retry loop treated every unexpected `env.execute()` exception as pre-effect. The downstream experiment now marks exceptions after process spawn as ambiguous and fences automatic replay.
 
 ## Metrics
 

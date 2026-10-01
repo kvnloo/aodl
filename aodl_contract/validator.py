@@ -315,7 +315,8 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
         if node is None:
             continue
         _require(node, ("id", "kind", "ports", "capabilities"), f"nodes[{i}]", issues)
-        node_kind = node.get("kind")\n        if not isinstance(node_kind, str) or node_kind not in NODE_KINDS_02:
+        node_kind = node.get("kind")
+        if not isinstance(node_kind, str) or node_kind not in NODE_KINDS_02:
             issues.append(Issue("kind", f"nodes[{i}].kind {node.get('kind')!r} is unknown"))
         if "harness" in node:
             harness_id = node.get("harness")
@@ -358,7 +359,8 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
             if p is None:
                 continue
             _require(p, ("id", "direction", "schema"), f"nodes[{i}].ports[{j}]", issues)
-            direction = p.get("direction")\n            if not isinstance(direction, str) or direction not in {"in", "out"}:
+            direction = p.get("direction")
+            if not isinstance(direction, str) or direction not in {"in", "out"}:
                 issues.append(Issue("port", f"nodes[{i}].ports[{j}] direction invalid"))
             pid = p.get("id")
             if isinstance(pid, str):
@@ -380,7 +382,8 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
             f"edges[{i}]",
             issues,
         )
-        relation = edge.get("relation")\n        if not isinstance(relation, str) or relation not in EDGE_REL_02:
+        relation = edge.get("relation")
+        if not isinstance(relation, str) or relation not in EDGE_REL_02:
             issues.append(Issue("relation", f"edges[{i}].relation {edge.get('relation')!r} is unknown"))
         edges_l.append(edge)
 
@@ -588,7 +591,8 @@ def validate_01(doc: dict[str, object]) -> list[Issue]:
         if node is None:
             continue
         _require(node, ("id", "role"), f"nodes[{i}]", issues)
-        node_role = node.get("role")\n        if not isinstance(node_role, str) or node_role not in NODE_ROLES_01:
+        node_role = node.get("role")
+        if not isinstance(node_role, str) or node_role not in NODE_ROLES_01:
             issues.append(Issue("role", f"nodes[{i}].role {node.get('role')!r} is unknown"))
         nodes_l.append(node)
     nodes = _ids(nodes_l, "nodes", issues)
@@ -599,7 +603,8 @@ def validate_01(doc: dict[str, object]) -> list[Issue]:
         if edge is None:
             continue
         _require(edge, ("id", "from", "to", "kind"), f"edges[{i}]", issues)
-        edge_kind = edge.get("kind")\n        if not isinstance(edge_kind, str) or edge_kind not in EDGE_KINDS_01:
+        edge_kind = edge.get("kind")
+        if not isinstance(edge_kind, str) or edge_kind not in EDGE_KINDS_01:
             issues.append(Issue("kind", f"edges[{i}].kind {edge.get('kind')!r} is unknown"))
         if edge.get("from") == edge.get("to"):
             issues.append(Issue("self-edge", f"self-edge {edge.get('id')}"))

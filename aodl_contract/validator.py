@@ -61,7 +61,7 @@ MUTATION_RECEIPT_PROTOCOL = "mutation-outcome-receipt/v0"
 MUTATION_RECEIPT_KIND = "mutation-outcome/v0"
 MUTATION_EFFECTS = {"none", "unknown", "observed"}
 MUTATION_VERIFICATION = {"unverified", "verified"}
-MUTATION_RETRY_DISPOSITIONS = {"retry", "observe", "resend", "stop"}
+MUTATION_RETRY_DISPOSITIONS = {"retry", "observe", "resend", "escalate", "stop"}
 MUTATION_IDEMPOTENCY = {"none", "receiver-durable"}
 NODE_ROLES_01 = {
     "orchestrator",
@@ -319,7 +319,10 @@ def _validate_mutation_outcome_receipts(
             issues.append(Issue("receipt", f"{path}.verification must be unverified|verified"))
         if retry not in MUTATION_RETRY_DISPOSITIONS:
             issues.append(
-                Issue("receipt", f"{path}.retryDisposition must be retry|observe|resend|stop")
+                Issue(
+                    "receipt",
+                    f"{path}.retryDisposition must be retry|observe|resend|escalate|stop",
+                )
             )
         if idempotency not in MUTATION_IDEMPOTENCY:
             issues.append(
@@ -346,11 +349,11 @@ def _validate_mutation_outcome_receipts(
                 Issue("receipt", f"{path} cannot claim effect={effect} when attempted=false")
             )
 
-        if effect == "unknown" and retry not in {"observe", "resend"}:
+        if effect == "unknown" and retry not in {"observe", "resend", "escalate"}:
             issues.append(
                 Issue(
                     "retry",
-                    "ambiguous mutation outcome must observe or resend the same durable identity",
+                    "ambiguous mutation outcome must observe, resend the same durable identity, or escalate unresolved",
                 )
             )
 
@@ -434,6 +437,22 @@ def _validate_mutation_outcome_receipts(
                     "observe disposition is reserved for attempted mutations with unknown effect",
                 )
             )
+
+        if retry == "escalate":
+            if not (attempted is True and effect == "unknown"):
+                issues.append(
+                    Issue(
+                        "retry",
+                        "escalate is reserved for attempted mutations with unknown effect",
+                    )
+                )
+            if not isinstance(evidence_ref, str) or not evidence_ref:
+                issues.append(
+                    Issue(
+                        "retry",
+                        "escalate after ambiguous outcome requires unresolved-boundary evidence",
+                    )
+                )
 
     if receipt_count == 0:
         issues.append(

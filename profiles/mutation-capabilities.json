@@ -109,6 +109,11 @@
       "class": "heuristic_dedupe_mutation",
       "evidence": "wger-project/mcp-server#25",
       "reason": "read-before-write window can race, expires, and lacks a stable caller mutation key"
+    },
+    "hermes.relay_draft_seal": {
+      "class": "durable_idempotent_mutation",
+      "evidence": "NousResearch/hermes-agent gateway/relay/adapter.py::_seal_open_draft",
+      "reason": "ambiguous seal retries the same draft frame; connector sealed-key tombstone returns the original stream identity and never opens a second stream"
     }
   }
 }

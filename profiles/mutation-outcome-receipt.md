@@ -21,7 +21,7 @@ Required payload fields:
 - `attempted`: boolean;
 - `effect`: `none | unknown | observed`;
 - `verification`: `unverified | verified`;
-- `retryDisposition`: `retry | observe | resend | stop`.
+- `retryDisposition`: `retry | observe | resend | escalate | stop`.
 
 Optional:
 
@@ -31,6 +31,8 @@ Optional:
 - `effectHash`: lowercase SHA-256 hex of the observed effect.
 
 `resend` means retransmit the identical `mutationKey` + `mutationHash` under a proven durable receiver-side dedupe contract. It is not permission to mint a replacement mutation.
+
+`escalate` means the effect remains unknown and automation has no safe observation/resend path. It preserves uncertainty instead of silently treating the mutation as completed.
 
 Normative retry rules are defined in `docs/frontier-lab/mutation-outcome-receipt-v0.md` and enforced by the Python validator.
 

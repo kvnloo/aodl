@@ -315,7 +315,7 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
         if node is None:
             continue
         _require(node, ("id", "kind", "ports", "capabilities"), f"nodes[{i}]", issues)
-        if node.get("kind") not in NODE_KINDS_02:
+        node_kind = node.get("kind")\n        if not isinstance(node_kind, str) or node_kind not in NODE_KINDS_02:
             issues.append(Issue("kind", f"nodes[{i}].kind {node.get('kind')!r} is unknown"))
         if "harness" in node:
             harness_id = node.get("harness")
@@ -358,7 +358,7 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
             if p is None:
                 continue
             _require(p, ("id", "direction", "schema"), f"nodes[{i}].ports[{j}]", issues)
-            if p.get("direction") not in {"in", "out"}:
+            direction = p.get("direction")\n            if not isinstance(direction, str) or direction not in {"in", "out"}:
                 issues.append(Issue("port", f"nodes[{i}].ports[{j}] direction invalid"))
             pid = p.get("id")
             if isinstance(pid, str):
@@ -380,7 +380,7 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
             f"edges[{i}]",
             issues,
         )
-        if edge.get("relation") not in EDGE_REL_02:
+        relation = edge.get("relation")\n        if not isinstance(relation, str) or relation not in EDGE_REL_02:
             issues.append(Issue("relation", f"edges[{i}].relation {edge.get('relation')!r} is unknown"))
         edges_l.append(edge)
 
@@ -394,10 +394,10 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
         to = edge.get("to")
         if frm == to:
             issues.append(Issue("self-edge", f"self-edge {edge.get('id')}"))
-        if frm not in nodes:
+        if not isinstance(frm, str) or frm not in nodes:
             issues.append(Issue("endpoint", f"edge {edge.get('id')} from unknown node {frm!r}"))
             continue
-        if to not in nodes:
+        if not isinstance(to, str) or to not in nodes:
             issues.append(Issue("endpoint", f"edge {edge.get('id')} to unknown node {to!r}"))
             continue
         degree[str(frm)] += 1
@@ -476,7 +476,7 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
 
     policies = _as_dict(doc.get("policies"), "policies", issues) or {}
     fan_in = policies.get("fanIn")
-    if any(count >= 2 for count in incoming_dep.values()) and fan_in not in FAN_IN:
+    if any(count >= 2 for count in incoming_dep.values()) and (not isinstance(fan_in, str) or fan_in not in FAN_IN):
         issues.append(Issue("fan-in", "implicit fan-in: declare policies.fanIn as all|any|quorum|reducer"))
     if fan_in == "quorum":
         quorum = policies.get("quorum")
@@ -518,7 +518,7 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
                     Issue("auction", "auction requires phases announce,bid,award,execute,verify,settle")
                 )
             payment = auction.get("payment", "unsupported")
-            if payment not in {None, "unsupported", False}:
+            if payment not in (None, "unsupported", False):
                 issues.append(Issue("payment", "payment execution is unsupported"))
 
     for ident, node in nodes.items():
@@ -556,7 +556,7 @@ def validate_02(doc: dict[str, object]) -> list[Issue]:
                     issues,
                 )
                 etype = event.get("type")
-                if etype not in EVENT_TYPES_02:
+                if not isinstance(etype, str) or etype not in EVENT_TYPES_02:
                     issues.append(Issue("event", f"unknown event type {etype!r}"))
                 if not isinstance(event.get("causalParents"), list):
                     issues.append(Issue("event", f"eventLog[{i}].causalParents must be an array"))
@@ -588,7 +588,7 @@ def validate_01(doc: dict[str, object]) -> list[Issue]:
         if node is None:
             continue
         _require(node, ("id", "role"), f"nodes[{i}]", issues)
-        if node.get("role") not in NODE_ROLES_01:
+        node_role = node.get("role")\n        if not isinstance(node_role, str) or node_role not in NODE_ROLES_01:
             issues.append(Issue("role", f"nodes[{i}].role {node.get('role')!r} is unknown"))
         nodes_l.append(node)
     nodes = _ids(nodes_l, "nodes", issues)
@@ -599,7 +599,7 @@ def validate_01(doc: dict[str, object]) -> list[Issue]:
         if edge is None:
             continue
         _require(edge, ("id", "from", "to", "kind"), f"edges[{i}]", issues)
-        if edge.get("kind") not in EDGE_KINDS_01:
+        edge_kind = edge.get("kind")\n        if not isinstance(edge_kind, str) or edge_kind not in EDGE_KINDS_01:
             issues.append(Issue("kind", f"edges[{i}].kind {edge.get('kind')!r} is unknown"))
         if edge.get("from") == edge.get("to"):
             issues.append(Issue("self-edge", f"self-edge {edge.get('id')}"))
@@ -609,9 +609,9 @@ def validate_01(doc: dict[str, object]) -> list[Issue]:
     incoming_dep: dict[str, int] = {ident: 0 for ident in nodes}
     for edge in edges_l:
         frm, to = edge.get("from"), edge.get("to")
-        if frm not in nodes:
+        if not isinstance(frm, str) or frm not in nodes:
             issues.append(Issue("endpoint", f"edge {edge.get('id')} from unknown node {frm!r}"))
-        if to not in nodes:
+        if not isinstance(to, str) or to not in nodes:
             issues.append(Issue("endpoint", f"edge {edge.get('id')} to unknown node {to!r}"))
         if edge.get("kind") == "dependency" and isinstance(to, str) and to in incoming_dep:
             incoming_dep[to] += 1
@@ -623,9 +623,9 @@ def validate_01(doc: dict[str, object]) -> list[Issue]:
     policies = _as_dict(doc.get("policies"), "policies", issues) or {}
     _require(policies, ("fanIn", "coordination", "dynamicFanOut"), "policies", issues)
     fan_in = policies.get("fanIn")
-    if fan_in not in FAN_IN:
+    if not isinstance(fan_in, str) or fan_in not in FAN_IN:
         issues.append(Issue("fan-in", "policies.fanIn must be all|any|quorum|reducer"))
-    elif any(count >= 2 for count in incoming_dep.values()) and fan_in not in FAN_IN:
+    elif any(count >= 2 for count in incoming_dep.values()) and (not isinstance(fan_in, str) or fan_in not in FAN_IN):
         issues.append(Issue("fan-in", "implicit fan-in"))
     dyn = _as_dict(policies.get("dynamicFanOut"), "policies.dynamicFanOut", issues) or {}
     if dyn.get("allowed") is True:
@@ -683,7 +683,7 @@ def validate_encodings() -> list[Issue]:
     if "auction" not in kinds:
         issues.append(Issue("encodings", "marketplace must map to auction policy"))
     payment = ((market.get("policies") or {}).get("auction") or {}).get("payment")
-    if payment not in {None, "unsupported", False}:
+    if payment not in (None, "unsupported", False):
         issues.append(Issue("payment", "marketplace payment execution is unsupported"))
     for tid, rec in (ir_map.get("topologies") or {}).items():
         if rec.get("status") not in {"expressible", "not-inferred", "unspecified"}:

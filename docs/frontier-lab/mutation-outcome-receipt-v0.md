@@ -97,6 +97,29 @@ The receipt is intentionally content-free. Raw prompts, commands, credentials, s
 
 The important distinction is **retry vs resend vs escalate**. `retry` authorizes another logical mutation because the prior effect is proven absent. `resend` retransmits the same logical mutation key/content so a durable receiver can return or reconstruct the prior result without duplicating the effect. `escalate` preserves the ambiguity as ambiguity when automation has no safe next move.
 
+### Proof obligations for `receiver-durable`
+
+A runtime must not claim `idempotency=receiver-durable` merely because it has a duplicate heuristic. The receiver-side contract should survive all of these:
+
+1. **concurrency:** two same-key attempts racing from separate workers cannot both create the effect;
+2. **acknowledgement loss:** retrying after the first commit but before the first response returns the existing outcome / duplicate result;
+3. **restart or cache expiry:** dedupe survives process restart and any short-lived request cache;
+4. **identity/content binding:** reusing a key with different mutation content is rejected;
+5. **atomicity:** the uniqueness decision and durable mutation cannot be split by a crash into "effect landed but key absent" or vice versa.
+
+SuperSync qualifies because operation identity is persisted with the operation and same-ID/different-content is rejected. A local in-memory request cache alone would not qualify.
+
+### Negative control: wger MCP duplicate-window guard
+
+`wger-project/mcp-server#25` is useful duplicate-prevention UX, but it does **not** satisfy the durable-resend proof:
+
+- it lists recent workout rows and then creates a new row in a separate call;
+- two concurrent `log_set` calls can both observe no duplicate before either write lands;
+- the configurable time window intentionally expires;
+- identity is inferred from exercise/load/reps/unit/slot rather than a stable caller-supplied mutation key.
+
+Therefore a lost acknowledgement around `log_set` cannot safely map to `resend` under this profile. The next experiment would need either receiver/API-level atomic idempotency or an observe/reconcile step. This is exactly the distinction the profile is meant to make visible.
+
 ## Adversarial corpus
 
 The executable corpus includes:

@@ -151,6 +151,9 @@ INVALID_EXPECT = {
     "langchain-as-harness": "unknown harness",
     "fail-event": "unknown event",
     "open-questions-field": "unknown fields",
+    "mutation-retry-after-unknown": "ambiguous mutation outcome must observe",
+    "mutation-retry-after-observed": "observed mutation outcome cannot retry",
+    "mutation-conflicting-effect-hash": "conflicting observed effect hashes",
 }
 
 _CATALOG_UNSET = object()

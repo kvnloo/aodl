@@ -638,12 +638,18 @@ def validate_01(doc: dict[str, object]) -> list[Issue]:
 def validate(doc: object) -> list[Issue]:
     if not isinstance(doc, dict):
         return [Issue("type", "document must be an object")]
-    version = doc.get("specVersion")
-    if version == "0.2":
-        return validate_02(doc)
-    if version == "0.1":
-        return validate_01(doc)
-    return [Issue("version", f"unknown specVersion {version!r}")]
+    try:
+        version = doc.get("specVersion")
+        if version == "0.2":
+            return validate_02(doc)
+        if version == "0.1":
+            return validate_01(doc)
+        return [Issue("version", f"unknown specVersion {version!r}")]
+    except (KeyError, TypeError, ValueError) as exc:
+        # Public validation is a fail-closed boundary over arbitrary JSON-shaped
+        # input. Malformed values must become Issues rather than escape into a
+        # caller that might accidentally treat validator failure as admission.
+        return [Issue("type", f"malformed document ({type(exc).__name__})")]
 
 
 

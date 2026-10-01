@@ -269,10 +269,11 @@ def _validate_mutation_outcome_receipts(
 ) -> None:
     """Validate the experimental mutation-outcome receipt profile.
 
-    The profile makes one conservative retry claim: an attempted mutation with
-    an unknown effect is never eligible for blind replay. Runtime-specific
-    causality/receipts remain authoritative; this only normalizes the decision
-    boundary for cross-runtime experiments.
+    The profile makes one conservative identity claim: an ambiguous mutation
+    may be observed, resent under proven receiver-durable idempotency, or
+    escalated unresolved, but it must never be replayed as a fresh logical
+    mutation. Runtime-specific causality/receipts remain authoritative; this
+    only normalizes the decision boundary for cross-runtime experiments.
     """
     observed_hashes: dict[str, str] = {}
     mutation_hashes: dict[str, str] = {}

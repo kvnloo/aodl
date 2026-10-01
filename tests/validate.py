@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from aodl_contract import Issue, validate  # noqa: E402,F401
+from aodl_contract.validator import validate_mutation_capability_catalog  # noqa: E402
 # `Issue` and `validate` are re-exported deliberately: this module is the shared
 # validation facade for the test corpus. `tests/compile.py` already imports
 # `validate` from here, and `compiler/hermes.py` imports both `Issue` and
@@ -149,6 +150,15 @@ def schema_cross_check() -> int:
 
 def run_corpus() -> int:
     failures = 0
+
+    mutation_capabilities = validate_mutation_capability_catalog()
+    if mutation_capabilities:
+        print("mutation capability catalog FAIL")
+        for issue in mutation_capabilities:
+            print(" ", issue)
+        failures += 1
+    else:
+        print("mutation capability catalog OK")
     try:
         from aodl_contract.validator import validate_encodings
 

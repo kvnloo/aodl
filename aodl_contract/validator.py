@@ -870,6 +870,105 @@ def validate(doc: object) -> list[Issue]:
 
 
 
+def validate_mutation_capability_catalog() -> list[Issue]:
+    """Validate the Frontier Lab mutation capability registry."""
+    issues: list[Issue] = []
+    path = _ROOT / "profiles" / "mutation-capabilities.json"
+    if not path.exists():
+        return [Issue("mutation-capability", "missing profiles/mutation-capabilities.json")]
+    doc = load_json(path)
+    if not isinstance(doc, dict):
+        return [Issue("mutation-capability", "mutation capability catalog must be an object")]
+    if doc.get("version") != "0":
+        issues.append(Issue("mutation-capability", "catalog version must be '0'"))
+
+    dispositions = doc.get("dispositions")
+    expected = {"retry", "observe", "resend", "escalate", "stop"}
+    if not isinstance(dispositions, list) or set(dispositions) != expected:
+        issues.append(
+            Issue(
+                "mutation-capability",
+                f"catalog dispositions must be {sorted(expected)}",
+            )
+        )
+
+    classes = doc.get("classes")
+    if not isinstance(classes, dict) or not classes:
+        issues.append(Issue("mutation-capability", "catalog classes must be non-empty"))
+        return issues
+
+    for name, raw in classes.items():
+        if not isinstance(raw, dict):
+            issues.append(Issue("mutation-capability", f"class {name} must be an object"))
+            continue
+        for field in ("mutates", "stableMutationKey", "receiverDurableIdempotency"):
+            if not isinstance(raw.get(field), bool):
+                issues.append(
+                    Issue("mutation-capability", f"class {name}.{field} must be boolean")
+                )
+        ambiguous = raw.get("ambiguousDisposition", [])
+        if not isinstance(ambiguous, list) or any(x not in expected for x in ambiguous):
+            issues.append(
+                Issue(
+                    "mutation-capability",
+                    f"class {name}.ambiguousDisposition contains unknown values",
+                )
+            )
+            ambiguous = []
+        if "retry" in ambiguous or "stop" in ambiguous:
+            issues.append(
+                Issue(
+                    "mutation-capability",
+                    f"class {name} cannot use retry/stop for an ambiguous effect",
+                )
+            )
+        if raw.get("receiverDurableIdempotency") is True:
+            if raw.get("stableMutationKey") is not True:
+                issues.append(
+                    Issue(
+                        "mutation-capability",
+                        f"class {name} durable idempotency requires a stable mutation key",
+                    )
+                )
+            if "resend" not in ambiguous:
+                issues.append(
+                    Issue(
+                        "mutation-capability",
+                        f"class {name} durable idempotency must permit same-identity resend",
+                    )
+                )
+        elif "resend" in ambiguous:
+            issues.append(
+                Issue(
+                    "mutation-capability",
+                    f"class {name} cannot permit resend without receiver-durable idempotency",
+                )
+            )
+
+    examples = doc.get("examples")
+    if not isinstance(examples, dict) or not examples:
+        issues.append(Issue("mutation-capability", "catalog examples must be non-empty"))
+    else:
+        for name, raw in examples.items():
+            if not isinstance(raw, dict):
+                issues.append(Issue("mutation-capability", f"example {name} must be an object"))
+                continue
+            klass = raw.get("class")
+            if klass not in classes:
+                issues.append(
+                    Issue(
+                        "mutation-capability",
+                        f"example {name} references unknown class {klass!r}",
+                    )
+                )
+            if not isinstance(raw.get("evidence"), str) or not raw.get("evidence"):
+                issues.append(
+                    Issue("mutation-capability", f"example {name} must cite evidence")
+                )
+
+    return issues
+
+
 def validate_encodings() -> list[Issue]:
     issues: list[Issue] = []
     visual_path = _ROOT / "encodings" / "visual.json"

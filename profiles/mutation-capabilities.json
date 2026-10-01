@@ -1,0 +1,119 @@
+{
+  "version": "0",
+  "purpose": "Cross-runtime retry policy for operations that may create durable or externally visible effects.",
+  "dispositions": [
+    "retry",
+    "observe",
+    "resend",
+    "escalate",
+    "stop"
+  ],
+  "classes": {
+    "read_only": {
+      "mutates": false,
+      "stableMutationKey": false,
+      "receiverDurableIdempotency": false,
+      "unknownEffectAllowed": false,
+      "ambiguousDisposition": [],
+      "notes": "No mutation effect exists. Transport/request retry is outside the mutation-outcome contract."
+    },
+    "proven_pre_effect_failure": {
+      "mutates": true,
+      "stableMutationKey": false,
+      "receiverDurableIdempotency": false,
+      "unknownEffectAllowed": false,
+      "ambiguousDisposition": [],
+      "knownNoEffectDisposition": [
+        "retry"
+      ],
+      "notes": "Retry is legal only when evidence proves execution did not cross the effect boundary."
+    },
+    "durable_idempotent_mutation": {
+      "mutates": true,
+      "stableMutationKey": true,
+      "receiverDurableIdempotency": true,
+      "unknownEffectAllowed": true,
+      "ambiguousDisposition": [
+        "resend",
+        "observe",
+        "escalate"
+      ],
+      "requirements": [
+        "receiver atomically binds mutation key to durable effect/result",
+        "same key with different mutation content is rejected",
+        "dedupe survives process restart and request-cache expiry",
+        "concurrent same-key attempts cannot both create the effect"
+      ]
+    },
+    "observable_mutation": {
+      "mutates": true,
+      "stableMutationKey": false,
+      "receiverDurableIdempotency": false,
+      "unknownEffectAllowed": true,
+      "ambiguousDisposition": [
+        "observe",
+        "escalate"
+      ],
+      "requirements": [
+        "fresh observation can distinguish effect-present from effect-absent before another mutation"
+      ]
+    },
+    "opaque_mutation": {
+      "mutates": true,
+      "stableMutationKey": false,
+      "receiverDurableIdempotency": false,
+      "unknownEffectAllowed": true,
+      "ambiguousDisposition": [
+        "escalate"
+      ],
+      "requirements": [
+        "no reliable read-back and no durable same-key resend contract"
+      ]
+    },
+    "heuristic_dedupe_mutation": {
+      "mutates": true,
+      "stableMutationKey": false,
+      "receiverDurableIdempotency": false,
+      "unknownEffectAllowed": true,
+      "ambiguousDisposition": [
+        "observe",
+        "escalate"
+      ],
+      "requirements": [
+        "heuristic duplicate suppression must not be treated as receiver-durable idempotency"
+      ]
+    }
+  },
+  "examples": {
+    "cua.guarded_browser_click": {
+      "class": "observable_mutation",
+      "evidence": "kvnloo/cua#105",
+      "reason": "target state can be re-observed; acknowledgement loss must not trigger another fresh click"
+    },
+    "supersync.operation_upload": {
+      "class": "durable_idempotent_mutation",
+      "evidence": "kvnloo/super-productivity#4",
+      "reason": "Operation.id is durable; same-id/same-content resend dedupes and same-id/different-content is rejected"
+    },
+    "hermes.foreground_terminal_command": {
+      "class": "opaque_mutation",
+      "evidence": "kvnloo/hermes-agent#421",
+      "reason": "after process spawn an arbitrary shell command may have external effects with no generic read-back"
+    },
+    "hermes.ambiguous_final_delivery": {
+      "class": "opaque_mutation",
+      "evidence": "NousResearch/hermes-agent tests/gateway/test_silent_partial_delivery.py",
+      "reason": "platform may have received the complete message but blind resend can duplicate it"
+    },
+    "wger.log_set_duplicate_window": {
+      "class": "heuristic_dedupe_mutation",
+      "evidence": "wger-project/mcp-server#25",
+      "reason": "read-before-write window can race, expires, and lacks a stable caller mutation key"
+    },
+    "hermes.relay_draft_seal": {
+      "class": "durable_idempotent_mutation",
+      "evidence": "NousResearch/hermes-agent gateway/relay/adapter.py::_seal_open_draft",
+      "reason": "ambiguous seal retries the same draft frame; connector sealed-key tombstone returns the original stream identity and never opens a second stream"
+    }
+  }
+}

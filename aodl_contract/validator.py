@@ -157,6 +157,7 @@ INVALID_EXPECT = {
     "mutation-conflicting-effect-hash": "conflicting observed effect hashes",
     "mutation-resend-without-idempotency": "requires receiver-durable idempotency",
     "mutation-conflicting-mutation-hash": "conflicting mutation hashes",
+    "mutation-escalate-without-evidence": "requires unresolved-boundary evidence",
 }
 
 _CATALOG_UNSET = object()

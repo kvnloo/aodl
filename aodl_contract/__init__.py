@@ -1,6 +1,7 @@
 """Importable AODL/HOTL contract validation."""
 
-from .core import CORE_FORMAT, canonical_json, semantic_fingerprint, to_core\nfrom .validator import (
+from .core import CORE_FORMAT, canonical_json, semantic_fingerprint, to_core
+from .validator import (
     Issue,
     WIRE_SPEC,
     validate,
@@ -11,6 +12,10 @@ from .core import CORE_FORMAT, canonical_json, semantic_fingerprint, to_core\nfr
 )
 
 __all__ = [
+    "CORE_FORMAT",
+    "canonical_json",
+    "semantic_fingerprint",
+    "to_core",
     "Issue",
     "WIRE_SPEC",
     "validate",

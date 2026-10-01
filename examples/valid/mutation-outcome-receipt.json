@@ -212,6 +212,26 @@
         "evidenceRef": "supersync:duplicate-operation",
         "effectHash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
       }
+    },
+    {
+      "eventId": "e7",
+      "type": "stateUpdate",
+      "candidateId": "m_unobservable_delivery",
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "revision": 1,
+      "causalParents": [],
+      "actor": "executor",
+      "logicalTime": "e7",
+      "payload": {
+        "receiptKind": "mutation-outcome/v0",
+        "mutationKey": "m_unobservable_delivery",
+        "authorityScope": "gateway:delivery",
+        "attempted": true,
+        "effect": "unknown",
+        "verification": "unverified",
+        "retryDisposition": "escalate",
+        "evidenceRef": "hermes:partial-failed-turn"
+      }
     }
   ]
 }

@@ -1,5 +1,6 @@
 """Importable AODL/HOTL contract validation."""
 
+from .canonical import CANON_VERSION, CanonicalizationError, canonicalize, semantic_fingerprint
 from .validator import (
     Issue,
     WIRE_SPEC,
@@ -11,6 +12,10 @@ from .validator import (
 )
 
 __all__ = [
+    "CANON_VERSION",
+    "CanonicalizationError",
+    "canonicalize",
+    "semantic_fingerprint",
     "Issue",
     "WIRE_SPEC",
     "validate",

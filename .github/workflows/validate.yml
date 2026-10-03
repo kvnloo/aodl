@@ -19,3 +19,5 @@ jobs:
         run: python3 tests/compile.py
       - name: Mesh registry (catalog only; not HOTL)
         run: python3 tests/mesh_registry.py
+      - name: Consumer CLI real-process contract
+        run: python3 -m unittest discover -s tests -p test_cli_json.py -v

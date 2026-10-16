@@ -17,3 +17,8 @@ python3 .verified-oss-loop/rollout.py show
 ```
 
 Rollout scheme (`rollout.yml`): Arch-style `rolling` by default. `staged` or `stable` for slower repos. See the kit's [docs/rollout.md](https://github.com/kvnloo/verified-oss-loop/blob/main/docs/rollout.md).
+
+Claim expiry in `.github/scripts/expire-claims.sh` retrieves every comment page using `gh api --paginate --slurp`.
+The Python lease parser flattens raw pages before evaluating renewals; `--slurp` must not be combined with
+`gh --jq` or `--template`. Verify late-page renewals with `python3 tests/expire_claims.py`.
+The script's `--dry-run` mode does not change labels or post comments.

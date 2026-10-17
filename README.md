@@ -153,9 +153,9 @@ Ids are fixed in [`harnesses/catalog.json`](harnesses/catalog.json). Unknown ids
 | `codex` | executor | wired | primary | [openai/codex](https://github.com/openai/codex) |
 | `claude` | executor | wired | primary | [anthropics/claude-code](https://github.com/anthropics/claude-code) |
 | `pi` | executor | none | primary | [earendil-works/pi](https://github.com/earendil-works/pi) |
-| `fx` | executor | none | none | [vercel-labs/fx](https://github.com/vercel-labs/fx) |
+| `fx` | executor | none | none | [vercel-labs/fx](https://github.com/vercel-labs/fx) |\n| `agentweb` | executor | none | none | [AgentWebPro/agentweb](https://github.com/AgentWebPro/agentweb) |
 
-[kunchenguid/firstmate](https://github.com/kunchenguid/firstmate) is a **distro**, not a ninth harness. Fork: [kvnloo/firstmate](https://github.com/kvnloo/firstmate).
+[kunchenguid/firstmate](https://github.com/kunchenguid/firstmate) is a **distro**, not a harness. Fork: [kvnloo/firstmate](https://github.com/kvnloo/firstmate).
 
 ## C(RAID)
 

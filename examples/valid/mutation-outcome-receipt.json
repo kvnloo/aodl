@@ -1,0 +1,237 @@
+{
+  "specVersion": "0.2",
+  "graphId": "mutationReceiptValid",
+  "revision": 1,
+  "intentGraph": {
+    "nodes": [
+      {
+        "id": "executor",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "receipt",
+            "direction": "out",
+            "schema": "mutation-outcome/v0"
+          }
+        ],
+        "capabilities": [
+          "mutate"
+        ],
+        "authorityCeiling": [
+          "mutate"
+        ]
+      },
+      {
+        "id": "verify",
+        "kind": "verifier",
+        "ports": [
+          {
+            "id": "receipt",
+            "direction": "in",
+            "schema": "mutation-outcome/v0"
+          }
+        ],
+        "capabilities": []
+      }
+    ],
+    "edges": [
+      {
+        "id": "receipt_observation",
+        "relation": "observation",
+        "from": "executor",
+        "to": "verify",
+        "fromPort": "receipt",
+        "toPort": "receipt",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [],
+          "delegationDepth": 0
+        },
+        "evidence": {
+          "required": true
+        },
+        "provenance": {
+          "sourceHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        }
+      }
+    ]
+  },
+  "policies": {
+    "protocol": "mutation-outcome-receipt/v0",
+    "kinds": [
+      "retry"
+    ],
+    "fanIn": "all",
+    "dynamic": {
+      "allowed": false,
+      "maxChildren": 0,
+      "maxDepth": 0
+    }
+  },
+  "constraints": {
+    "budgets": {
+      "attention": 1
+    },
+    "termination": {
+      "on": "verified-or-escalated"
+    }
+  },
+  "provenance": {
+    "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "source": "frontier-lab mutation outcome receipt v0"
+  },
+  "eventLog": [
+    {
+      "eventId": "e1",
+      "type": "stateUpdate",
+      "candidateId": "m_safe_retry",
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "revision": 1,
+      "causalParents": [],
+      "actor": "executor",
+      "logicalTime": "e1",
+      "payload": {
+        "receiptKind": "mutation-outcome/v0",
+        "mutationKey": "m_safe_retry",
+        "authorityScope": "session:a",
+        "attempted": true,
+        "effect": "none",
+        "verification": "unverified",
+        "retryDisposition": "retry",
+        "evidenceRef": "probe:no-effect"
+      }
+    },
+    {
+      "eventId": "e2",
+      "type": "stateUpdate",
+      "candidateId": "m_ack_lost",
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "revision": 1,
+      "causalParents": [],
+      "actor": "executor",
+      "logicalTime": "e2",
+      "payload": {
+        "receiptKind": "mutation-outcome/v0",
+        "mutationKey": "m_ack_lost",
+        "authorityScope": "session:a",
+        "attempted": true,
+        "effect": "unknown",
+        "verification": "unverified",
+        "retryDisposition": "observe"
+      }
+    },
+    {
+      "eventId": "e3",
+      "type": "stateUpdate",
+      "candidateId": "m_ack_lost",
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "revision": 1,
+      "causalParents": [
+        "e2"
+      ],
+      "actor": "executor",
+      "logicalTime": "e3",
+      "payload": {
+        "receiptKind": "mutation-outcome/v0",
+        "mutationKey": "m_ack_lost",
+        "authorityScope": "session:a",
+        "attempted": true,
+        "effect": "observed",
+        "verification": "verified",
+        "retryDisposition": "stop",
+        "evidenceRef": "state:postcondition",
+        "effectHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    },
+    {
+      "eventId": "e4",
+      "type": "stateUpdate",
+      "candidateId": "m_never_sent",
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "revision": 1,
+      "causalParents": [],
+      "actor": "executor",
+      "logicalTime": "e4",
+      "payload": {
+        "receiptKind": "mutation-outcome/v0",
+        "mutationKey": "m_never_sent",
+        "authorityScope": "session:a",
+        "attempted": false,
+        "effect": "none",
+        "verification": "unverified",
+        "retryDisposition": "retry"
+      }
+    },
+    {
+      "eventId": "e5",
+      "type": "stateUpdate",
+      "candidateId": "m_durable_resend",
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "revision": 1,
+      "causalParents": [],
+      "actor": "executor",
+      "logicalTime": "e5",
+      "payload": {
+        "receiptKind": "mutation-outcome/v0",
+        "mutationKey": "m_durable_resend",
+        "authorityScope": "device:sync-client",
+        "attempted": true,
+        "effect": "unknown",
+        "verification": "unverified",
+        "retryDisposition": "resend",
+        "idempotency": "receiver-durable",
+        "mutationHash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "evidenceRef": "supersync:operation-id-unique"
+      }
+    },
+    {
+      "eventId": "e6",
+      "type": "stateUpdate",
+      "candidateId": "m_durable_resend",
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "revision": 1,
+      "causalParents": [
+        "e5"
+      ],
+      "actor": "executor",
+      "logicalTime": "e6",
+      "payload": {
+        "receiptKind": "mutation-outcome/v0",
+        "mutationKey": "m_durable_resend",
+        "authorityScope": "device:sync-client",
+        "attempted": true,
+        "effect": "observed",
+        "verification": "verified",
+        "retryDisposition": "stop",
+        "idempotency": "receiver-durable",
+        "mutationHash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "evidenceRef": "supersync:duplicate-operation",
+        "effectHash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      }
+    },
+    {
+      "eventId": "e7",
+      "type": "stateUpdate",
+      "candidateId": "m_unobservable_delivery",
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "revision": 1,
+      "causalParents": [],
+      "actor": "executor",
+      "logicalTime": "e7",
+      "payload": {
+        "receiptKind": "mutation-outcome/v0",
+        "mutationKey": "m_unobservable_delivery",
+        "authorityScope": "gateway:delivery",
+        "attempted": true,
+        "effect": "unknown",
+        "verification": "unverified",
+        "retryDisposition": "escalate",
+        "evidenceRef": "hermes:partial-failed-turn"
+      }
+    }
+  ]
+}

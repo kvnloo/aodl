@@ -1,0 +1,13 @@
+LICENSE
+README.md
+pyproject.toml
+aodl_contract/__init__.py
+aodl_contract/catalog.py
+aodl_contract/cli.py
+aodl_contract/validator.py
+aodl_contract.egg-info/PKG-INFO
+aodl_contract.egg-info/SOURCES.txt
+aodl_contract.egg-info/dependency_links.txt
+aodl_contract.egg-info/entry_points.txt
+aodl_contract.egg-info/top_level.txt
+tests/test_aodl_contract_api.py

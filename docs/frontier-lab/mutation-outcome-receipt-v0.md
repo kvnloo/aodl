@@ -1,0 +1,200 @@
+# Frontier Lab: Mutation Outcome Receipt v0
+
+Status: experimental profile. It does not add a new HOTL event type or scheduler.
+
+## Hypothesis
+
+A mutation with an ambiguous outcome must never be retried under a **new logical identity**.
+
+After dispatch with an unknown effect, a runtime has three safe paths:
+
+1. **observe/reconcile** before deciding what to do next;
+2. **resend the identical mutation** only when a durable receiver-side idempotency contract binds the same mutation key to the same content; or
+3. **escalate unresolved** when neither a reliable observation nor a safe same-ID resend exists.
+
+A fresh mutation identity after an ambiguous attempt is invalid. An unresolved ambiguity must never be relabeled as successful completion.
+
+### Revision from the first hypothesis
+
+The initial study hypothesis allowed automatic retry only after proving that the prior attempt had no effect. Super Productivity falsified that stronger claim: its server can safely receive the same operation again after a lost acknowledgement because `Operation.id` is durably unique and same-ID/different-content is rejected. The retry is safe even when the first effect may already exist.
+
+This is the intended research loop: preserve the counterexample and refine the invariant rather than forcing every runtime into CUA's weaker stop-and-observe model.
+
+## Why this study exists
+
+Three current systems already implement pieces of the same safety boundary:
+
+| Runtime | Evidence already present | Gap exposed by normalization |
+|---|---|---|
+| CUA guarded completion | session-bound authority, exact-single-candidate admission, fresh refs, one-shot plan consumption, content-free route receipts | `dispatch_attempted` proves dispatch, not whether the external mutation landed when acknowledgement is lost |
+| Super Productivity sync | unique operation id, client id, vector clock, local sequence, `syncedAt`, rejection/application status | rich causal history exists, but the retry/no-retry decision is not named as a portable receipt |
+| Hermes | admission receipts are explicitly not execution acknowledgements; completed terminal processes can write atomic, redacted durable result receipts; disk failure never claims durability | a process completion receipt does not by itself prove every external side effect of the command |
+
+The experiment asks whether one conservative receipt can describe the shared decision boundary without erasing those differences.
+
+## Results to date
+
+| Runtime | Injected / observed boundary | Safe disposition | Evidence |
+|---|---|---|---|
+| CUA guarded completion | target applies the guarded click, then caller loses the acknowledgement | `observe` | Python + TypeScript fault tests assert one click only, target state changed, caller records `effect=unknown` |
+| Super Productivity / SuperSync | server commits an operation, success response is discarded, client sends again | `resend` | identical `Operation.id` + content returns `DUPLICATE_OPERATION`; same id + changed content returns `INVALID_OP_ID`; next fresh op receives the next sequence exactly once |
+| Hermes gateway delivery | a complete final message may have reached the platform, but delivery is explicitly ambiguous and no reliable read-back exists | `escalate` | existing ambiguous-timeout path refuses blind re-send; failed turns with tool activity tell the caller to verify effects before resending |
+| Hermes terminal | arbitrary shell process has spawned, then the trustworthy completion channel fails | `escalate` / verify | downstream fault test fences the automatic retry loop after one possible mutation while preserving pre-spawn retries |
+
+### First falsification
+
+The original hypothesis said every unknown effect must be observed before retry. SuperSync disproved it. Receiver-durable idempotency allows a safer and faster operation: resend the **same** immutable mutation identity and let the receiver reconcile it.
+
+### Second refinement
+
+Hermes shows the opposite limit: some effects are neither queryable nor safely idempotent. For those, automation needs a first-class unresolved state. Treating that state as ordinary failure encourages duplicate effects; treating it as success lies. `escalate` preserves the uncertainty.
+
+### Emerging invariant
+
+The portable invariant is therefore not "never retry after ambiguity." It is:
+
+> **Never create a fresh logical mutation identity after an ambiguous attempt.** Observe the world, resend the exact content under a proven durable receiver-side idempotency key, or preserve the ambiguity for a higher-level reconciler.
+
+
+## Normalized receipt
+
+A Mutation Outcome Receipt is carried in an ordinary HOTL `stateUpdate` event payload:
+
+```json
+{
+  "receiptKind": "mutation-outcome/v0",
+  "mutationKey": "stable logical mutation identity",
+  "authorityScope": "session/task/device scope that authorized it",
+  "attempted": true,
+  "effect": "none | unknown | observed",
+  "verification": "unverified | verified",
+  "retryDisposition": "retry | observe | resend | escalate | stop",
+  "idempotency": "none | receiver-durable",
+  "mutationHash": "optional sha256 binding the mutation content",
+  "evidenceRef": "content-free reference to the proof",
+  "effectHash": "optional sha256 of the observed effect"
+}
+```
+
+The receipt is intentionally content-free. Raw prompts, commands, credentials, screenshots, tool arguments, and model reasoning do not belong in it.
+
+### Required safety rules
+
+1. `effect=unknown` => `retryDisposition=observe|resend|escalate`; never ordinary `retry` or success-like `stop`.
+2. `retryDisposition=resend` is legal only when:
+   - `effect=unknown`;
+   - `idempotency=receiver-durable`;
+   - `mutationHash` is present;
+   - `evidenceRef` identifies the durable dedupe contract.
+3. Every receipt for the same `mutationKey` that carries `mutationHash` must carry the same hash. Same identity/different content is a conflict.
+4. `retryDisposition=escalate` is legal only for an attempted mutation with `effect=unknown`; `evidenceRef` must name the unresolved boundary handed to a human/higher-level reconciler.
+5. `effect=observed` => `retryDisposition=stop` and `effectHash` is required.
+6. `verification=verified` => `retryDisposition=stop` and `evidenceRef` is required.
+7. Ordinary `retryDisposition=retry` is legal only when `effect=none`; if an attempt occurred, `evidenceRef` must prove the pre-effect boundary.
+8. `attempted=false` cannot claim `effect=unknown|observed`.
+9. The same `mutationKey` may progress from unknown to observed/verified, but two observed receipts for that key with different `effectHash` values are a conflict.
+10. The receipt never grants authority. Existing AODL authority rules still govern the mutation.
+
+The important distinction is **retry vs resend vs escalate**. `retry` authorizes another logical mutation because the prior effect is proven absent. `resend` retransmits the same logical mutation key/content so a durable receiver can return or reconstruct the prior result without duplicating the effect. `escalate` preserves the ambiguity as ambiguity when automation has no safe next move.
+
+### Proof obligations for `receiver-durable`
+
+A runtime must not claim `idempotency=receiver-durable` merely because it has a duplicate heuristic. The receiver-side contract should survive all of these:
+
+1. **concurrency:** two same-key attempts racing from separate workers cannot both create the effect;
+2. **acknowledgement loss:** retrying after the first commit but before the first response returns the existing outcome / duplicate result;
+3. **restart or cache expiry:** dedupe survives process restart and any short-lived request cache;
+4. **identity/content binding:** reusing a key with different mutation content is rejected;
+5. **atomicity:** the uniqueness decision and durable mutation cannot be split by a crash into "effect landed but key absent" or vice versa.
+
+SuperSync qualifies because operation identity is persisted with the operation and same-ID/different-content is rejected. A local in-memory request cache alone would not qualify.
+
+### Negative control: wger MCP duplicate-window guard
+
+`wger-project/mcp-server#25` is useful duplicate-prevention UX, but it does **not** satisfy the durable-resend proof:
+
+- it lists recent workout rows and then creates a new row in a separate call;
+- two concurrent `log_set` calls can both observe no duplicate before either write lands;
+- the configurable time window intentionally expires;
+- identity is inferred from exercise/load/reps/unit/slot rather than a stable caller-supplied mutation key.
+
+Therefore a lost acknowledgement around `log_set` cannot safely map to `resend` under this profile. The next experiment would need either receiver/API-level atomic idempotency or an observe/reconcile step. This is exactly the distinction the profile is meant to make visible.
+
+## Adversarial corpus
+
+The executable corpus includes:
+
+- safe pre-effect failure -> retry;
+- acknowledgement lost after dispatch without durable idempotency -> observe, not retry;
+- acknowledgement lost with durable receiver idempotency -> resend same key/content;
+- acknowledgement/delivery ambiguous with no observable state and no durable dedupe -> escalate unresolved;
+- observed effect -> stop;
+- verified effect -> stop;
+- unknown + ordinary retry -> invalid;
+- unknown + resend without durable idempotency proof -> invalid;
+- same mutation key + conflicting mutation hashes -> invalid;
+- observed + retry -> invalid;
+- same mutation key + conflicting observed hashes -> invalid.
+
+## Transfer plan
+
+### CUA
+
+Map existing `BoundCompletionEvidence` / `TwoActionContinuationJournal` into the admission half of the receipt, then add one new fault-injection case:
+
+1. dispatch mutation;
+2. apply effect in the fixture world;
+3. drop acknowledgement;
+4. assert the normalized result is `effect=unknown, retryDisposition=observe`;
+5. observe world state;
+6. resolve to `effect=observed|verified, retryDisposition=stop`;
+7. assert no second mutation dispatch.
+
+This is deliberately different from the existing "failed proof clears pending authority" test: that test prevents a *next* guarded child; this one prevents replaying the *same* possibly-landed mutation.
+
+### Super Productivity
+
+Use `Operation.id` as the mutation key. Candidate mapping:
+
+- local op before upload: attempted locally, remote effect unresolved;
+- server acknowledgement (`syncedAt`) or later download of the same op id: observed/verified remote durability;
+- explicit rejection (`rejectedAt`) before server acceptance: no remote effect, eligible for the resolver/rebase path;
+- network ambiguity with no acknowledgement: safely resend the exact same `Operation.id` and immutable operation content. Durable duplicate detection is the observation/reconciliation mechanism: the server either accepts once or reports the existing duplicate; it rejects same-ID/different-content.
+
+The vector clock remains causal evidence; this profile does not replace it.
+
+### Hermes
+
+Keep the explicit distinction already documented in `MessageEvent._gateway_accepted`: admission is not execution acknowledgement.
+
+Hermes already has two directly relevant fail-closed behaviors:
+
+- failed turns containing tool activity use `PARTIAL_FAILED_TURN_NOTICE`: "Some actions may already have run; verify their effects before resending." This maps to `effect=unknown, retryDisposition=escalate`;
+- an explicitly ambiguous full-final delivery timeout does not blindly send the message again because a duplicate user-visible delivery is possible.
+
+For terminal processes, an atomic retained process-result file can provide execution-completion evidence. If persistence fails, Hermes already logs the failure and does not claim durability. For commands with external side effects, a process exit alone remains insufficient; the adapter needs a domain observation before `verification=verified`.
+
+The Frontier Lab transfer also found a lower-level gap: the foreground terminal retry loop treated every unexpected `env.execute()` exception as pre-effect. The downstream experiment now marks exceptions after process spawn as ambiguous and fences automatic replay.
+
+## Metrics
+
+For each runtime and fault class record:
+
+- duplicate external mutations;
+- false suppression of a needed retry;
+- time to reconcile an ambiguous outcome;
+- extra observations/tool calls;
+- bytes in the normalized receipt;
+- whether raw user/tool content leaks into the receipt.
+
+The target is zero duplicate mutations and zero false "verified" claims. Latency is secondary until those hold.
+
+## Non-goals
+
+- exactly-once delivery as a global guarantee;
+- replacing vector clocks, operation logs, browser refs, process receipts, or runtime-specific journals;
+- a new event type;
+- encoding raw execution content;
+- claiming novelty for idempotency or distributed retry theory.
+
+The candidate contribution is the **portable fail-closed decision boundary and benchmark**, not the underlying distributed-systems ideas.

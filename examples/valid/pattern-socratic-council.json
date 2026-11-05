@@ -1,0 +1,1735 @@
+{
+  "specVersion": "0.2",
+  "graphId": "pattern-socratic-council-kevin-council-4x4",
+  "revision": 0,
+  "intentGraph": {
+    "nodes": [
+      {
+        "id": "brief",
+        "kind": "task",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared"
+      },
+      {
+        "id": "seat.argon",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared"
+      },
+      {
+        "id": "pool.argon.free",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "hermes"
+      },
+      {
+        "id": "pool.argon.luna",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "fx"
+      },
+      {
+        "id": "pool.argon.haiku-5_5",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "hermes"
+      },
+      {
+        "id": "seat.astra",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "fx"
+      },
+      {
+        "id": "pool.astra.free",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "hermes"
+      },
+      {
+        "id": "pool.astra.luna",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "fx"
+      },
+      {
+        "id": "pool.astra.haiku-5_5",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "hermes"
+      },
+      {
+        "id": "seat.fable-5_1",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "hermes"
+      },
+      {
+        "id": "pool.fable-5_1.free",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "hermes"
+      },
+      {
+        "id": "pool.fable-5_1.luna",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "fx"
+      },
+      {
+        "id": "pool.fable-5_1.haiku-5_5",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "hermes"
+      },
+      {
+        "id": "seat.opus-5_5",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "hermes"
+      },
+      {
+        "id": "pool.opus-5_5.free",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "hermes"
+      },
+      {
+        "id": "pool.opus-5_5.luna",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "fx"
+      },
+      {
+        "id": "pool.opus-5_5.haiku-5_5",
+        "kind": "executor",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared",
+        "harness": "hermes"
+      },
+      {
+        "id": "synthesis",
+        "kind": "task",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared"
+      },
+      {
+        "id": "check",
+        "kind": "verifier",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared"
+      },
+      {
+        "id": "owner",
+        "kind": "humanGate",
+        "ports": [
+          {
+            "id": "in",
+            "direction": "in",
+            "schema": "Task"
+          },
+          {
+            "id": "out",
+            "direction": "out",
+            "schema": "Task"
+          }
+        ],
+        "capabilities": [
+          "execute"
+        ],
+        "authorityCeiling": [
+          "execute"
+        ],
+        "lifecycle": "declared"
+      }
+    ],
+    "edges": [
+      {
+        "id": "e-dependency-brief-seat_argon",
+        "relation": "dependency",
+        "from": "brief",
+        "to": "seat.argon",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-delegation-seat_argon-pool_argon_free",
+        "relation": "delegation",
+        "from": "seat.argon",
+        "to": "pool.argon.free",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 1
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-artifact-pool_argon_free-seat_argon",
+        "relation": "artifact",
+        "from": "pool.argon.free",
+        "to": "seat.argon",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-delegation-seat_argon-pool_argon_luna",
+        "relation": "delegation",
+        "from": "seat.argon",
+        "to": "pool.argon.luna",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 1
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-artifact-pool_argon_luna-seat_argon",
+        "relation": "artifact",
+        "from": "pool.argon.luna",
+        "to": "seat.argon",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-delegation-seat_argon-pool_argon_haiku-5_5",
+        "relation": "delegation",
+        "from": "seat.argon",
+        "to": "pool.argon.haiku-5_5",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 1
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-artifact-pool_argon_haiku-5_5-seat_argon",
+        "relation": "artifact",
+        "from": "pool.argon.haiku-5_5",
+        "to": "seat.argon",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-dependency-brief-seat_astra",
+        "relation": "dependency",
+        "from": "brief",
+        "to": "seat.astra",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-delegation-seat_astra-pool_astra_free",
+        "relation": "delegation",
+        "from": "seat.astra",
+        "to": "pool.astra.free",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 1
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-artifact-pool_astra_free-seat_astra",
+        "relation": "artifact",
+        "from": "pool.astra.free",
+        "to": "seat.astra",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-delegation-seat_astra-pool_astra_luna",
+        "relation": "delegation",
+        "from": "seat.astra",
+        "to": "pool.astra.luna",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 1
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-artifact-pool_astra_luna-seat_astra",
+        "relation": "artifact",
+        "from": "pool.astra.luna",
+        "to": "seat.astra",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-delegation-seat_astra-pool_astra_haiku-5_5",
+        "relation": "delegation",
+        "from": "seat.astra",
+        "to": "pool.astra.haiku-5_5",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 1
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-artifact-pool_astra_haiku-5_5-seat_astra",
+        "relation": "artifact",
+        "from": "pool.astra.haiku-5_5",
+        "to": "seat.astra",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-dependency-brief-seat_fable-5_1",
+        "relation": "dependency",
+        "from": "brief",
+        "to": "seat.fable-5_1",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-delegation-seat_fable-5_1-pool_fable-5_1_free",
+        "relation": "delegation",
+        "from": "seat.fable-5_1",
+        "to": "pool.fable-5_1.free",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 1
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-artifact-pool_fable-5_1_free-seat_fable-5_1",
+        "relation": "artifact",
+        "from": "pool.fable-5_1.free",
+        "to": "seat.fable-5_1",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-delegation-seat_fable-5_1-pool_fable-5_1_luna",
+        "relation": "delegation",
+        "from": "seat.fable-5_1",
+        "to": "pool.fable-5_1.luna",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 1
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-artifact-pool_fable-5_1_luna-seat_fable-5_1",
+        "relation": "artifact",
+        "from": "pool.fable-5_1.luna",
+        "to": "seat.fable-5_1",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-delegation-seat_fable-5_1-pool_fable-5_1_haiku-5_5",
+        "relation": "delegation",
+        "from": "seat.fable-5_1",
+        "to": "pool.fable-5_1.haiku-5_5",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 1
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-artifact-pool_fable-5_1_haiku-5_5-seat_fable-5_1",
+        "relation": "artifact",
+        "from": "pool.fable-5_1.haiku-5_5",
+        "to": "seat.fable-5_1",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-dependency-brief-seat_opus-5_5",
+        "relation": "dependency",
+        "from": "brief",
+        "to": "seat.opus-5_5",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-delegation-seat_opus-5_5-pool_opus-5_5_free",
+        "relation": "delegation",
+        "from": "seat.opus-5_5",
+        "to": "pool.opus-5_5.free",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 1
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-artifact-pool_opus-5_5_free-seat_opus-5_5",
+        "relation": "artifact",
+        "from": "pool.opus-5_5.free",
+        "to": "seat.opus-5_5",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-delegation-seat_opus-5_5-pool_opus-5_5_luna",
+        "relation": "delegation",
+        "from": "seat.opus-5_5",
+        "to": "pool.opus-5_5.luna",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 1
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-artifact-pool_opus-5_5_luna-seat_opus-5_5",
+        "relation": "artifact",
+        "from": "pool.opus-5_5.luna",
+        "to": "seat.opus-5_5",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-delegation-seat_opus-5_5-pool_opus-5_5_haiku-5_5",
+        "relation": "delegation",
+        "from": "seat.opus-5_5",
+        "to": "pool.opus-5_5.haiku-5_5",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 1
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-artifact-pool_opus-5_5_haiku-5_5-seat_opus-5_5",
+        "relation": "artifact",
+        "from": "pool.opus-5_5.haiku-5_5",
+        "to": "seat.opus-5_5",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-critique-seat_argon-seat_astra",
+        "relation": "critique",
+        "from": "seat.argon",
+        "to": "seat.astra",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-critique-seat_argon-seat_fable-5_1",
+        "relation": "critique",
+        "from": "seat.argon",
+        "to": "seat.fable-5_1",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-critique-seat_argon-seat_opus-5_5",
+        "relation": "critique",
+        "from": "seat.argon",
+        "to": "seat.opus-5_5",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-critique-seat_astra-seat_argon",
+        "relation": "critique",
+        "from": "seat.astra",
+        "to": "seat.argon",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-critique-seat_astra-seat_fable-5_1",
+        "relation": "critique",
+        "from": "seat.astra",
+        "to": "seat.fable-5_1",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-critique-seat_astra-seat_opus-5_5",
+        "relation": "critique",
+        "from": "seat.astra",
+        "to": "seat.opus-5_5",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-critique-seat_fable-5_1-seat_argon",
+        "relation": "critique",
+        "from": "seat.fable-5_1",
+        "to": "seat.argon",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-critique-seat_fable-5_1-seat_astra",
+        "relation": "critique",
+        "from": "seat.fable-5_1",
+        "to": "seat.astra",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-critique-seat_fable-5_1-seat_opus-5_5",
+        "relation": "critique",
+        "from": "seat.fable-5_1",
+        "to": "seat.opus-5_5",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-critique-seat_opus-5_5-seat_argon",
+        "relation": "critique",
+        "from": "seat.opus-5_5",
+        "to": "seat.argon",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-critique-seat_opus-5_5-seat_astra",
+        "relation": "critique",
+        "from": "seat.opus-5_5",
+        "to": "seat.astra",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-critique-seat_opus-5_5-seat_fable-5_1",
+        "relation": "critique",
+        "from": "seat.opus-5_5",
+        "to": "seat.fable-5_1",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-dependency-seat_argon-synthesis",
+        "relation": "dependency",
+        "from": "seat.argon",
+        "to": "synthesis",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-dependency-seat_astra-synthesis",
+        "relation": "dependency",
+        "from": "seat.astra",
+        "to": "synthesis",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-dependency-seat_fable-5_1-synthesis",
+        "relation": "dependency",
+        "from": "seat.fable-5_1",
+        "to": "synthesis",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-dependency-seat_opus-5_5-synthesis",
+        "relation": "dependency",
+        "from": "seat.opus-5_5",
+        "to": "synthesis",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-verification-synthesis-check",
+        "relation": "verification",
+        "from": "synthesis",
+        "to": "check",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-control-check-owner",
+        "relation": "control",
+        "from": "check",
+        "to": "owner",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      },
+      {
+        "id": "e-observation-owner-brief",
+        "relation": "observation",
+        "from": "owner",
+        "to": "brief",
+        "fromPort": "out",
+        "toPort": "in",
+        "delivery": {
+          "order": "ordered",
+          "idempotent": true,
+          "timeoutMs": 600000,
+          "maxRetries": 0
+        },
+        "authority": {
+          "grant": [
+            "execute"
+          ],
+          "delegationDepth": 0
+        },
+        "provenance": {
+          "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+        }
+      }
+    ]
+  },
+  "policies": {
+    "kinds": [
+      "fanout",
+      "reducer",
+      "human_gate"
+    ],
+    "fanIn": "quorum",
+    "quorum": 4,
+    "reducer": "synthesis",
+    "protocol": "socratic",
+    "dynamic": {
+      "allowed": true,
+      "maxChildren": 9,
+      "maxDepth": 1
+    }
+  },
+  "constraints": {
+    "budgets": {
+      "rounds": 4,
+      "seats": 4,
+      "researchSpawns": 36,
+      "attention": 1
+    },
+    "termination": {
+      "on": "humanGate.approved"
+    }
+  },
+  "provenance": {
+    "source": "pattern:socratic-council@0.1",
+    "sourceHash": "ada590bb7d67b7552ac8c4d66f63cba5c96750b34a942acae8d81efe9bc4eb5f"
+  },
+  "plan": {
+    "compiler": "pattern",
+    "profile": "pattern-template",
+    "status": "dry-run",
+    "pattern": "socratic-council",
+    "paramsHash": "f39be79de89408344aa4f21b9d49e3ea7e994c151b4bc5d6e560bdcf09089454",
+    "topology": "council",
+    "rounds": 4,
+    "seats": [
+      {
+        "alias": "argon",
+        "node": "seat.argon",
+        "provider": "google",
+        "route": "agy",
+        "model": "gemini-4-argon-high"
+      },
+      {
+        "alias": "astra",
+        "node": "seat.astra",
+        "provider": "openai",
+        "route": "fx",
+        "model": "gpt-6-astra"
+      },
+      {
+        "alias": "fable-5.1",
+        "node": "seat.fable-5_1",
+        "provider": "anthropic",
+        "route": "hermes",
+        "model": "claude-fable-5-1"
+      },
+      {
+        "alias": "opus-5.5",
+        "node": "seat.opus-5_5",
+        "provider": "anthropic",
+        "route": "hermes",
+        "model": "claude-opus-5-5"
+      }
+    ],
+    "leases": [
+      {
+        "seat": "argon",
+        "class": "free",
+        "count": 5,
+        "route": "vllm-sr",
+        "model": "vllm-sr/free"
+      },
+      {
+        "seat": "argon",
+        "class": "luna",
+        "count": 2,
+        "route": "fx",
+        "model": "gpt-6-luna"
+      },
+      {
+        "seat": "argon",
+        "class": "haiku-5.5",
+        "count": 2,
+        "route": "hermes",
+        "model": "claude-haiku-5-5"
+      },
+      {
+        "seat": "astra",
+        "class": "free",
+        "count": 5,
+        "route": "vllm-sr",
+        "model": "vllm-sr/free"
+      },
+      {
+        "seat": "astra",
+        "class": "luna",
+        "count": 2,
+        "route": "fx",
+        "model": "gpt-6-luna"
+      },
+      {
+        "seat": "astra",
+        "class": "haiku-5.5",
+        "count": 2,
+        "route": "hermes",
+        "model": "claude-haiku-5-5"
+      },
+      {
+        "seat": "fable-5.1",
+        "class": "free",
+        "count": 5,
+        "route": "vllm-sr",
+        "model": "vllm-sr/free"
+      },
+      {
+        "seat": "fable-5.1",
+        "class": "luna",
+        "count": 2,
+        "route": "fx",
+        "model": "gpt-6-luna"
+      },
+      {
+        "seat": "fable-5.1",
+        "class": "haiku-5.5",
+        "count": 2,
+        "route": "hermes",
+        "model": "claude-haiku-5-5"
+      },
+      {
+        "seat": "opus-5.5",
+        "class": "free",
+        "count": 5,
+        "route": "vllm-sr",
+        "model": "vllm-sr/free"
+      },
+      {
+        "seat": "opus-5.5",
+        "class": "luna",
+        "count": 2,
+        "route": "fx",
+        "model": "gpt-6-luna"
+      },
+      {
+        "seat": "opus-5.5",
+        "class": "haiku-5.5",
+        "count": 2,
+        "route": "hermes",
+        "model": "claude-haiku-5-5"
+      }
+    ],
+    "maxDelegationDepth": 1,
+    "laws": [
+      "route-alias-only",
+      "route-law",
+      "finite-bounds",
+      "seat-preflight",
+      "round-token",
+      "spawn-lease",
+      "observed-model",
+      "peer-text"
+    ],
+    "planHash": "a2d2cfc1433f5057396f5da16fcef0f5f2724064ec7c74a523c967bf1c07f4a1"
+  }
+}

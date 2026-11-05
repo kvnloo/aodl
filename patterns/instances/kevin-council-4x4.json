@@ -1,0 +1,13 @@
+{
+  "pattern": "socratic-council",
+  "instanceId": "kevin-council-4x4",
+  "requestedBy": "owner",
+  "description": "Four-seat Socratic council (Argon via agy, Astra, Fable 5.1, Opus 5.5), four rounds, each seat with 5 free-tier, 2 Luna and 2 Haiku research agents.",
+  "params": {
+    "rounds": 4,
+    "seats": ["argon", "astra", "fable-5.1", "opus-5.5"],
+    "researchPool": {"free": 5, "luna": 2, "haiku-5.5": 2},
+    "maxDelegationDepth": 1,
+    "approval": "owner"
+  }
+}

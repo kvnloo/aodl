@@ -1,0 +1,37 @@
+{
+  "patternVersion": "0.1",
+  "id": "socratic-council",
+  "title": "Socratic council",
+  "topology": "council",
+  "summary": "N seats answer one brief independently, then question each other for R rounds. Each seat may delegate deep research to a fixed pool. A reducer writes the synthesis, a verifier checks it, the owner approves.",
+  "method": {
+    "id": "socratic",
+    "rounds": [
+      {"index": 1, "name": "opening", "rule": "Independent openings. No seat sees a peer's text."},
+      {"index": "2..R-1", "name": "examination", "rule": "Each seat receives every peer's previous-round text verbatim, asks each peer one question that could falsify their claim, and answers the questions put to it. Retractions are explicit."},
+      {"index": "R", "name": "closing", "rule": "Each seat states its final position, what changed its mind, and remaining disagreement."}
+    ],
+    "claimLabels": ["Measured", "Source", "Inference"]
+  },
+  "parameters": {
+    "rounds": {"type": "integer", "min": 1, "max": 6, "default": 3},
+    "seats": {"type": "routeAliasList", "minItems": 2, "maxItems": 6, "unique": true},
+    "researchPool": {"type": "map<routeAlias, integer>", "perSeat": true, "maxPerClass": 8, "maxPerSeat": 12, "default": {}},
+    "maxDelegationDepth": {"type": "integer", "min": 0, "max": 1, "default": 1},
+    "approval": {"enum": ["owner"], "default": "owner"}
+  },
+  "laws": [
+    {"id": "route-alias-only", "when": "compile", "rule": "Every seat and pool class is an alias in patterns/routes.json."},
+    {"id": "route-law", "when": "compile", "rule": "Each alias's route satisfies routes.json routeLaws (GPT via fx/pi, Gemini via agy, free via vllm-sr)."},
+    {"id": "finite-bounds", "when": "compile", "rule": "Rounds, seats and pool counts are finite and inside the parameter limits; the plan reserves exactly that many leases."},
+    {"id": "seat-preflight", "when": "admit", "rule": "Before round 1, every seat's exact route returns exit 0, non-empty text, usage success, and observed model == requested model. No substitution; a failed seat makes the council incomplete, not re-seated."},
+    {"id": "round-token", "when": "run", "rule": "A seat turn needs the round token for its round; tokens are issued in order and a seat gets one turn per round. A turn for round R+1 is rejected."},
+    {"id": "spawn-lease", "when": "run", "rule": "A research spawn consumes one lease of its seat's class. A spawn with no remaining lease, an unlisted class, or depth > maxDelegationDepth is rejected."},
+    {"id": "observed-model", "when": "run", "rule": "Every turn and spawn reports the model that actually answered; it must equal the alias's model (free class: any model the router reports as a qualified free lane)."},
+    {"id": "peer-text", "when": "run", "rule": "Examination rounds cite peers' previous-round turn ids; round 1 cites none."}
+  ],
+  "measure": {
+    "receipt": ["patternId", "paramsHash", "planHash", "seatsQualified", "roundsCompleted", "spawnsByClass", "tokensBySeat", "wallSeconds", "violations", "outcome"],
+    "outcome": "Owner verdict (keep / partial / drop) plus any task metric the brief declares. Patterns are compared only on the same brief family."
+  }
+}

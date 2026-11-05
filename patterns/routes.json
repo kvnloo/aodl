@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "rule": "A seat or pool names a route alias, never a raw model string. The alias fixes provider, launch route and exact model id; the pattern compiler refuses anything not listed here. Free lanes resolve through the semantic router at run time, so the template states the class, not the model.",
+  "routeLaws": [
+    {"id": "gpt-via-fx", "provider": "openai", "allowedRoutes": ["fx", "pi"], "why": "Owner rule 2026-11-04: GPT models run only through fx or pi+SoL-Pi, never inside Hermes chat or delegate_task."},
+    {"id": "gemini-via-agy", "provider": "google", "allowedRoutes": ["agy"], "why": "Gemini is reached only through the agy CLI; never as a Hermes provider or direct API."},
+    {"id": "free-via-router", "provider": "free", "allowedRoutes": ["vllm-sr"], "why": "Free-tier agents go through vLLM Semantic Router lanes so per-model limits and privacy lanes apply."}
+  ],
+  "aliases": {
+    "opus-5.5":   {"provider": "anthropic", "route": "hermes", "harness": "hermes", "model": "claude-opus-5-5",     "billing": "subscription", "visualModel": "multi"},
+    "fable-5.1":  {"provider": "anthropic", "route": "hermes", "harness": "hermes", "model": "claude-fable-5-1",    "billing": "subscription", "visualModel": "fable"},
+    "haiku-5.5":  {"provider": "anthropic", "route": "hermes", "harness": "hermes", "model": "claude-haiku-5-5",    "billing": "subscription", "visualModel": "claude-haiku"},
+    "astra":      {"provider": "openai",    "route": "fx",     "harness": "fx",     "model": "gpt-6-astra",         "billing": "subscription", "visualModel": "codex"},
+    "luna":       {"provider": "openai",    "route": "fx",     "harness": "fx",     "model": "gpt-6-luna",          "billing": "subscription", "visualModel": "codex"},
+    "sol":        {"provider": "openai",    "route": "fx",     "harness": "fx",     "model": "gpt-6.1-sol",         "billing": "subscription", "visualModel": "codex-sol"},
+    "argon":      {"provider": "google",    "route": "agy",    "harness": null,     "model": "gemini-4-argon-high", "billing": "subscription", "visualModel": "unknown",
+                   "note": "agy is not a harness id in harnesses/catalog.json yet, so the node carries no harness; the route lives in the plan."},
+    "free":       {"provider": "free",      "route": "vllm-sr", "harness": "hermes", "model": "vllm-sr/free",       "billing": "free", "visualModel": "multi",
+                   "note": "Virtual model. The router picks a qualified free lane per call and logs X-Vsr-Selected-Model."}
+  }
+}

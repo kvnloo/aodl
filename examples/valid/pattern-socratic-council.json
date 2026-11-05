@@ -1609,7 +1609,7 @@
         "node": "seat.argon",
         "provider": "google",
         "route": "agy",
-        "model": "gemini-4-argon-high"
+        "model": "gemini-4-argon"
       },
       {
         "alias": "astra",
@@ -1730,6 +1730,6 @@
       "observed-model",
       "peer-text"
     ],
-    "planHash": "a2d2cfc1433f5057396f5da16fcef0f5f2724064ec7c74a523c967bf1c07f4a1"
+    "planHash": "66dae9e58e26f440751e7e27480b456a44c80727b85571c452d76843861e1f95"
   }
 }

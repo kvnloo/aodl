@@ -13,7 +13,7 @@
     "astra":      {"provider": "openai",    "route": "fx",     "harness": "fx",     "model": "gpt-6-astra",         "billing": "subscription", "visualModel": "codex"},
     "luna":       {"provider": "openai",    "route": "fx",     "harness": "fx",     "model": "gpt-6-luna",          "billing": "subscription", "visualModel": "codex"},
     "sol":        {"provider": "openai",    "route": "fx",     "harness": "fx",     "model": "gpt-6.1-sol",         "billing": "subscription", "visualModel": "codex-sol"},
-    "argon":      {"provider": "google",    "route": "agy",    "harness": null,     "model": "gemini-4-argon-high", "billing": "subscription", "visualModel": "unknown",
+    "argon":      {"provider": "google",    "route": "agy",    "harness": null,     "model": "gemini-4-argon", "billing": "subscription", "visualModel": "unknown",
                    "note": "agy is not a harness id in harnesses/catalog.json yet, so the node carries no harness; the route lives in the plan."},
     "free":       {"provider": "free",      "route": "vllm-sr", "harness": "hermes", "model": "vllm-sr/free",       "billing": "free", "visualModel": "multi",
                    "note": "Virtual model. The router picks a qualified free lane per call and logs X-Vsr-Selected-Model."}

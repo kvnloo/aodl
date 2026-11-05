@@ -9,7 +9,8 @@
     "codex",
     "claude",
     "pi",
-    "fx"
+    "fx",
+    "agentweb"
   ],
   "harnesses": {
     "hermes": {
@@ -90,6 +91,18 @@
       "dash": "wired",
       "firstmate": "none",
       "role": "Vercel Labs unix-like coding agent. Dash adapter: fx ask --json --full-access. Not antonmedv/fx."
+    },
+    "agentweb": {
+      "name": "AgentWeb / Emma",
+      "kind": "executor",
+      "endpoint": "https://api.agentweb.pro/mcp",
+      "transport": "mcp",
+      "repo": "https://github.com/AgentWebPro/agentweb",
+      "fork": "https://github.com/kvnloo/agentweb",
+      "docs": "https://agentweb.pro",
+      "dash": "none",
+      "firstmate": "none",
+      "role": "Remote web/MCP agent runtime. AODL names the executor surface but does not replace AgentWeb session, confirmation, publishing, evaluation-workspace, funding, or scheduling authority."
     }
   },
   "distros": {

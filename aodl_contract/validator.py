@@ -6,7 +6,6 @@ import hashlib
 import json
 import re
 from pathlib import Path
-from typing import Any
 
 WIRE_SPEC = "hotl-0.2"
 _ROOT = Path(__file__).resolve().parent.parent
